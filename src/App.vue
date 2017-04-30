@@ -1,24 +1,18 @@
 <template>
-  <div id="app">
-    <div class="page-wrapper">
-    <app-header v-if="isLogged"></app-header>
-      <router-view>
-
-      </router-view>
-    </div>
-  </div>
+    <div id="app">
+        <router-view></router-view>
+      </div>
 </template>
 
 <script>
-  import Header from './Header.vue'
+  import AppMain from './components/layout/AppMain.vue'
+  import Navbar from './components/layout/Navbar.vue'
 
   export default {
-    computed: {
-      isLogged () {
-        return this.$store.getters.isLoggedIn
-      }
+    components: {
+      Navbar,
+      AppMain
     },
-    components: {appHeader: Header},
     name: 'app'
   }
 </script>

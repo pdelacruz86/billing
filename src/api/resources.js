@@ -1,8 +1,7 @@
 import config from '../config'
-
 import axios from 'axios'
 
-export default axios.create({
+axios.create({
   baseURL: config.api_root,
   timeout: 5000,
   headers: {
@@ -11,3 +10,4 @@ export default axios.create({
   }
 })
 
+export default axios

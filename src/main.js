@@ -12,6 +12,7 @@ require('./assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css')
 require('./assets/layouts/layout3/css/layout.min.css')
 require('./assets/layouts/layout3/css/themes/default.min.css')
 require('./assets/layouts/layout3/css/custom.min.css')
+require('./assets/global/css/components-rounded.css')
 
 Vue.config.productionTip = false
 
