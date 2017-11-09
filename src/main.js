@@ -14,6 +14,11 @@ require('./assets/layouts/layout3/css/themes/default.min.css')
 require('./assets/layouts/layout3/css/custom.min.css')
 require('./assets/global/css/components-rounded.css')
 
+import {Tabs, Tab} from 'vue-tabs-component';
+
+Vue.component('tabs', Tabs);
+Vue.component('tab', Tab);
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

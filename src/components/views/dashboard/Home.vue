@@ -9,7 +9,7 @@
               <div class="portlet-title">
                   <div class="caption caption-md">
                       <i class="icon-bar-chart font-dark hide"></i>
-                      <span class="caption-subject font-green-steel uppercase bold">Sales Summary</span>
+                      <span class="caption-subject font-green-steel uppercase bold">Cases Summary</span>
                       <span class="caption-helper hide">weekly stats...</span>
                   </div>
                   <div class="actions">
@@ -26,27 +26,23 @@
               <div class="portlet-body">
                   <div class="row list-separated">
                       <div class="col-md-3 col-sm-3 col-xs-6">
-                          <div class="font-grey-mint font-sm"> Total Sales </div>
-                          <div class="uppercase font-hg font-red-flamingo"> 13,760
-                              <span class="font-lg font-grey-mint">$</span>
+                          <div class="font-grey-mint font-sm"> Total </div>
+                          <div class="uppercase font-hg font-red-flamingo"> 134
                           </div>
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-6">
-                          <div class="font-grey-mint font-sm"> Revenue </div>
-                          <div class="uppercase font-hg theme-font"> 4,760
-                              <span class="font-lg font-grey-mint">$</span>
+                          <div class="font-grey-mint font-sm"> Completed </div>
+                          <div class="uppercase font-hg theme-font"> 100
                           </div>
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-6">
-                          <div class="font-grey-mint font-sm"> Expenses </div>
-                          <div class="uppercase font-hg font-purple"> 11,760
-                              <span class="font-lg font-grey-mint">$</span>
+                          <div class="font-grey-mint font-sm"> Pending </div>
+                          <div class="uppercase font-hg font-purple"> 30
                           </div>
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-6">
-                          <div class="font-grey-mint font-sm"> Growth </div>
-                          <div class="uppercase font-hg font-blue-sharp"> 9,760
-                              <span class="font-lg font-grey-mint">$</span>
+                          <div class="font-grey-mint font-sm">Conditional Reflex </div>
+                          <div class="uppercase font-hg font-blue-sharp"> 4
                           </div>
                       </div>
                   </div>
@@ -88,7 +84,7 @@
               <div class="portlet-title">
                   <div class="caption caption-md">
                       <i class="icon-bar-chart font-dark hide"></i>
-                      <span class="caption-subject font-green-steel bold uppercase">Member Activity</span>
+                      <span class="caption-subject font-green-steel bold uppercase">Patients Activity</span>
                       <span class="caption-helper">weekly stats...</span>
                   </div>
                   <div class="actions">
@@ -112,7 +108,7 @@
                               </div>
                               <div class="stat-number">
                                   <div class="title"> Total </div>
-                                  <div class="number"> 2460 </div>
+                                  <div class="number"> 500 </div>
                               </div>
                           </div>
                       </div>
@@ -124,7 +120,7 @@
                               </div>
                               <div class="stat-number">
                                   <div class="title"> New </div>
-                                  <div class="number"> 719 </div>
+                                  <div class="number"> 20      </div>
                               </div>
                           </div>
                       </div>
@@ -134,7 +130,6 @@
                           <thead>
                               <tr class="uppercase">
                                   <th colspan="2"> MEMBER </th>
-                                  <th> Earnings </th>
                                   <th> CASES </th>
                                   <th> CLOSED </th>
                                   <th> RATE </th>
@@ -146,9 +141,8 @@
                               <td>
                                   <a href="javascript:;" class="primary-link">Brain</a>
                               </td>
-                              <td> $345 </td>
-                              <td> 45 </td>
-                              <td> 124 </td>
+                              <td> 5 </td>
+                              <td> 2 </td>
                               <td>
                                   <span class="bold theme-font">80%</span>
                               </td>
@@ -159,9 +153,8 @@
                               <td>
                                   <a href="javascript:;" class="primary-link">Nick</a>
                               </td>
-                              <td> $560 </td>
-                              <td> 12 </td>
-                              <td> 24 </td>
+                              <td> 2 </td>
+                              <td> 1 </td>
                               <td>
                                   <span class="bold theme-font">67%</span>
                               </td>
@@ -172,11 +165,10 @@
                               <td>
                                   <a href="javascript:;" class="primary-link">Tim</a>
                               </td>
-                              <td> $1,345 </td>
-                              <td> 450 </td>
-                              <td> 46 </td>
+                              <td> 7 </td>
+                              <td> 1 </td>
                               <td>
-                                  <span class="bold theme-font">98%</span>
+                                  <span class="bold theme-font">90%</span>
                               </td>
                           </tr>
                           <tr>
@@ -185,11 +177,10 @@
                               <td>
                                   <a href="javascript:;" class="primary-link">Tom</a>
                               </td>
-                              <td> $645 </td>
-                              <td> 50 </td>
-                              <td> 89 </td>
+                              <td> 5 </td>
+                              <td> 0 </td>
                               <td>
-                                  <span class="bold theme-font">58%</span>
+                                  <span class="bold theme-font">100%</span>
                               </td>
                           </tr>
                       </table>

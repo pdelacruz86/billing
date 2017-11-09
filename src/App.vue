@@ -5,8 +5,8 @@
 </template>
 
 <script>
-  import AppMain from './components/layout/AppMain.vue'
-  import Navbar from './components/layout/Navbar.vue'
+  import AppMain from './components/layout/appMain.vue'
+  import Navbar from './components/layout/navbar.vue'
 
   export default {
     components: {

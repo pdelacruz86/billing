@@ -1,4 +1,4 @@
-import api from '../../api'
+// import api from '../../api'
 import * as types from '../types'
 import router from '../../router'
 
@@ -21,19 +21,24 @@ const mutations = {
 
 const actions = {
   login ({ commit }, creds) {
-    commit(types.LOGIN) // show spinner
-    api.localLogin(creds).then(response => {
-      if (response.statusText !== 'OK') {
-        return
-      }
-      const token = response.data.token
-      localStorage.setItem('token', token)
-      commit(types.LOGIN_SUCCESS)
-      console.log(response)
-      router.push('/')
-    },
-    response => {
-    })
+    commit(types.LOGIN)
+
+    localStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTA1ODkzNzY2MjF9.MqHRSfGklBn610d2JNRedcwm251UQZDO79axeq2w6Fc')
+
+    router.push('/')
+    // show spinner
+    // api.localLogin(creds).then(response => {
+    //   if (response.statusText !== 'OK') {
+    //     return
+    //   }
+    //   const token = response.data.token
+    //   localStorage.setItem('token', token)
+    //   commit(types.LOGIN_SUCCESS)
+    //   console.log(response)
+    //   router.push('/')
+    // },
+    // response => {
+    // })
   },
   logout ({ commit }) {
     localStorage.removeItem('token')

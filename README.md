@@ -1,6 +1,6 @@
 # svl
 
-> Sistema ventas Loteria Admin
+> Client portal 
 
 ## Build Setup
 

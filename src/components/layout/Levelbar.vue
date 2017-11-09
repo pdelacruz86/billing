@@ -24,7 +24,6 @@
 
     methods: {
       getList () {
-        debugger
         let matched = this.$route.matched.filter(item => item.name)
         let first = matched[0]
         if (first && (first.name !== 'Home' || first.path !== '')) {
