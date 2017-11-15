@@ -15,11 +15,14 @@ require('./assets/layouts/layout3/css/custom.min.css')
 require('./assets/global/css/components-rounded.css')
 
 import {Tabs, Tab} from 'vue-tabs-component';
+import BlockUI from 'vue-blockui'
 
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
 
 Vue.config.productionTip = false
+
+Vue.use(BlockUI)
 
 /* eslint-disable no-new */
 new Vue({

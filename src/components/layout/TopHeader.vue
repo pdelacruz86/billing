@@ -2,8 +2,8 @@
 	<div class="top-menu">
 		<ul class="nav navbar-nav pull-right">
 			<!-- BEGIN NOTIFICATION DROPDOWN -->
-			<li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">
-				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+			<li :class="taskClass" id="header_notification_bar" >
+				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" @click="toggleTaskMenu">
 					<i class="icon-bell"></i>
 					<span class="badge badge-default">7</span>
 				</a>
@@ -55,8 +55,8 @@
 				<span class="separator"></span>
 			</li>
 			<!-- BEGIN USER LOGIN DROPDOWN -->
-			<li class="dropdown dropdown-user dropdown-dark">
-				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+			<li :class="userClass">
+				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" @click="toggleUserMenu">
 					<img alt="" class="img-circle" src="../../assets/layouts/layout3/img/avatar9.jpg" />
 					<span class="username username-hide-mobile">Nick</span>
 				</a>
@@ -109,10 +109,63 @@
 
 <script>
 	export default {
+		data () {
+			return {
+				showTastMenu : true,
+				showUserMenu : true
+			}
+		},
+		computed : {
+			taskClass () {
+				if (this.showTastMenu) {
+					return "dropdown dropdown-extended dropdown-notification dropdown-dark"
+				}
+				else {
+					return "dropdown dropdown-extended dropdown-notification dropdown-dark open"
+				}
+			},
+			userClass () {
+				if (this.showUserMenu) {
+					return "dropdown dropdown-user dropdown-dark"
+				}
+				else {
+					return "dropdown dropdown-user dropdown-dark open"
+				}
+			}
+			
+		},
   methods: {
     logout () {
       this.$store.dispatch('logout')
+    },
+    toggleTaskMenu() {
+    	this.showTastMenu = (this.showTastMenu == true) ? false : true
+    	
+    	if(this.showUserMenu){
+    		this.showUserMenu = false
+    	}
+    },
+    toggleUserMenu() {
+    	this.showUserMenu = (this.showUserMenu == true) ? false : true
+    	if(this.showTastMenu){
+    		this.showTastMenu = false
+    	}
     }
+   //  documentClick(e){
+   //      let el = this.$refs.dropdownMenu
+   //      let target = e.target
+   //      // if ( el !== target) && !el.contains(target)) {
+   //        this.showTastMenu=false
+   //      // }
+   //    // }
+   //  },
+   //  created () {
+   //    document.addEventListener('click', this.documentClick)
+   //  },
+   //  destroyed () {
+   //  // important to clean up!!
+   //  document.removeEventListener('click', this.documentClick)
+  	// }
   }
 }
 </script>
