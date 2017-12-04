@@ -16,14 +16,15 @@ require('./assets/global/css/components-rounded.css')
 
 import {Tabs, Tab} from 'vue-tabs-component';
 import BlockUI from 'vue-blockui'
+import VueGoodWizard from 'vue-good-wizard';
 
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
 
-Vue.config.productionTip = false
-
 Vue.use(BlockUI)
+Vue.use(VueGoodWizard);
 
+Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
