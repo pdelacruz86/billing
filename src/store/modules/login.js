@@ -3,7 +3,8 @@ import * as types from '../types'
 import router from '../../router'
 
 const state = {
-  isLoggedIn: !!localStorage.getItem('token')
+  isLoggedIn: !!localStorage.getItem('token'),
+  searchText: ''
 }
 
 const mutations = {
@@ -16,7 +17,15 @@ const mutations = {
   },
   [types.LOGOUT] (state) {
     state.isLoggedIn = false
+  },  
+  updateTextSearch (state, text) {
+    state.searchText = text
+  },
+  [types.addAccession] (state, accession) {
+    state.AllAccessions.push(accession)
   }
+
+
 }
 
 const actions = {
@@ -44,12 +53,18 @@ const actions = {
     localStorage.removeItem('token')
     commit(types.LOGOUT)
     router.push('/login')
+  },
+  addAccession ({ commit }, accession){
+    commit(types.addAccession, accession)
   }
 }
 
 const getters = {
   isLoggedIn: state => {
     return state.isLoggedIn
+  },
+  Accessions: state => {
+    return state.AllAccessions;
   }
 }
 

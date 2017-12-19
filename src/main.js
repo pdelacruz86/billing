@@ -14,15 +14,51 @@ require('./assets/layouts/layout3/css/themes/default.min.css')
 require('./assets/layouts/layout3/css/custom.min.css')
 require('./assets/global/css/components-rounded.css')
 
+import VueNotifications from 'vue-notifications' //https://github.com/se-panfilov/vue-notifications
+import miniToastr from 'mini-toastr'
+
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+
 import {Tabs, Tab} from 'vue-tabs-component';
 import BlockUI from 'vue-blockui'
-import VueGoodWizard from 'vue-good-wizard';
+import VueFormWizard from 'vue-form-wizard'
+
+import VeeValidate from 'vee-validate';
+
+Vue.use(VeeValidate);
 
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
 
+// If using mini-toastr, provide additional configuration
+const toastTypes = {
+  success: 'success',
+  error: 'error',
+  info: 'info',
+  warn: 'warn'
+}
+
+miniToastr.init({types: toastTypes})
+
+// Here we setup messages output to `mini-toastr`
+function toast ({title, message, type, timeout, cb}) {
+  return miniToastr[type](message, title, 7000, cb)
+}
+
+// Binding for methods .success(), .error() and etc. You can specify and map your own methods here.
+// Required to pipe our output to UI library (mini-toastr in example here)
+// All not-specified events (types) would be piped to output in console.
+const options = {
+  success: toast,
+  error: toast,
+  info: toast,
+  warn: toast
+}
+
+Vue.use(VueNotifications, options)// VueNotifications have auto install but if we want to specify options we've got to do it manually.
+
 Vue.use(BlockUI)
-Vue.use(VueGoodWizard);
+Vue.use(VueFormWizard)
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */

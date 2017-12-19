@@ -4,7 +4,7 @@ import Home from '@/components/views/dashboard/Home'
 import Login from '@/components/views/Login/Login'
 import CaseList from '@/components/views/case/list'
 import CaseDetail from '@/components/views/case/details'
-import Billing from '@/components/views/billing/index'
+import Billing from '@/components/views/billing/index2'
 import Blank from '@/components/views/billing/blank'
 import AppMain from '@/components/layout/AppMain'
 
