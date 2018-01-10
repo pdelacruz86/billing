@@ -1,51 +1,58 @@
 <template> 
 	<div class="row">
 		<div class="portlet light">
-			<div class="portlet-body">
-				<div id="pro-wizard">
-					<step-navigation :steps="steps" :currentstep="currentstep">
-					</step-navigation>
-
-					<div v-if="currentstep == 1">
-						<StepSearch></StepSearch>
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-cogs"></i>List of Accessions </div>
+					<div class="tools">
+					<input type="buttons" class="btn btn-success" value="New Search" @click="newSearch">
 					</div>
-					
-					<div v-if="selectedAccession">
-						<div v-if="currentstep == 2">
-							<StepActiveAccession :Accession="selectedAccession"></StepActiveAccession>
+				</div>
+				<div class="portlet-body">
+					<div id="pro-wizard">
+						<step-navigation :steps="steps" :currentstep="currentstep">
+						</step-navigation>
+
+						<div v-if="currentstep == 1">
+							<StepSearch></StepSearch>
 						</div>
 
-						<div v-if="currentstep == 3">
-							<Insurance :Accession="selectedAccession"></Insurance>
+						<div v-if="selectedAccession">
+							<div v-if="currentstep == 2">
+								<StepActiveAccession :Accession="selectedAccession"></StepActiveAccession>
+							</div>
+
+							<div v-if="currentstep == 3">
+								<Insurance :Accession="selectedAccession"></Insurance>
+							</div>
+
+							<div v-if="currentstep == 4">
+								<HospitalStatus :Accession="selectedAccession"></HospitalStatus>
+							</div>
+
+							<div v-if="currentstep == 5">
+								<MissingInfo :Accession="selectedAccession" @missingAdded="missingAdded"></MissingInfo>
+							</div>
+
+							<div v-if="currentstep == 6">
+								<CheckIn :Accession="selectedAccession"></CheckIn>
+							</div>
+
+							<div v-if="currentstep == 7">
+								<Review :Accession="selectedAccession"></Review>
+							</div>
 						</div>
 
-						<div v-if="currentstep == 4">
-							<HospitalStatus :Accession="selectedAccession"></HospitalStatus>
-						</div>
-
-						<div v-if="currentstep == 5">
-							<MissingInfo :Accession="selectedAccession" @missingAdded="missingAdded"></MissingInfo>
-						</div>
-
-						<div v-if="currentstep == 6">
-							<CheckIn :Accession="selectedAccession"></CheckIn>
-						</div>
-
-						<div v-if="currentstep == 7">
-							<Review :Accession="selectedAccession"></Review>
-						</div>
-					</div>
-
-					<step-controls v-for="step in steps"
-					:step="step"
-					:stepcount="steps.length"
-					:currentstep="currentstep"
-					@step-change="stepChanged">
-				</step-controls>
+						<step-controls v-for="step in steps"
+						:step="step"
+						:stepcount="steps.length"
+						:currentstep="currentstep"
+						@step-change="stepChanged">
+					</step-controls>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </template>
 
 <script>
@@ -228,6 +235,9 @@
 
 		},
 		methods: {
+			newSearch: function () {
+				window.document.location.reload()
+			},
 			missingAdded: function ( info ) {
 				debugger;	
 				var date = new Date();
@@ -250,11 +260,11 @@
 					}
 				}else {
 					this.selectedAccession.MissingInformation.push({
-							Name : info.Name,
-							CaseNumber: info.CaseNumber,
-							Notes: info.Notes,
-							CreatedDate: finaldate
-						})
+						Name : info.Name,
+						CaseNumber: info.CaseNumber,
+						Notes: info.Notes,
+						CreatedDate: finaldate
+					})
 				}
 
 				this.selectedAccession.MissingInformation
@@ -433,57 +443,58 @@
 						//
 
 						for (var i = 0; i < this.selectedAccession.Cases.length; i++) {
-							 var _case = this.selectedAccession.Cases[i];
+							var _case = this.selectedAccession.Cases[i];
 
-							 if (_case.BillingType === "Select One") {
-							 	_case.Status = 'Pending'
-							 	_case.Comments = ''
-							 }
-							 else
-							 if  (_case.BillingType === "Missing") {
-							 	_case.Status = 'Missing'
-							 }
-							 else if (_case.BillingType === "Direct" || _case.BillingType === "Split" ) {
-							 	_case.Status = 'Complete'
-							 }
-							 else if (_case.BillingType === "Insurance") {
-							 	 if (_case.InsuranceType === "Select One") {
-							 		_case.Status = 'Incomplete'
-							 		_case.Comments = 'Insurance status is missing'
-								 }
-								 else
-								 if  (_case.InsuranceType === "Missing") {
-								 	_case.Status = 'Missing'
-								 }
-								 else
-							 	 if  (_case.InsuranceType === "Medicare") {
-								 	if(_case.HospitalStatus === "Select One") {
-							 			_case.Status = 'Incomplete'
-							 			_case.Comments = 'Hospital status is missing'
-								 	} 
-								 	else if(_case.HospitalStatus === "Missing") {
-							 			_case.Status = 'Missing'
+							if (_case.BillingType === "Select One") {
+								_case.Status = 'Pending'
+								_case.Comments = ''
+							}
+							else
+								if  (_case.BillingType === "Missing") {
+									_case.Status = 'Missing'
+								}
+								else if (_case.BillingType === "Direct" || _case.BillingType === "Split" ) {
+									_case.Status = 'Complete'
+								}
+								else if (_case.BillingType === "Insurance") {
+									if (_case.InsuranceType === "Select One") {
+										_case.Status = 'Incomplete'
+										_case.Comments = 'Insurance status is missing'
+									}
+									else
+										if  (_case.InsuranceType === "Missing") {
+											_case.Status = 'Missing'
+										}
+										else
+											if  (_case.InsuranceType === "Medicare") {
+												if(_case.HospitalStatus === "Select One") {
+													_case.Status = 'Incomplete'
+													_case.Comments = 'Hospital status is missing'
+												} 
+												else if(_case.HospitalStatus === "Missing") {
+													_case.Status = 'Missing'
 
-								 	}else {
-								 		_case.Status = "Complete";
-								 	}
+												}else {
+													_case.Status = "Complete";
+												}
 
-								 }else {
-								 	_case.Status = "Complete"
-								 }
-							 }
+											}else {
+												_case.Status = "Complete"
+											}
+										}
+									}
+
+									this.currentstep = step;
+								}
+							}
+
+							return;
 						}
-
-						this.currentstep = step;
-					}
-				}
-
-				return;
-			}
 
 			//step 7 -- Last Step
 			if ( selfStep === 7 ) {
-				this.currentstep = step;
+				this.$store.dispatch('addAccession', this.selectedAccession)
+				this.$router.push({ path: '/'});
 				return;
 			}
 		}
@@ -492,56 +503,56 @@
 </script>
 
 <style>
-fieldset {
-    border: 1px solid #ddd !important;
-    margin: 0;
-    xmin-width: 0;
-    padding: 10px;
-    position: relative;
-    border-radius: 4px;
-    background-color: #f5f5f5;
-    padding-left: 10px!important;
-}
+	fieldset {
+		border: 1px solid #ddd !important;
+		margin: 0;
+		xmin-width: 0;
+		padding: 10px;
+		position: relative;
+		border-radius: 4px;
+		background-color: #f5f5f5;
+		padding-left: 10px!important;
+	}
 
-fieldset {
-    min-width: 0;
-    padding: 0;
-    margin: 0;
-    border: 0;
-}
+	fieldset {
+		min-width: 0;
+		padding: 0;
+		margin: 0;
+		border: 0;
+	}
 
-fieldset {
-    padding: .35em .625em .75em;
-    margin: 0 2px;
-    border: 1px solid silver;
-}
+	fieldset {
+		padding: .35em .625em .75em;
+		margin: 0 2px;
+		border: 1px solid silver;
+	}
 	legend {
-    font-size: 14px !important;
-    font-weight: bold;
-    margin-bottom: 0px;
-    width: 35%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px 5px 5px 10px;
-    background-color: #ffffff;
-}
+		font-size: 14px !important;
+		font-weight: bold;
+		margin-bottom: 0px;
+		width: 35%;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: 5px 5px 5px 10px;
+		background-color: #ffffff;
+	}
 
-legend {
-    display: block;
-    width: 100%;
-    padding: 0;
-    margin-bottom: 20px;
-    font-size: 21px;
-    line-height: inherit;
-    color: #333;
-    border: 0;
-    border-bottom: 1px solid #e5e5e5;
-}
+	legend {
+		display: block;
+		width: 100%;
+		padding: 0;
+		margin-bottom: 20px;
+		font-size: 21px;
+		line-height: inherit;
+		color: #333;
+		border: 0;
+		border-bottom: 1px solid #e5e5e5;
+	}
 
-legend {
-    padding: 0;
-    border: 0;
-}
+	legend {
+		padding: 0;
+		border: 0;
+	}
 	.step-wrapper {
 		padding: 20px 0;
 		display: none;

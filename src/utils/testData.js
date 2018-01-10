@@ -16,28 +16,32 @@ export const getData = () => {
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Pending'
 		},
 		{
 			CaseNumber: 'CG17-002345',
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Pending'
 		},
 		{
 			CaseNumber: 'FIG17-003456',
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Client Approval'
 		},	
 		{
 			CaseNumber: 'MOL17-004567',
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Normal'
 		}
 		],
 		checkInMissingInformation : 'false'
@@ -59,14 +63,16 @@ export const getData = () => {
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Pending'
 		},
 		{
 			CaseNumber: 'MOL17-004569',
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Lab Approval'
 		}
 		],
 		checkInMissingInformation : 'false'
@@ -88,21 +94,24 @@ export const getData = () => {
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Client Approval'
 		},
 		{
 			CaseNumber: 'CG17-002341',
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Normal'
 		},
 		{
 			CaseNumber: 'FIG17-003442',
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Pending'
 		}
 		],
 		checkInMissingInformation : 'false'
@@ -124,7 +133,8 @@ export const getData = () => {
 			BillingType: 'Select One',
 			InsuranceType: 'Select One',
 			HospitalStatus: 'Select One',
-			Status: ''
+			Status: '',
+			LISCaseStatus: 'Pending'
 		}
 		],
 		checkInMissingInformation : 'false'

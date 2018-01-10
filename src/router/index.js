@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/views/dashboard/Home'
+import Home from '@/components/views/dashboard/Home2'
 import Login from '@/components/views/Login/Login'
 import CaseList from '@/components/views/case/list'
 import CaseDetail from '@/components/views/case/details'
