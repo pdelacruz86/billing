@@ -24,6 +24,7 @@
     "vue-blockui": "^1.1.6",
     "vue-chartjs": "^2.6.1",
     "vue-form-wizard": "^0.8.1",
+    "vue-good-table": "^1.19.1",
     "vue-good-wizard": "^1.1.2",
     "vue-multiselect": "^1.1.4",
     "vue-notifications": "^0.9.0",

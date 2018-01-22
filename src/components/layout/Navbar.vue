@@ -47,6 +47,12 @@
                     <span class="arrow"></span>
                   </router-link>
                 </li>
+                <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                  <router-link :to="{ path: 'worklist' }">
+                    Worklist
+                    <span class="arrow"></span>
+                  </router-link>
+                </li>
                  <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
                 <a href="javascript:;"> Actions
                    <span class="arrow"></span>

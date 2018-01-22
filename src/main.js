@@ -24,8 +24,11 @@ import BlockUI from 'vue-blockui'
 import VueFormWizard from 'vue-form-wizard'
 
 import VeeValidate from 'vee-validate';
-
 Vue.use(VeeValidate);
+
+import VueGoodTable from 'vue-good-table';
+Vue.use(VueGoodTable);
+
 
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
