@@ -18,7 +18,7 @@
 									<th></th>
 									<th><span class="primary-link">CSI Case Number</span></th>
 									<th> <span class="primary-link">Patient's Last Name</span></th>
-									<th> <span class="primary-link">Patients' First Name</span></th>
+									<th> <span class="primary-link">Patient's First Name</span></th>
 									<th> <span class="primary-link">Case Type </span></th>
 									<th> <span class="primary-link">Case Status </span></th>
 									<th> <span class="primary-link">Specimen ID </span></th>
@@ -175,19 +175,5 @@
 		position: relative;
 		background: radial-gradient(circle closest-side at 51%, #00757F 0%, #00757F 26%, #1f3335 140%);
 	}
-	.fullpage {
-		overflow: hidden;
-		#cover {
-			height: 150%;
-			.col-12 {
-				position:relative;
-				background: -webkit-radial-gradient(circle closest-side at 50%, @color-base 0%, @color-base 26%, fade(@color-base-darker, 100) 100%);
-				background: -moz-radial-gradient(circle closest-side at 50%, @color-base 0%, @color-base 26%, fade(@color-base-darker, 100) 100%);
-				background: -o-radial-gradient(circle closest-side at 50%, @color-base 0%, @color-base 26%, fade(@color-base-darker, 100) 100%);
-				background: -ms-radial-gradient(circle closest-side at 50%, @color-base 0%, @color-base 26%, fade(@color-base-darker, 100) 100%);
-				background: radial-gradient(circle closest-side at 50%, @color-base 0%, @color-base 26%, fade(@color-base-darker, 100) 100%);
-				height: 1000px;
-			}
-		}
-	}
+	
 </style>

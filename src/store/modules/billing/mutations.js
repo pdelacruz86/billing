@@ -6,6 +6,10 @@ var _ = require('lodash')
 const mutation =  {
   [types.GET_ALL] (state, list) {
       state.caselist = list;
+  },
+  [types.SET_SELECTED_ACCESSION] (state, selectedAccession) {
+    debugger;
+    state.selectedAccession  = selectedAccession
   }
 }
 export default mutation

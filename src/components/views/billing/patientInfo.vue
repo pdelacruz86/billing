@@ -7,15 +7,15 @@
 					<tr>
 						<td> <span class="primary-link">Patient: </span> </td>
 						<td>
-							<span class="bold">{{this.selectedAccession.PatientInformation.FullName}}</span>
+							<span class="bold">{{this.selectedAccession.PatientInformation.PatientName}}</span>
 						</td>
 						<td><span class="primary-link">DOB:</span> </td>
-						<td><span class="bold">{{this.selectedAccession.PatientInformation.DOB}}</span></td>
+						<td><span class="bold">{{this.selectedAccession.PatientInformation.DateOfBirth}}</span></td>
 						<td><span class="primary-link">Gender:</span> </td>
 						<td>	<span class="bold">{{this.selectedAccession.PatientInformation.Gender}}</span> 
 						</td>
 						<td><span class="primary-link">Client:</span> </td>
-						<td>	<span class="bold">{{this.selectedAccession.PatientInformation.Client}}</span> 
+						<td>	<span class="bold">{{this.selectedAccession.PatientInformation.ClientName}}</span> 
 						</td>
 					</tr>
 					<tr>
@@ -29,7 +29,7 @@
 						</td>
 
 						<td><span class="primary-link">Accession Date :</span> </td>
-						<td><span class="bold">{{this.selectedAccession.PatientInformation.AccessionDate}}</span> </td>
+						<td><span class="bold">{{this.selectedAccession.CreatedDate}}</span> </td>
 						<td></td>
 						<td></td>
 					</tr>

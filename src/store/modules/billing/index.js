@@ -4,7 +4,8 @@ import mutations from './mutations'
 
 
 const state = {
-  caselist: []
+  caselist: [],
+  selectedAccession: {},
 }
 
 export default

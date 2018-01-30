@@ -58,6 +58,7 @@
 <script>
 	var testData  = require('../../../utils/testData.js')
 	var stepsData  = require('./wizard_steps/steps.js')
+  	import { mapGetters, mapActions } from 'vuex'
 
 	//wizard buttons
 	import StepNavigation from './wizard_steps/step-navigation'
@@ -87,8 +88,9 @@
 			Review
 		},
 		mounted () {
-			debugger;
-			this.Accessions = testData.getData();
+			if (this.selectedAccession.AccessionID !== undefined){
+				
+			}
 			this.steps = stepsData.steps();
 		},
 		data () {
@@ -102,12 +104,15 @@
 				lastStep: "",
 				laststep: false,
 				steps : [],
-				selectedAccession : {},
+				// selectedAccession : {},
 				Accessions : {}
 			}
 		},
 		computed: {
-
+			 ...mapGetters([
+				'selectedAccession',
+				'caselist'
+        	]),
 			hasInsurance() {
 				var cases = this.selectedAccession.Cases;
 
@@ -232,14 +237,16 @@
 				
 				return tab;
 			}
-
 		},
 		methods: {
+			 ...mapActions([
+        		'getAllCases',
+        		'setSelectedAccession'
+      		]),
 			newSearch: function () {
 				window.document.location.reload()
 			},
 			missingAdded: function ( info ) {
-				debugger;	
 				var date = new Date();
 
 				var finaldate = date.toLocaleDateString() + " " + date.getHours()  + ":" + date.getMinutes() + ":" + date.getSeconds()
@@ -270,6 +277,7 @@
 				this.selectedAccession.MissingInformation
 			},
 			stepChanged: function(step) {
+				debugger;
 				var selfStep =  this.currentstep;
 				var isback = false;
 
@@ -278,7 +286,7 @@
 				}
 
 				if ( selfStep === 1 ) {
-					var accessions = this.Accessions;
+					var accessions = this.caselist;
 					var tinput = this.$store.state.login.searchText
 
 					//identify a case number or accession id
@@ -305,10 +313,9 @@
 					var accession = accessions.filter(function(item) {
 						return item.AccessionID === tinput;
 					})[0];
-
+					debugger;
 					if (accession) {
-						this.selectedAccession = accession;
-
+						this.setSelectedAccession(accession);
 						this.currentstep = step
 					}
 					else {

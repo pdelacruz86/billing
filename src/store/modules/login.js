@@ -19,11 +19,7 @@ const mutations = {
   [types.LOGOUT] (state) {
     state.isLoggedIn = false
   },  
-  updateTextSearch (state, text) {
-    state.searchText = text
-  },
   [types.ADD_ACCESSION] (state, accession) {
-    debugger;
     state.AllAccessions.push(accession)
   }
 
