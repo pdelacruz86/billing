@@ -4,7 +4,6 @@ import router from '../../router'
 
 const state = {
   isLoggedIn: !!localStorage.getItem('token'),
-  searchText: '',
   AllAccessions: [] 
 }
 
@@ -22,8 +21,6 @@ const mutations = {
   [types.ADD_ACCESSION] (state, accession) {
     state.AllAccessions.push(accession)
   }
-
-
 }
 
 const actions = {
@@ -53,7 +50,6 @@ const actions = {
     router.push('/login')
   },
   addAccession ({ commit }, accession){
-    debugger;
     commit(types.ADD_ACCESSION, accession)
   }
 }

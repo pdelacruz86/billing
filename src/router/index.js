@@ -18,9 +18,14 @@ const router = new Router({
       children: [
         { path: 'dashboard1', alias: '', component: Home, name: 'Dashboard', meta: {description: 'Overview of environment'} },
         { path: 'worklist', alias: '', component: Worklist, name: 'Worklist', meta: {description: 'worklist'} },
-        { path: 'billing', alias: '', component: Billing, name: 'Billing', meta: {description: 'Billing Description'} },
         { path: 'blank', alias: '', component: Blank, name: 'Blank', meta: {description: 'Blank Description'} }
       ]
+    },
+    { path: '/billing', component: AppMain, name: 'billing', meta: {description: 'test'},
+      children: [
+        { path: 'home', alias: '', component: Billing, name: 'Billing', meta: {description: 'Overview of environment'} },
+        { path: '/billing/:id', component: Billing, name: 'Billing', meta: {title: "Billing", description: "details"}},
+      ]  
     },
     { path: '/cases', component: AppMain, name: 'Cases', meta: {description: 'test'},
       children: [

@@ -6,6 +6,7 @@ import mutations from './mutations'
 const state = {
   caselist: [],
   selectedAccession: {},
+  searchText: ''
 }
 
 export default

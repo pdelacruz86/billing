@@ -21,7 +21,7 @@
 										<option>Select One</option>	
 										<option>Medicare</option>	
 										<option>Not Medicare</option>	
-										<option>Missing</option>	
+										<option>Not Provided</option>	
 									</select>
 								</td>
 								<td v-else="">

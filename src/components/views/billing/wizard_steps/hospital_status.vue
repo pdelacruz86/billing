@@ -22,14 +22,14 @@
 										<option>Inpatient</option>	
 										<option>Outpatient</option>	
 										<option>Non-hospital</option>	
-										<option>Missing</option>	
+										<option>Not Provided</option>	
 									</select>
 								</td>
 								<td v-else="">
 									<div v-if="item.BillingType === 'Direct' || item.BillingType === 'Split'">
 										{{ item.BillingType }}
 									</div>
-									<div v-else-if="item.BillingType === 'Missing'">
+									<div v-else-if="item.BillingType === 'Not Provided'">
 										{{ item.BillingType }}
 									</div>
 									<div v-else>

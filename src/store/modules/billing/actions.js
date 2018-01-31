@@ -24,7 +24,11 @@ export const getAllCases = ({ commit }) => {
   });
 }
 
-export const setSelectedAccession = ({ commit, selectedAccession }) => {
-  debugger;
+export const setSelectedAccession = ({ commit }, selectedAccession) => {
   commit(types.SET_SELECTED_ACCESSION, selectedAccession)
+};
+
+export const updateTextSearch = ({ commit }, text) => {
+  debugger;
+  commit(types.UPDATE_TEXT_SEARCH, text)
 };

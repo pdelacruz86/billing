@@ -23,7 +23,7 @@
 										<option>Direct</option>	
 										<option>Insurance</option>	
 										<option>Split</option>	
-										<option>Missing</option>	
+										<option>Not Provided</option>	
 									</select>
 								</td>
 							</tr>

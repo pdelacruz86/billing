@@ -17,21 +17,10 @@ require('./assets/global/css/components-rounded.css')
 import VueNotifications from 'vue-notifications' //https://github.com/se-panfilov/vue-notifications
 import miniToastr from 'mini-toastr'
 
-import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-
 import {Tabs, Tab} from 'vue-tabs-component';
 import BlockUI from 'vue-blockui'
-import VueFormWizard from 'vue-form-wizard'
-
 import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
-
 import VueGoodTable from 'vue-good-table';
-Vue.use(VueGoodTable);
-
-
-Vue.component('tabs', Tabs);
-Vue.component('tab', Tab);
 
 // If using mini-toastr, provide additional configuration
 const toastTypes = {
@@ -58,10 +47,14 @@ const options = {
   warn: toast
 }
 
-Vue.use(VueNotifications, options)// VueNotifications have auto install but if we want to specify options we've got to do it manually.
+Vue.component('tabs', Tabs);
+Vue.component('tab', Tab);
 
+Vue.use(VueNotifications, options)// VueNotifications have auto install but if we want to specify options we've got to do it manually.
+Vue.use(VeeValidate);
 Vue.use(BlockUI)
-Vue.use(VueFormWizard)
+// Vue.use(VueFormWizard)
+Vue.use(VueGoodTable);
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */

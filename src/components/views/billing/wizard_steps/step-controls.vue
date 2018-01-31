@@ -1,5 +1,5 @@
 <template>
-	<div class="step-wrapper":class="{ 'active': active }">
+	<div class="step-wrapper" :class="{ 'active': active }">
 		<div v-if="laststep">
 			<button class="btn btn-primary" @click="lastStep()" :disabled="firststep">Back</button>
 			<button class="btn btn-primary col-md-offset-10" @click="nextStep()">Submit</button>

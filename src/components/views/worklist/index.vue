@@ -29,13 +29,13 @@
                           v-bind:item="item"
                           v-bind:index="item.CaseNumber"
                           v-bind:key="item.CaseID"> {{ item.CaseNumber }}
-                    </a>
+                      </a>
                 </td>
                 <td>{{ props.row.PatientInformation.PatientID }}</td>
                 <td>{{ props.row.PatientInformation.PatientName }}</td>
                 <td>{{ props.row.PatientInformation.Client }}</td>
                 <td>{{ props.row.PatientInformation.ClientName }}</td>
-                <td>{{ props.row.CreatedDate }}</td>
+                <td>{{ timestamp(props.row.CreatedDate) }}</td>
                 <td>{{ props.row.LISCaseStatus }}</td>
                 <td>
                   <span v-if="props.formattedRow.TriageStatus=='Pending'" class="label label-sm label-success">Pending</span>
@@ -54,7 +54,7 @@
  </template>
  <script>
   import { mapGetters, mapActions } from 'vuex'
-  var testData  = require('../../../utils/worklistdata.js')
+	var moment = require('moment');
 
   export default {
     components: {
@@ -62,6 +62,9 @@
      mounted () {
       if (this.caselist.length === 0)
         this.getAllCases();
+
+      this.setSelectedAccession({});
+      this.updateTextSearch('');
     },
     computed: {
       ...mapGetters([
@@ -134,16 +137,21 @@
    methods: {
       ...mapActions([
         'getAllCases',
-        'setSelectedAccession'
+        'setSelectedAccession',
+        'updateTextSearch'
       ]),
       onClickFn(row, index) {
         console.log(row, index);
+        debugger;
         this.setSelectedAccession(row);
-        this.$router.push({ path: '/billing' })
+        this.$router.push({ path: '/billing/'+ row.AccessionID.toString() })
       },
       reloadData() {
         this.getAllCases();
-      }
+      },
+       timestamp: function (date) {
+				return moment.unix(date).format('YYYY-MM-DD HH:mm:ss');
+			}
     }
 }
 </script>

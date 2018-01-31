@@ -3,14 +3,16 @@
 		<div class="portlet light">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-cogs"></i>List of Accessions </div>
+					<i class="fa fa-cogs"></i>Billing Wizard </div>
 					<div class="tools">
-					<input type="buttons" class="btn btn-success" value="New Search" @click="newSearch">
+					<!-- <input type="buttons" class="btn btn-success" value="New Search" @click="newSearch"> -->
+					<button type="button" class="btn btn-info" @click="newSearch">New Search</button>
+					<button type="button" class="btn btn-info" @click="openCaseContentCentral">Content Central</button>
 					</div>
 				</div>
 				<div class="portlet-body">
 					<div id="pro-wizard">
-						<step-navigation :steps="steps" :currentstep="currentstep">
+						<step-navigation :steps="steps" :currentstep="currentstep" @step-change="stepChanged">
 						</step-navigation>
 
 						<div v-if="currentstep == 1">
@@ -43,15 +45,31 @@
 							</div>
 						</div>
 
-						<step-controls v-for="step in steps"
-						:step="step"
-						:stepcount="steps.length"
-						:currentstep="currentstep"
-						@step-change="stepChanged">
+						<!-- <iframe src="http://csi-dis-one/ContentCentral/Search/Search.aspx?c=Operations Medical Records&dt=Requisitions&f2&v2=FIG17-006633"></iframe> -->
+
+						<step-controls v-for="step in steps" ref="stepControls"
+							:step="step"
+							:stepcount="steps.length"
+							:currentstep="currentstep"
+							@step-change="stepChanged">
 					</step-controls>
 				</div>
 			</div>
 		</div>
+		 <!-- use the modal component, pass in the prop -->
+		<modal v-if="showModal" @close="showModal = false">
+			<!--
+			you can use custom content here to overwrite
+			default content
+			-->
+			<div slot="body">
+				<div class="intrinsic-container intrinsic-container-16x9">
+					<iframe allowfullscreen src="http://csi-dis-one/ContentCentral/Search/Search.aspx?c=Operations Medical Records&dt=Requisitions&f2&v2=FIG17-006633">
+				</iframe>
+			</div>
+				
+			</div>
+		</modal>
 	</div>
 </template>
 
@@ -73,6 +91,8 @@
 	import CheckIn from './wizard_steps/checkin'
 	import Review from './wizard_steps/review'
 
+	import Modal from '../utils/modal-template.vue'
+
 	import VueNotifications from 'vue-notifications'
 
 	export default {
@@ -85,11 +105,28 @@
 			HospitalStatus,	
 			MissingInfo,
 			CheckIn,
-			Review
+			Review,
+			Modal
+		},
+		watch: {
+			'$route' (to, from) {
+				// react to route changes...
+				debugger;
+				if (to.fullPath === '/billing') {
+					this.currentstep = 1;
+					this.updateTextSearch('');
+				}
+			}
 		},
 		mounted () {
+			debugger;
 			if (this.selectedAccession.AccessionID !== undefined){
-				
+				this.updateTextSearch(this.selectedAccession.AccessionID.toString());
+				this.currentstep = 2
+			}
+			else {
+				this.currentstep = 1;
+				this.updateTextSearch('');
 			}
 			this.steps = stepsData.steps();
 		},
@@ -105,14 +142,19 @@
 				laststep: false,
 				steps : [],
 				// selectedAccession : {},
-				Accessions : {}
+				Accessions : {},
+				showModal: false
 			}
 		},
 		computed: {
 			 ...mapGetters([
 				'selectedAccession',
-				'caselist'
-        	]),
+				'caselist',
+				'searchText'
+			]),
+			isNew() {
+				return this.$router.history.current.params.id === undefined;
+			},
 			hasInsurance() {
 				var cases = this.selectedAccession.Cases;
 
@@ -241,12 +283,21 @@
 		methods: {
 			 ...mapActions([
         		'getAllCases',
-        		'setSelectedAccession'
+				'setSelectedAccession',
+				'updateTextSearch'
       		]),
 			newSearch: function () {
-				window.document.location.reload()
+				debugger;
+				this.currentstep = 1;
+				this.updateTextSearch('');
+				this.showModal = false;
+				this.$router.push({ path : '/billing'})
 			},
-			missingAdded: function ( info ) {
+			openCaseContentCentral: function ()  {
+				debugger;
+				this.showModal = true;
+			},
+			missingAdded: function() {
 				var date = new Date();
 
 				var finaldate = date.toLocaleDateString() + " " + date.getHours()  + ":" + date.getMinutes() + ":" + date.getSeconds()
@@ -287,7 +338,7 @@
 
 				if ( selfStep === 1 ) {
 					var accessions = this.caselist;
-					var tinput = this.$store.state.login.searchText
+					var tinput = this.searchText
 
 					//identify a case number or accession id
 					var isCaseNumber = (tinput.indexOf('-') > -1)
@@ -651,5 +702,96 @@
 		color: #ccc;
 		padding: 11px 16px;
 	}
+
+
+	/* modal styles */
+.modal-mask {
+  position: relative;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  /* width: 300px; */
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
+
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-default-button {
+  float: right;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.intrinsic-container {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+}
+ 
+/* 16x9 Aspect Ratio */
+.intrinsic-container-16x9 {
+  padding-bottom: 56.25%;
+}
+ 
+/* 4x3 Aspect Ratio */
+.intrinsic-container-4x3 {
+  padding-bottom: 75%;
+}
+ 
+.intrinsic-container iframe {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 
 </style>

@@ -31,15 +31,11 @@ const mutations = {
       VueNotifications.info(data)
 
     state.showBlockUI= false
-  },
-  [types.UPDATE_TEXT_SEARCH] (state, text) {
-    state.searchText = text
-  },
+  }
 }
 
 const actions = {
   setLoading ({ commit}, loaded, message) {
-    debugger;
     if (loaded) {
       commit(types.LOADING_START, message) // show spinner
     }

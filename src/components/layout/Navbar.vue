@@ -48,56 +48,42 @@
                   </router-link>
                 </li>
                 <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
-                  <router-link :to="{ path: 'worklist' }">
+                  <router-link :to="{ path: '/worklist' }">
                     Worklist
                     <span class="arrow"></span>
                   </router-link>
                 </li>
-                 <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
+                <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
                 <a href="javascript:;"> Actions
                    <span class="arrow"></span>
                  </a>
                  <ul class="dropdown-menu pull-left">
-                   <li aria-haspopup="true" class=" ">
-                    <a href="layout_mega_menu_light.html" class="nav-link  "> Request Additional Testing </a>
+                   <li aria-haspopup="true" class="">
+                    <router-link :to="{ path: '/billing' }">
+                      Process Bill
+                        <span class="arrow"></span>
+                      </router-link>
                   </li>
-                  <li aria-haspopup="true" class=" ">
-                    <a href="layout_top_bar_light.html" class="nav-link  "> Manage Case Notations </a>
-                  </li>
                    <li aria-haspopup="true" class=" ">
-                    <a href="layout_top_bar_light.html" class="nav-link  "> EMerge </a>
+                    <a href="layout_mega_menu_light.html" class="nav-link  "> Process Bill in Batch </a>
                   </li>
                     <li aria-haspopup="true" class=" ">
                     <a href="layout_top_bar_light.html" class="nav-link  "> Create Feedback </a>
                   </li>
                 </ul>
               </li>
-                <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
-                  <router-link :to="{ name: 'List' }">
-                    Case List
-                    <span class="arrow"></span>
-                  </router-link>
-                </li>
-
-                <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
+              <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
                 <a href="javascript:;"> Reports
                    <span class="arrow"></span>
                  </a>
                  <ul class="dropdown-menu pull-left">
                    <li aria-haspopup="true" class=" ">
-                    <a href="layout_mega_menu_light.html" class="nav-link  "> Report 1 </a>
+                    <a href="layout_mega_menu_light.html" class="nav-link  "> Pending / Completed </a>
                   </li>
                   <li aria-haspopup="true" class=" ">
                     <a href="layout_top_bar_light.html" class="nav-link  "> Report 2 </a>
                   </li>
                 </ul>
-              </li>
-
-          <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
-                <router-link :to="{ name: 'Billing' }">
-                   Billing
-                    <span class="arrow"></span>
-                  </router-link>
               </li>
             </ul>
           </div>

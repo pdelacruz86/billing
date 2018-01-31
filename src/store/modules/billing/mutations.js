@@ -8,8 +8,12 @@ const mutation =  {
       state.caselist = list;
   },
   [types.SET_SELECTED_ACCESSION] (state, selectedAccession) {
-    debugger;
     state.selectedAccession  = selectedAccession
+  },
+  [types.UPDATE_TEXT_SEARCH] (state, text) {
+    debugger;
+
+    state.searchText = text;
   }
 }
 export default mutation
