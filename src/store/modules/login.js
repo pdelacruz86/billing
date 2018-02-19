@@ -4,27 +4,27 @@ import router from '../../router'
 
 const state = {
   isLoggedIn: !!localStorage.getItem('token'),
-  AllAccessions: [] 
+  AllAccessions: []
 }
 
 const mutations = {
-  [types.LOGIN] (state) {
+  [types.LOGIN](state) {
     state.pending = true
   },
-  [types.LOGIN_SUCCESS] (state) {
+  [types.LOGIN_SUCCESS](state) {
     state.isLoggedIn = true
     state.pending = false
   },
-  [types.LOGOUT] (state) {
+  [types.LOGOUT](state) {
     state.isLoggedIn = false
-  },  
-  [types.ADD_ACCESSION] (state, accession) {
-    state.AllAccessions.push(accession)
+
   }
 }
 
 const actions = {
-  login ({ commit }, creds) {
+  login({
+    commit
+  }, creds) {
     commit(types.LOGIN)
 
     localStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTA1ODkzNzY2MjF9.MqHRSfGklBn610d2JNRedcwm251UQZDO79axeq2w6Fc')
@@ -44,13 +44,12 @@ const actions = {
     // response => {
     // })
   },
-  logout ({ commit }) {
+  logout({
+    commit
+  }) {
     localStorage.removeItem('token')
     commit(types.LOGOUT)
     router.push('/login')
-  },
-  addAccession ({ commit }, accession){
-    commit(types.ADD_ACCESSION, accession)
   }
 }
 
@@ -63,7 +62,7 @@ const getters = {
   }
 }
 
-export default{
+export default {
   state,
   mutations,
   actions,

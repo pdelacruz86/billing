@@ -17,10 +17,9 @@ const store = new Vuex.Store({
     billing,
     appGlobal
   },
-  plugins: process.env.NODE_ENV !== 'production'
-    ? [createLogger(), createPersistedState()]
-    : [createPersistedState()]
+  plugins: process.env.NODE_ENV !== 'production' ?
+    [createLogger(), createPersistedState()] :
+    [createPersistedState()]
 })
 
 export default store
-

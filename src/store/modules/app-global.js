@@ -10,38 +10,44 @@ const state = {
 }
 
 const mutations = {
-  [types.LOADED_SUCCESS] (state) {
-    state.showBlockUI= false
+  [types.LOADED_SUCCESS](state) {
+    state.showBlockUI = false
   },
-  [types.LOADING_START] (state, message) {
+  [types.LOADING_START](state, message) {
     state.loadingMessage = message
     state.showBlockUI = true
   },
-  [types.NOTIFY_ERRORS] (state, data) {
-    if(data.type == 'error')
+  [types.NOTIFY_ERRORS](state, data) {
+    if (data.type == 'error')
       VueNotifications.error(data)
 
-    if(data.type == 'success')
+    if (data.type == 'success')
       VueNotifications.success(data)
 
-    if(data.type == 'warn')
+    if (data.type == 'warn')
       VueNotifications.warn(data)
 
-    if(data.type == 'info')
+    if (data.type == 'info')
       VueNotifications.info(data)
 
-    state.showBlockUI= false
+    state.showBlockUI = false
   }
 }
 
 const actions = {
-  setLoading ({ commit}, loaded, message) {
+  setLoading({
+    commit
+  }, loaded, message) {
     if (loaded) {
       commit(types.LOADING_START, message) // show spinner
+    } else {
+      commit(types.LOADED_SUCCESS) // hide spinner
     }
-    else{
-      commit(types.LOADED_SUCCESS) // show spinner
-    }
+  },
+  removeLoading({
+    commit
+  }) {
+    commit(types.LOADED_SUCCESS) // hide spinner
   }
 }
 
@@ -57,7 +63,7 @@ const getters = {
   }
 }
 
-export default{
+export default {
   state,
   mutations,
   actions,

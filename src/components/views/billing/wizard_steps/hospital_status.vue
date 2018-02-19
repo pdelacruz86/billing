@@ -1,72 +1,120 @@
 <template>
-	<div>
 		<div class="row">
 			<WizardHeader :selectedAccession="Accession"></WizardHeader>
 			<div class="col-md-6">
-				<fieldset>
-					<legend>Current</legend>
-					<table class="table table-striped" >
-						<thead>
-							<tr>
-								<th class="col-xs-3">Case Number</th>
-								<th class="col-xs-3"> Status </th>
-							</tr>
-						</thead>
+				<div class="portlet box blue">
+					<div class="portlet-title">
+						<div class="caption">
+									<i class="fa fa-hospital-o"></i>
+									<span > Current</span>
+							</div>
+							<div class="actions">
+									<div :class="{'btn-group':true,  'open': toggleSelectAll}" @click="toggleSelectAll = !toggleSelectAll">
+											<a class="btn btn-sm btn-info dropdown-toggle btn-outline btn-circle btn-sm active" href="javascript:;" data-toggle="dropdown" aria-expanded="true"> Select All
+													<i class="fa fa-angle-down"></i>
+											</a>
+											<ul class="dropdown-menu pull-right">
+													<li>
+															<a href="javascript:;" @click="selectAllTypes('Inpatient')">
+																	Inpatient </a>
+													</li>
+													<li class="divider"> </li>
+													<li>
+															<a href="javascript:;" @click="selectAllTypes('Outpatient')">
+																	Outpatient </a>
+													</li>
+													<li class="divider"> </li>
+													<li>
+															<a href="javascript:;" @click="selectAllTypes('Non-hospital')">
+																Non-hospital </a>
+													</li>
+													<li class="divider"> </li>
+													<li>
+															<a href="javascript:;" @click="selectAllTypes('Not Provided')"> Not Provided</a>
+													</li>
+											</ul>
+									</div>
+							</div>
+					</div>
+					<div class="portlet-body white">
+						<table class="table table-striped" >
+							<thead>
+								<tr>
+									<th class="col-xs-3">Case Number</th>
+									<th class="col-xs-3"> Status </th>
+								</tr>
+							</thead>
 
-						<tbody>
-							<tr v-for="item in Accession.Cases">
-								<td>{{ item.CaseNumber }}</td>
-								<td v-if="item.InsuranceType === 'Medicare'"> 
-									<select v-model="item.HospitalStatus">
-										<option>Select One</option>	
-										<option>Inpatient</option>	
-										<option>Outpatient</option>	
-										<option>Non-hospital</option>	
-										<option>Not Provided</option>	
-									</select>
-								</td>
-								<td v-else="">
-									<div v-if="item.BillingType === 'Direct' || item.BillingType === 'Split'">
-										{{ item.BillingType }}
-									</div>
-									<div v-else-if="item.BillingType === 'Not Provided'">
-										{{ item.BillingType }}
-									</div>
-									<div v-else>
-										{{item.InsuranceType}}
-									</div>
-									<!-- {{item.InsuranceType}} -->
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</fieldset>
+							<tbody>
+								<tr v-for="item in Accession.Cases">
+									<td>{{ item.CaseNumber }}</td>
+									<td v-if="item.InsuranceType === 'Medicare'"> 
+										<select v-model="item.HospitalStatus">
+											<option>Select One</option>	
+											<option>Inpatient</option>	
+											<option>Outpatient</option>	
+											<option>Non-hospital</option>	
+											<option>Not Provided</option>	
+										</select>
+									</td>
+									<td v-else="">
+										<div v-if="item.BillingType === 'Direct' || item.BillingType === 'Split'">
+											{{ item.BillingType }}
+										</div>
+										<div v-else-if="item.BillingType === 'Not Provided'">
+											{{ item.BillingType }}
+										</div>
+										<div v-else>
+											{{item.InsuranceType}}
+										</div>
+										<!-- {{item.InsuranceType}} -->
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 			<div class="col-md-6">
-				<fieldset>
-					<legend>Previous</legend>
-					<div class="alert alert-info">
-						<strong>Info!</strong> There is not previous accession.
+				<div class="portlet box blue">
+						<div class="portlet-title">
+								<div class="caption">
+										<i class="fa fa-backward"></i>
+										<span > Previous</span>
+								</div>
+						</div>
+						<div class="portlet-body">
+						<div class="alert alert-info">
+							<strong>Info!</strong> There is not previous accession.
+						</div>
 					</div>
-				</fieldset>
+				</div>
 			</div>
-
-		</div>
 	</div>
 </template>
 <script>
+import WizardHeader from "./../patientInfo";
 
-	import WizardHeader from './../patientInfo'
-
-	export default {
-		components: {
-			WizardHeader
-		},
-		props: {
-			Accession: {
-				type: Object,
-				default: () => { }	
-			}
-		}
-	}
+export default {
+  components: {
+    WizardHeader
+  },
+  props: {
+    Accession: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data() {
+    return {
+      toggleSelectAll: false
+    };
+  },
+  methods: {
+    selectAllTypes: function(type) {
+      debugger;
+      this.$emit("select-all-types", "Hospital", type);
+    }
+  }
+};
 </script>

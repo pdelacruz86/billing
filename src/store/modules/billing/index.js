@@ -4,13 +4,12 @@ import mutations from './mutations'
 
 
 const state = {
-  caselist: [],
+  accessions: [],
   selectedAccession: {},
   searchText: ''
 }
 
-export default
-{
+export default {
   state,
   getters,
   actions,

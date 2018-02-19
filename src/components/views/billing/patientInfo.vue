@@ -45,24 +45,20 @@
 </template>
 
 <script>
-	var moment = require('moment');
+var moment = require("moment");
 
-	export default {
-		props: ['selectedAccession'],
-		data () {
-			return {
-				
-			}
-		},
-		methods: {
-			dob_timestamp: function (date) {
-				 debugger;
-				return moment.unix(date).format('YYYY-MM-DD');
-			},
-			 timestamp: function (date) {
-				 debugger;
-				return moment.unix(date).format('YYYY-MM-DD HH:mm:ss');
-			}
-		}
-	}
+export default {
+  props: ["selectedAccession"],
+  data() {
+    return {};
+  },
+  methods: {
+    dob_timestamp: function(date) {
+      return moment.unix(date).format("YYYY-MM-DD");
+    },
+    timestamp: function(date) {
+      return moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
+    }
+  }
+};
 </script>

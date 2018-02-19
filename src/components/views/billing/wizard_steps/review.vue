@@ -1,153 +1,190 @@
 <template>
 	<div class="row">
-		<div class="col-md-offset-5">
-			<h4>Saved Information</h4> 
-		</div>
-
-		<div class="panel panel-body">
-			<fieldset>
-				<legend>Billing Categorization</legend>
-
-				<table class="table">
-					<thead>
-						<th></th>
-						<th>Billing</th>
-						<th>Saved</th>
-						<th>Insurance</th>
-						<th>Saved</th>
-						<th>Hospital</th>
-						<th>Saved</th>
-					</thead>
-					<tbody>
-						<tr v-for="item in Accession.Cases">
-							<td>{{item.CaseNumber}}</td>
-							<td>
-								<div v-if="item.BillingType === 'Select One'">
-									Not Selected
-								</div>
-								<div v-else="">
-									{{item.BillingType}}
-								</div>
-							</td>
-							<td>
-								<div v-if="item.BillingType === 'Select One'">
-									
-								</div>
-								<div v-else="">
-									{{CurrentDate}}
-								</div>
-							</td>
-							<td>
-								<div v-if="item.InsuranceType === 'Select One'">
-									Not Selected
-								</div>
-								<div v-else="">
-									{{item.InsuranceType}}
-								</div>
-							</td>
-							<td>
-								<div v-if="item.InsuranceType === 'Select One'">
-									
-								</div>
-								<div v-else="">
-									{{CurrentDate}}
-								</div>
-							</td>
-							<td>
-								<div v-if="item.HospitalStatus === 'Select One'">
-									Not Selected
-								</div>
-								<div v-else="">
-									{{item.HospitalStatus}}
-								</div>
-							</td>
-							<td>
-								<div v-if="item.HospitalStatus === 'Select One'">
-									
-								</div>
-								<div v-else="">
-									{{CurrentDate}}
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</fieldset>
-		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<div class="panel panel-body">
-					<fieldset>
-						<legend>Triague Status</legend>
-
-						<table class="table">
+		<div class="col-md-12">
+			<!-- BEGIN SAMPLE TABLE PORTLET-->
+			<div class="portlet">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="fa fa-money"></i>Billing Categorization </div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+						<a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="table-scrollable">
+						<table class="table table-striped table-bordered table-advance table-hover">
 							<thead>
-								<th></th>
-								<th>Status</th>
-								<th>Comment</th>
+								<tr>
+									<th></th>
+									<th><i class="fa fa-money"></i> Billing </th>
+									<th class="hidden-xs"><i class="fa fa-save "></i> Saved </th>
+									<th><i class="fa fa-h-square"></i> Insurance </th>
+									<th class="hidden-xs"> <i class="fa fa-save "></i> Saved </th>
+									<th>  <i class="fa fa-hospital-o"></i> Hospital  </th>
+									<th class="hidden-xs"> <i class="fa fa-save "></i> Saved </th>
+										<!-- <th class="hiden-xs">
+											Status
+										</th> -->
+								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="item in Accession.Cases">
-									<td>{{item.CaseNumber}}</td>
-									<td>
-										{{item.Status}}
+									<td class="highlight">
+										<div class="success"></div>
+										<a href="javascript:;" @click="goToBilling"> {{item.CaseNumber}} </a>
+									</td>
+									<td class="hidden-xs"> 
+										<div v-if="item.BillingType === 'Select One'">
+											Not Selected
+										</div>
+										<div v-else="">
+											{{item.BillingType}}
+										</div>
+									</td>
+									<td> 
+										<div v-if="item.BillingType === 'Select One'">
+										</div>
+										<div v-else="">
+											{{item.BillingTypeSavedDate}}
+										</div> 
 									</td>
 									<td>
-										<!-- <input type="text" placeholder="Enter any Comment" class="form-control"> -->
-										{{item.Comments}}
+										<div v-if="item.InsuranceType === 'Select One'">
+											Not Selected
+										</div>
+										<div v-else="">
+											{{item.InsuranceType}}
+										</div>
 									</td>
+									<td>
+										<div v-if="item.InsuranceType === 'Select One'">
+										</div>
+										<div v-else="">
+											{{item.InsuranceTypeSavedDate}}
+										</div>
+									</td>
+									<td>
+										<div v-if="item.HospitalStatus === 'Select One'">
+											Not Selected
+										</div>
+										<div v-else="">
+											{{item.HospitalStatus}}
+										</div>
+									</td>
+									<td>
+										<div v-if="item.HospitalStatus === 'Select One'">
+											
+										</div>
+										<div v-else="">
+											{{item.HospitalStatusSavedDate}}
+										</div>
+									</td>
+									<!-- <td>
+										<span class="label label-sm label-info">Complete</span>
+									</td> -->
 								</tr>
 							</tbody>
 						</table>
-					</fieldset>
+					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="panel panel-body">
-					<fieldset>
-						<legend>Missing Information</legend>
-
-						<table class="table">
-							<thead>
-								<th>Case</th>
-								<th>Information</th>
-								<th>Reason</th>
-								<th>Saved</th>
-							</thead>
-							<tbody>
-								<tr v-for="item in Accession.MissingInformation">
-									<td> {{item.CaseNumber}} </td>
-									<td> {{item.Name}} </td>
-									<td> {{item.Notes}} </td>
-									<td> {{item.CreatedDate}} </td>
-								</tr>
-							</tbody>
-						</table>
-					</fieldset>
+			<!-- END SAMPLE TABLE PORTLET-->
+		</div>
+<div class="col-md-12">
+			<div class="portlet">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-bar-chart-o"></i>Triage Status
+				</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+					<a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="table-scrollable">
+					<table class="table table-striped table-bordered table-advance table-hover">
+						<thead>
+							<tr>
+							<th>Case Number</th>
+							<th>Status</th>
+							<th>Comment</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="item in Accession.Cases">
+								<td>{{item.CaseNumber}}</td>
+								<td>
+									<span v-if="item.Status=='Pending'" class="label label-sm label-success">{{item.Status}}</span>
+									<span v-if="item.Status=='Incomplete'" class="label label-sm label-danger">{{item.Status}}</span>
+									<span v-if="item.Status=='Complete'" class="label label-sm label-info">{{item.Status}}</span>
+								</td>
+								<td>
+									<!-- <input type="text" placeholder="Enter any Comment" class="form-control"> -->
+									{{item.Comments}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
+		<div class="col-md-12">
+			<div class="portlet">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-info-circle"></i>Missing Information</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+				</div>
+				<div class="actions">
+					<a href="javascript:;" class="btn btn-outline btn-circle btn-sm red" @click="goToMissingInformation">
+                                                                                <i class="fa fa-edit"></i> Edit </a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="table-scrollable">
+					<table class="table table-striped table-bordered table-advance table-hover" v-if="Accession.MissingInformation.length > 0">
+						<thead>
+							<tr>
+							<th>Case</th>
+							<th>Information</th>
+							<th>Reason</th>
+							<th>Saved</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="item in Accession.MissingInformation">
+								<td> {{item.CaseNumber}} </td>
+								<td> {{item.Name}} </td>
+								<td> {{item.Notes}} </td>
+								<td> {{item.CreatedDate}} </td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="alert alert-info" v-else="">
+						<strong>Info!</strong> There is not missing information.
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
 		
-
-		
-
 	</div>
-
-
+</div>
 </template>
 
 <script>
-	export default {
-		props: ['Accession'],
-		computed: {
-			CurrentDate() {
-				var date = new Date();
-
-				var finaldate = date.toLocaleDateString() + " " + date.getHours()  + ":" + date.getMinutes() + ":" + date.getSeconds()
-
-				return finaldate
-			},
-
-		}
-	}
+export default {
+  props: ["Accession", "CurrentDate"],
+  methods: {
+    goToMissingInformation: function() {
+      this.$emit("go-to-missing", 6);
+    },
+    goToBilling: function() {
+      this.$emit("go-to-missing", 6);
+    }
+  }
+};
 </script>
