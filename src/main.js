@@ -17,10 +17,14 @@ require('./assets/global/css/components-rounded.css')
 import VueNotifications from 'vue-notifications' //https://github.com/se-panfilov/vue-notifications
 import miniToastr from 'mini-toastr'
 
-import {Tabs, Tab} from 'vue-tabs-component';
+import {
+  Tabs,
+  Tab
+} from 'vue-tabs-component';
 import BlockUI from 'vue-blockui'
 import VeeValidate from 'vee-validate';
 import VueGoodTable from 'vue-good-table';
+import VueRangedatePicker from 'vue-rangedate-picker'
 
 // If using mini-toastr, provide additional configuration
 const toastTypes = {
@@ -30,10 +34,18 @@ const toastTypes = {
   warn: 'warn'
 }
 
-miniToastr.init({types: toastTypes})
+miniToastr.init({
+  types: toastTypes
+})
 
 // Here we setup messages output to `mini-toastr`
-function toast ({title, message, type, timeout, cb}) {
+function toast({
+  title,
+  message,
+  type,
+  timeout,
+  cb
+}) {
   return miniToastr[type](message, title, 7000, cb)
 }
 
@@ -50,7 +62,9 @@ const options = {
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
 
-Vue.use(VueNotifications, options)// VueNotifications have auto install but if we want to specify options we've got to do it manually.
+Vue.use(VueRangedatePicker)
+
+Vue.use(VueNotifications, options) // VueNotifications have auto install but if we want to specify options we've got to do it manually.
 Vue.use(VeeValidate);
 Vue.use(BlockUI)
 // Vue.use(VueFormWizard)
@@ -63,6 +77,7 @@ new Vue({
   store,
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })
-

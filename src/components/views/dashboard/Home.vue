@@ -3,13 +3,13 @@
     <div class="row">
         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
             <div class="dashboard-stat2 ">
-                <a href="javascript:;" @click="loadDetail('Total')">
+                <a href="javascript:;" @click="loadDetail('Pending')">
                     <div class="display">
                             <div class="number">
                             <h3 class="font-green-sharp">
-                                <span data-counter="counterup" data-value="7800">{{viewModel.AccessionTotal}}</span>
+                                <span data-counter="counterup" data-value="7800">{{viewModel.PendingTotal}}</span>
                             </h3>
-                            <small>TOTAL</small>
+                            <small>PENDING</small>
                         </div>
                     
                     </div>
@@ -53,7 +53,59 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2 ">
+                <a href="javascript:;" @click="loadDetail('Insurance')">
+                
+                    <div class="display">
+                        <div class="number">
+                            <h3 class="font-purple-soft">
+                                <span data-counter="counterup" data-value="276">{{viewModel.InsuranceTotal}}</span>
+                            </h3>
+                            <small>INSURANCE</small>
+                        </div>
+                    </div>
+                    <div class="progress-info">
+                        <div class="progress">
+                            <span style="width: 57%;" class="progress-bar progress-bar-success purple-soft">
+                                <span class="sr-only">56% change</span>
+                            </span>
+                        </div>
+                        <div class="status">
+                            <div class="status-title"> change </div>
+                            <div class="status-number"> 57% </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2 ">
+                <a href="javascript:;" @click="loadDetail('DirectSplit')">
+                    
+                    <div class="display">
+                        <div class="number">
+                            <h3 class="font-purple-soft">
+                                <span data-counter="counterup" data-value="276">{{viewModel.DirectSplit}}</span>
+                            </h3>
+                            <small>Direct/Split</small>
+                        </div>
+                    </div>
+                    <div class="progress-info">
+                        <div class="progress">
+                            <span style="width: 57%;" class="progress-bar progress-bar-success purple-soft">
+                                <span class="sr-only">56% change</span>
+                            </span>
+                        </div>
+                        <div class="status">
+                            <div class="status-title"> change </div>
+                            <div class="status-number"> 57% </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
             <div class="dashboard-stat2 ">
                 <a href="javascript:;" @click="loadDetail('Completed')">
                 
@@ -105,58 +157,6 @@
                 </a>
             </div>
         </div>
-         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-            <div class="dashboard-stat2 ">
-                <a href="javascript:;" @click="loadDetail('Insurance')">
-                
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-purple-soft">
-                                <span data-counter="counterup" data-value="276">{{viewModel.InsuranceTotal}}</span>
-                            </h3>
-                            <small>INSURANCE</small>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 57%;" class="progress-bar progress-bar-success purple-soft">
-                                <span class="sr-only">56% change</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> change </div>
-                            <div class="status-number"> 57% </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-            <div class="dashboard-stat2 ">
-                <a href="javascript:;" @click="loadDetail('Hospital')">
-                    
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-purple-soft">
-                                <span data-counter="counterup" data-value="276">{{viewModel.HospitalTotal}}</span>
-                            </h3>
-                            <small>HOSPITAL</small>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 57%;" class="progress-bar progress-bar-success purple-soft">
-                                <span class="sr-only">56% change</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> change </div>
-                            <div class="status-number"> 57% </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
     </div>
     <div class="row">
         <div class="col-lg-6 col-xs-12 col-sm-12">
@@ -189,167 +189,16 @@
             <div class="portlet-title">
                 <div class="caption caption-md">
                     <i class="icon-bar-chart font-dark hide"></i>
-                    <span class="caption-subject bold uppercase font-dark">Accessions Summary</span>
+                    <span class="caption-subject bold uppercase font-dark">Cases Summary</span>
                     <span class="caption-helper hide">weekly stats...</span>
                 </div>
             </div>
             <div class="portlet-body">
-                <!-- <div class="row list-separated">
-                    <div class="col-md-3 col-sm-3 col-xs-6">
-                        <div class="font-grey-mint font-sm"> Total </div>
-                        <div class="uppercase font-hg font-red-flamingo"> 134
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3 col-sm-3 col-xs-6">
-                        <div class="font-grey-mint font-sm"> Pending </div>
-                        <div class="uppercase font-hg font-purple"> 30
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-6">
-                        <div class="font-grey-mint font-sm"> Completed </div>
-                        <div class="uppercase font-hg theme-font"> 100
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-6">
-                        <div class="font-grey-mint font-sm">Incomplete </div>
-                        <div class="uppercase font-hg font-blue-sharp"> 4
-                        </div>
-                    </div>
-                </div>
-                <ul class="list-separated list-inline-xs hide">
-                    <li>
-                        <div class="font-grey-mint font-sm"> Total Sales </div>
-                        <div class="uppercase font-hg font-red-flamingo"> 13,760
-                            <span class="font-lg font-grey-mint">$</span>
-                        </div>
-                    </li>
-                    <li> </li>
-                    <li class="border">
-                        <div class="font-grey-mint font-sm"> Revenue </div>
-                        <div class="uppercase font-hg theme-font"> 4,760
-                            <span class="font-lg font-grey-mint">$</span>
-                        </div>
-                    </li>
-                    <li class="divider"> </li>
-                    <li>
-                        <div class="font-grey-mint font-sm"> Expenses </div>
-                        <div class="uppercase font-hg font-purple"> 11,760
-                            <span class="font-lg font-grey-mint">$</span>
-                        </div>
-                    </li>
-                    <li class="divider"> </li>
-                    <li>
-                        <div class="font-grey-mint font-sm"> Growth </div>
-                        <div class="uppercase font-hg font-blue-sharp"> 9,760
-                            <span class="font-lg font-grey-mint">$</span>
-                        </div>
-                    </li>
-                </ul> -->
                 <div id="chartdiv" style="width: 100%; height: 400px;"></div>
             </div>
         </div>
         </div>
     </div>
-      <!-- <div class="col-md-6 col-sm-6">
-          <div class="portlet light ">
-              <div class="portlet-title">
-                  <div class="caption caption-md">
-                      <i class="icon-bar-chart font-dark hide"></i>
-                      <span class="caption-subject font-green-steel bold uppercase">Accessions</span>
-                  </div>
-                  <div class="actions">
-                    
-                  </div>
-              </div>
-              <div class="portlet-body">
-                  <div class="row number-stats margin-bottom-30">
-                      <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class="stat-left">
-                              <div class="stat-chart">
-                                  <div id="sparkline_bar"></div>
-                              </div>
-                              <div class="stat-number">
-                                  <div class="title"> Total </div>
-                                  <div class="number"> 500 </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6 col-sm-6 col-xs-6">
-                          <div class="stat-right">
-                              <div class="stat-chart">
-                                  <div id="sparkline_bar2"></div>
-                              </div>
-                              <div class="stat-number">
-                                  <div class="title"> New </div>
-                                  <div class="number"> 20      </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="table-scrollable table-scrollable-borderless">
-                      <table class="table table-hover table-light">
-                          <thead>
-                              <tr class="uppercase">
-                                  <th colspan="2"> MEMBER </th>
-                                  <th> CASES </th>
-                                  <th> CLOSED </th>
-                                  <th> RATE </th>
-                              </tr>
-                          </thead>
-                          <tr>
-                              <td class="fit">
-                                  <img class="user-pic rounded" src="../../../assets/pages/media/users/avatar4.jpg"> </td>
-                              <td>
-                                  <a href="javascript:;" class="primary-link">Brain</a>
-                              </td>
-                              <td> 5 </td>
-                              <td> 2 </td>
-                              <td>
-                                  <span class="bold theme-font">80%</span>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td class="fit">
-                                  <img class="user-pic rounded" src="../../../assets/pages/media/users/avatar5.jpg"> </td>
-                              <td>
-                                  <a href="javascript:;" class="primary-link">Nick</a>
-                              </td>
-                              <td> 2 </td>
-                              <td> 1 </td>
-                              <td>
-                                  <span class="bold theme-font">67%</span>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td class="fit">
-                                  <img class="user-pic rounded" src="../../../assets/pages/media/users/avatar6.jpg"> </td>
-                              <td>
-                                  <a href="javascript:;" class="primary-link">Tim</a>
-                              </td>
-                              <td> 7 </td>
-                              <td> 1 </td>
-                              <td>
-                                  <span class="bold theme-font">90%</span>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td class="fit">
-                                  <img class="user-pic rounded" src="../../../assets/pages/media/users/avatar7.jpg"> </td>
-                              <td>
-                                  <a href="javascript:;" class="primary-link">Tom</a>
-                              </td>
-                              <td> 5 </td>
-                              <td> 0 </td>
-                              <td>
-                                  <span class="bold theme-font">100%</span>
-                              </td>
-                          </tr>
-                      </table>
-                  </div>
-              </div>
-          </div>
-      </div> -->
   </div>
 </template>
 
@@ -362,54 +211,56 @@ import AmPie from "amcharts3/amcharts/pie";
 
 export default {
   mounted() {
-    this.loadDetail("Total");
-    window.AmCharts.makeChart("chartdiv", {
-      type: "serial",
-      categoryField: "type",
-      chartCursor: {},
-      graphs: [
-        {
-          type: "column",
-          title: "Pizza types",
-          valueField: "sold",
-          fillAlphas: 0.8
-        }
-      ],
-
-      dataProvider: [
-        { type: "Margherita", sold: 120 },
-        { type: "Funghi", sold: 82 },
-        { type: "Capricciosa", sold: 78 },
-        { type: "Quattro Stagioni", sold: 71 }
-      ]
-    });
+    // this.accessions = this.accessions;
+    this.loadDetail("Pending");
+    this.loadSummary();
   },
   computed: {
-    ...mapGetters(["accessions"]),
+    ...mapGetters(["dashboardData", "accessions"]),
     viewModel() {
       //accession total
       let accessionTotal = 0;
 
-      this.accessions.forEach(element => {
+      this.dashboardData.forEach(element => {
         accessionTotal = accessionTotal + element.Cases.length;
       });
 
       //pending
       let accessionPending = 0;
-      this.accessions.forEach(element => {
+      let accessionComplete = 0;
+      let accessionIncomplete = 0;
+
+      this.dashboardData.forEach(element => {
         element.Cases.filter(function(item) {
-          if (item.BillingType == "Select One") accessionPending++;
+          if (item.Status === "Pending") accessionPending++;
+          if (item.Status === "Complete") accessionComplete++;
+          if (item.Status === "Incomplete") accessionIncomplete++;
         });
       });
 
-      //completed
-      let accessionCompleted = this.accessions.filter(function(item) {
-        return item.TrigueStatus == "Complete";
+      //insurance
+      let InsuranceCount = 0;
+
+      this.dashboardData.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (
+            item.BillingType === "Insurance" &&
+            (item.InsuranceType !== "Not Provided" &&
+              item.HospitalStatus !== "Not Provided")
+          ) {
+            InsuranceCount++;
+          }
+        });
       });
 
-      //imcomplete
-      let accessionIncomplete = this.accessions.filter(function(item) {
-        return item.TrigueStatus == "Incomplete";
+      //direct split
+      let DirectSplitCount = 0;
+
+      this.dashboardData.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.BillingType === "Direct" || item.BillingType === "Split")
+            DirectSplitCount++;
+        });
       });
 
       //categorized total
@@ -417,8 +268,11 @@ export default {
       var data = {
         AccessionTotal: accessionTotal,
         CategorizedTotal: accessionCategorized,
-        CompletedTotal: accessionCompleted.length,
-        IncompleteTotal: accessionIncomplete.length
+        CompletedTotal: accessionComplete,
+        IncompleteTotal: accessionIncomplete,
+        InsuranceTotal: InsuranceCount,
+        DirectSplit: DirectSplitCount,
+        PendingTotal: accessionPending
       };
 
       return data;
@@ -426,6 +280,7 @@ export default {
   },
   data() {
     return {
+      //   dashboardData: [],
       data: {
         labels: ["Sleeping", "Designing", "Coding", "Cycling"],
         datasets: [
@@ -446,13 +301,61 @@ export default {
       }
     };
   },
+  watch: {
+    dashboardData: function(val) {
+      this.loadDetail("Pending");
+      this.loadSummary();
+    }
+  },
   methods: {
+    loadSummary() {
+      var types = [];
+      let accessionTotal = 0;
+
+      this.dashboardData.forEach(element => {
+        accessionTotal = accessionTotal + element.Cases.length;
+      });
+
+      //pending
+      let accessionPending = 0;
+      let accessionComplete = 0;
+      let accessionIncomplete = 0;
+
+      this.dashboardData.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Pending") accessionPending++;
+          if (item.Status === "Complete") accessionComplete++;
+          if (item.Status === "Incomplete") accessionIncomplete++;
+        });
+      });
+
+      window.AmCharts.makeChart("chartdiv", {
+        type: "serial",
+        categoryField: "type",
+        chartCursor: {},
+        graphs: [
+          {
+            type: "column",
+            title: "Pizza types",
+            valueField: "sold",
+            fillAlphas: 0.8
+          }
+        ],
+
+        dataProvider: [
+          { type: "Pending", sold: accessionPending },
+          { type: "Complete", sold: accessionComplete },
+          { type: "Incomplete", sold: accessionIncomplete }
+        ]
+      });
+    },
     loadDetail(typename) {
+      this.loadSummary();
       var chart;
       var legend;
       var selected;
 
-      var types = getTypelist(typename, this.accessions);
+      var types = getTypelist(typename, this.dashboardData);
 
       window.AmCharts.makeChart("mainchartdiv", {
         type: "pie",
@@ -524,7 +427,7 @@ function generateChartData(types, selected) {
 function getTypelist(typename, accessionList) {
   var types = [];
   let accessionTotal = 0;
-
+  debugger;
   accessionList.forEach(element => {
     accessionTotal = accessionTotal + element.Cases.length;
   });
@@ -542,9 +445,87 @@ function getTypelist(typename, accessionList) {
     });
   });
 
+  //complete cases details
+  let casesInsurance = 0;
+  let casesDirect = 0;
+  let casesSplit = 0;
+
+  accessionList.forEach(element => {
+    element.Cases.filter(function(item) {
+      if (item.Status === "Complete") {
+        if (item.BillingType === "Insurance") casesInsurance++;
+        if (item.BillingType === "Direct") casesDirect++;
+        if (item.BillingType === "Split") casesSplit++;
+      }
+    });
+  });
+
+  //incomplete cases details
+  let incompleteBillingType = 0;
+  let incompleteInsuranceType = 0;
+  let incompleteHospitalStatus = 0;
+
+  accessionList.forEach(element => {
+    element.Cases.filter(function(item) {
+      if (item.Status === "Incomplete") {
+        if (item.BillingType === "Not Provided") incompleteBillingType++;
+        if (item.InsuranceType === "Not Provided") incompleteInsuranceType++;
+        if (item.HospitalStatus === "Not Provided") incompleteHospitalStatus++;
+      }
+    });
+  });
+
+  //direct / split
+  let directCount = 0;
+  let splitCount = 0;
+
+  accessionList.forEach(element => {
+    element.Cases.filter(function(item) {
+      if (item.BillingType === "Direct") directCount++;
+      if (item.BillingType === "Split") splitCount++;
+    });
+  });
+
+  debugger;
+
+  //insurance
+  let InsuranceMedicare = 0;
+  let InsuranceNotMedicare = 0;
+
+  accessionList.forEach(element => {
+    element.Cases.filter(function(item) {
+      if (item.BillingType === "Insurance") {
+        if (item.InsuranceType === "Medicare") InsuranceMedicare++;
+        if (item.InsuranceType === "Not Medicare") InsuranceNotMedicare++;
+      }
+    });
+  });
+
+  //hospital status
+  let HospitalStatusInpatient = 0;
+  let HospitalStatusOutpatient = 0;
+  let HospitalStatusNonHospital = 0;
+
+  accessionList.forEach(element => {
+    element.Cases.filter(function(item) {
+      if (item.InsuranceType === "Medicare") {
+        if (item.HospitalStatus === "Inpatient") HospitalStatusInpatient++;
+        if (item.HospitalStatus === "Outpatient") HospitalStatusOutpatient++;
+        if (item.HospitalStatus === "Non-hospital") HospitalStatusNonHospital++;
+      }
+    });
+  });
+
   let accessionCategorized = accessionTotal - accessionPending;
 
   switch (typename) {
+    case "Pending":
+      types.push({
+        type: "Pending",
+        percent: accessionPending,
+        color: "#ff9e01"
+      });
+      return types;
     case "Total":
       types.push({
         type: "Pending",
@@ -576,15 +557,15 @@ function getTypelist(typename, accessionList) {
         subs: [
           {
             type: "Insurance",
-            percent: 2
+            percent: casesInsurance
           },
           {
             type: "Direct",
-            percent: 6
+            percent: casesDirect
           },
           {
             type: "Split",
-            percent: 4
+            percent: casesSplit
           }
         ]
       });
@@ -595,15 +576,15 @@ function getTypelist(typename, accessionList) {
         subs: [
           {
             type: "Billing type",
-            percent: 2
+            percent: incompleteBillingType
           },
           {
             type: "Insurance Type",
-            percent: 2
+            percent: incompleteInsuranceType
           },
           {
             type: "Hospital Status",
-            percent: 3
+            percent: incompleteHospitalStatus
           }
         ]
       });
@@ -611,68 +592,82 @@ function getTypelist(typename, accessionList) {
     case "Completed":
       types.push({
         type: "Insurance",
-        percent: 100,
+        percent: casesInsurance,
         color: "#b0de09",
         subs: [
           {
             type: "Medicare",
-            percent: 36
+            percent: InsuranceMedicare
           },
           {
             type: "Not Medicare",
-            percent: 44
+            percent: InsuranceNotMedicare
           }
         ]
       });
       types.push({
         type: "Direct",
-        percent: 200,
+        percent: casesDirect,
         color: "#b0de09"
       });
       types.push({
         type: "Split",
-        percent: 50,
+        percent: casesSplit,
         color: "#b0de09"
       });
       return types;
     case "Incompleted":
       types.push({
         type: "Billing Type",
-        percent: 20,
+        percent: incompleteBillingType,
         color: "#b0de09"
       });
       types.push({
         type: "Insurance Type",
-        percent: 36,
+        percent: incompleteInsuranceType,
         color: "#b0de09"
       });
       types.push({
-        type: "Hospital Type",
-        percent: 100,
+        type: "Hospital Status",
+        percent: incompleteHospitalStatus,
         color: "#b0de09"
       });
       return types;
     case "Insurance":
       types.push({
         type: "Medicare",
-        percent: 20,
-        color: "#b0de09"
+        percent: InsuranceMedicare,
+        color: "#b0de09",
+        subs: [
+          {
+            type: "Inpatient",
+            percent: HospitalStatusInpatient
+          },
+          {
+            type: "Outpatient",
+            percent: HospitalStatusOutpatient
+          },
+          {
+            type: "Non-hospital",
+            percent: HospitalStatusNonHospital
+          }
+        ]
       });
       types.push({
         type: "Not Medicare",
-        percent: 36,
+        percent: InsuranceNotMedicare,
         color: "#b0de09"
       });
       return types;
-    case "Hospital":
+    case "DirectSplit":
       types.push({
-        type: "Medicare",
-        percent: 59,
+        type: "Direct",
+        percent: directCount,
         color: "#b0de09"
       });
       types.push({
-        type: "Not Medicare",
-        percent: 67,
+        type: "Split",
+        percent: splitCount,
         color: "#b0de09"
       });
       return types;

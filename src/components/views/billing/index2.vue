@@ -71,6 +71,7 @@
 
 <script>
 var stepsData = require("./wizard_steps/steps.js");
+
 import { mapGetters, mapActions } from "vuex";
 
 //wizard buttons

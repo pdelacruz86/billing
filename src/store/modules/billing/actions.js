@@ -61,3 +61,16 @@ export const updateTextSearch = ({
 }, text) => {
   commit(types.UPDATE_TEXT_SEARCH, text)
 };
+
+export const filterDashboardData = ({
+  commit
+}, filter) => {
+  commit(types.FILTER_DASHBOARD_DATA, filter)
+}
+
+export const setFilterDates = ({
+  commit
+}, dates) => {
+  debugger
+  commit(types.SET_FILTER_DATES, dates)
+}
