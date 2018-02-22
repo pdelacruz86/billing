@@ -18,7 +18,8 @@
               <div class="row">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <vue-rangedate-picker 
-                      v-model="filterDates" 
+                    :initRange="test"
+                    format="YYYY-MM-DD"
                        @selected="onDateSelected" righttoleft="true" i18n="EN">
                     </vue-rangedate-picker>
                   </div>
@@ -32,11 +33,17 @@
 </template>
 
 <script>
+const moment = require("moment");
+
 import VueRangedatePicker from "vue-rangedate-picker";
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     VueRangedatePicker
+  },
+  mounted() {
+    document.getElementsByClassName("input-date").innerHTML =
+      "2017-01-01 - 2018-01-31";
   },
   computed: {
     ...mapGetters(["filterDates"]),
@@ -45,6 +52,16 @@ export default {
     },
     details() {
       return this.getItem().description;
+    },
+    test() {
+      return {
+        start: new Date(
+          "Sun Apr 01 2018 00:00:00 GMT-0400 (Eastern Daylight Time)"
+        ),
+        end: new Date(
+          "Sat Feb 03 2018 00:00:00 GMT-0500 (Eastern Standard Time)"
+        )
+      };
     }
   },
   data() {
@@ -61,14 +78,14 @@ export default {
     ...mapActions(["setFilterDates", "filterDashboardData"]),
     onDateSelected: function(daterange) {
       // this.selectedDate = daterange;
-      console.log(daterange.end, daterange.start);
+      console.log(daterange, daterange.end, daterange.start);
 
       let payload = {
         end: daterange.end,
         start: daterange.start
       };
 
-      this.setFilterDates(payload);
+      this.setFilterDates(daterange);
       // this.filterDashboardData(payload);
     },
     getItem() {

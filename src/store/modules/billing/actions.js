@@ -29,13 +29,13 @@ export const getAllCases = ({
 export const updateAccession = ({
   commit
 }, accession) => {
-  // commit(globalTypes.LOADING_START, 'Saving current Accession...');
-  // debugger;
+  commit(globalTypes.LOADING_START, 'Saving current Accession...');
+  debugger;
 
-  // api.getAll().then(function (response) {
+  // api.create(accession).then(function (response) {
   //   if (response.data.Status == "Error") {
   //     var error = {
-  //       title: 'Loading pending cases Failed',
+  //       title: 'error saving',
   //       message: 'Please contact support',
   //       type: 'error'
   //     }
@@ -43,8 +43,8 @@ export const updateAccession = ({
   //     commit(globalTypes.NOTIFY_ERRORS, error)
   //   } else {
   commit(types.UPDATE_ACCESSION, accession)
-  //     commit(globalTypes.LOADED_SUCCESS)
-  //   }
+  commit(globalTypes.LOADED_SUCCESS)
+  // }
   // });
 
 

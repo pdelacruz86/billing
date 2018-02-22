@@ -140,7 +140,7 @@
                             <h3 class="font-red-haze">
                                 <span data-counter="counterup" data-value="276">{{viewModel.IncompleteTotal}}</span>
                             </h3>
-                            <small>IMCOMPLETED</small>
+                            <small>INCOMPLETED</small>
                         </div>
                     </div>
                     <div class="progress-info">
@@ -212,8 +212,12 @@ import AmPie from "amcharts3/amcharts/pie";
 export default {
   mounted() {
     // this.accessions = this.accessions;
+    debugger;
+    this.removeLoading();
     this.loadDetail("Pending");
     this.loadSummary();
+    document.getElementsByClassName("input-date").value =
+      "01 Feb 2018 - 28 Feb 2018";
   },
   computed: {
     ...mapGetters(["dashboardData", "accessions"]),
@@ -278,6 +282,13 @@ export default {
       return data;
     }
   },
+  watch: {
+    dashboardData: function(val) {
+      debugger;
+      this.loadDetail("Pending");
+      this.loadSummary();
+    }
+  },
   data() {
     return {
       //   dashboardData: [],
@@ -301,13 +312,8 @@ export default {
       }
     };
   },
-  watch: {
-    dashboardData: function(val) {
-      this.loadDetail("Pending");
-      this.loadSummary();
-    }
-  },
   methods: {
+    ...mapActions(["removeLoading"]),
     loadSummary() {
       var types = [];
       let accessionTotal = 0;

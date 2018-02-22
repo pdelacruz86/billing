@@ -1,4 +1,9 @@
-export { Navbar } from './Navbar.vue'
+export {
+  Navbar
+}
+from './Navbar.vue'
 
-export AppMain from './AppMain'
-
+export {
+  AppMain
+}
+from './AppMain'

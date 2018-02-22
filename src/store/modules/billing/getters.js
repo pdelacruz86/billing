@@ -6,7 +6,6 @@ export const searchText = state => state.searchText
 export const filterDates = state => state.filterDates
 
 export const dashboardData = state => state.accessions.filter((item) => {
-  debugger;
   if (state.filterDates !== undefined) {
     const beginDate = moment(state.filterDates.start);
     const endDate = moment(state.filterDates.end);

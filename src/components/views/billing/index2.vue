@@ -71,6 +71,7 @@
 
 <script>
 var stepsData = require("./wizard_steps/steps.js");
+const moment = require("moment");
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -107,7 +108,6 @@ export default {
   watch: {
     $route(to, from) {
       // react to route changes...
-      debugger;
       if (to.fullPath === "/billing") {
         this.currentstep = 1;
         this.updateTextSearch("");
@@ -274,7 +274,6 @@ export default {
       return hasMedicare;
     },
     isLastStep() {
-      debugger;
       if (this.$children[0]) {
         return this.$children[0].isLastStep;
       }
@@ -331,7 +330,6 @@ export default {
       this.selectedAccession.MissingInformation = missing;
     },
     newSearch: function() {
-      debugger;
       this.currentstep = 1;
       this.updateTextSearch("");
       this.showModal = false;
@@ -436,7 +434,6 @@ export default {
         var accession = accessions.filter(function(item) {
           return item.AccessionID === tinput;
         })[0];
-        debugger;
         if (accession) {
           this.setSelectedAccession(accession);
           this.currentstep = step;
@@ -484,7 +481,6 @@ export default {
         if (isback) {
           this.currentstep = step;
         } else {
-          debugger;
           if (this.hasSelectOneInsurance) {
             var error = {
               title: "Insurance type required",
@@ -612,7 +608,6 @@ export default {
 
       //step 7 -- Last Step
       if (selfStep === 7) {
-        debugger;
         if (isback) {
           if (this.selectedAccession.CheckInMissingInformation === true) {
             //go next
@@ -623,7 +618,60 @@ export default {
         } else {
           console.log(JSON.stringify(this.selectedAccession));
 
-          this.$store.dispatch("updateAccession", this.selectedAccession);
+          let date = new Date();
+          let finaldate =
+            date.toLocaleDateString() + " " + date.toLocaleTimeString();
+          debugger;
+
+          //get the current accession
+          let _accession = this.selectedAccession;
+          //get the caselist
+          let caselist = _accession.Cases;
+
+          //iterate through currentAccession cases
+          for (var i = 0; i < caselist.length; i++) {
+            var currentCase = caselist[i];
+
+            if (currentCase.BillingType === "Select One") {
+              _accession.TrigueStatus = "Pending";
+            } else if (currentCase.BillingType === "Not Provided") {
+              _accession.TrigueStatus = "Incomplete";
+              break;
+            } else if (
+              currentCase.BillingType === "Direct" ||
+              currentCase.BillingType === "Split"
+            ) {
+              _accession.TrigueStatus = "Complete";
+            } else if (currentCase.BillingType === "Insurance") {
+              if (currentCase.InsuranceType === "Not Provided") {
+                _accession.TrigueStatus = "Incomplete";
+                break;
+              } else if (currentCase.InsuranceType === "Not Provided") {
+                _accession.TrigueStatus = "Incomplete";
+                break;
+              } else if (currentCase.InsuranceType === "Medicare") {
+                if (currentCase.HospitalStatus === "Not Provided") {
+                  _accession.TrigueStatus = "Incomplete";
+                  break;
+                } else if (
+                  currentCase.HospitalTrigueStatus === "Not Provided"
+                ) {
+                  _accession.TrigueStatus = "Incomplete";
+                  break;
+                } else {
+                  _accession.TrigueStatus = "Complete";
+                }
+              } else {
+                _accession.TrigueStatus = "Complete";
+              }
+
+              break;
+            }
+          }
+
+          console.log(JSON.stringify(_accession));
+
+          this.$store.dispatch("updateAccession", _accession);
           this.$router.push({ path: "/worklist" });
           var success = {
             title: "Done",
