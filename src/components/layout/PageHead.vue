@@ -42,10 +42,10 @@
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <ul class="theme-colors">
                               <li class="theme-color theme-color-gray" data-theme="yellow-crusta">
-                                <input type="text" placeholder="AccessionID" style="width:125px!important"
+                                <input type="text" :model="worklist_filter.accessionID" placeholder="AccessionID" style="width:125px!important"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
                               </li>
-                               <li class="theme-color theme-color-blue-hoki" data-theme="green-seagreen">
+                               <li class="theme-color theme-color-blue-hoki" data-theme="green-seagreen" @click="setWorklistFilter('Pending')">
                                   <span class="theme-color-view"></span>
                                   <span class="theme-color-name">All</span>
                               </li>
@@ -67,7 +67,7 @@
                           <div class="col-md-6 col-sm-6 col-xs-12">
                               <ul class="theme-colors">
                                 <li class="theme-color theme-color-yellow-orange">
-                                   <input type="text" placeholder="Case Number" style="width:125px!important"
+                                   <input type="text" :model="worklist_filter.caseNumber" placeholder="Case Number" style="width:125px!important"
                                    class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
                                 </li>
                                   <li class="theme-color theme-color-yellow-orange" data-theme="yellow-orange">
@@ -94,43 +94,46 @@
                       <h3>GENERAL</h3>
                       <ul class="theme-settings">
                           <li> First Name:
-                              <input type="text" 
+                              <input type="text" :model="worklist_filter.firstName"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                           <li> Last Name:
-                           <input type="text" 
+                           <input type="text" :model="worklist_filter.lastName"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                           <li> Patient ID:
-                            <input type="text" 
+                            <input type="text" :model="worklist_filter.patientID"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                            <li> Client Name:
-                               <input type="text" 
+                               <input type="text" :model="worklist_filter.clientName"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                           <li> Client Number:
-                               <input type="text" 
+                               <input type="text" :model="worklist_filter.clientNumber"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                            <li> Insurance Type:
-                              <select class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
-                                  <option value="fixed">Fixed</option>
-                                  <option value="not-fixed" selected="selected">Not Fixed</option>
+                              <select :model="worklist_filter.insuranceType"
+                              class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
+                                  <option>Medicare </option>
+                                  <option>Not Medicare</option>
                               </select>
                           </li>
                            <li> Hospital Status: 
-                              <select class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
-                                  <option value="fixed">Fixed</option>
-                                  <option value="not-fixed" selected="selected">Not Fixed</option>
+                              <select :model="worklist_filter.hospitalStatus"
+                              class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
+                                  <option>Inpatient</option>
+                                  <option>Outpatient</option>
+                                  <option>Non-hospital</option>
                               </select>
                           </li>
-                          <li><button data-v-5e837f70="" class="calendar-btn-apply">Apply</button></li>
+                          <li><button data-v-5e837f70="" class="calendar-btn-apply" @click="filterWorklistData">Apply</button></li>
                       </ul>
                   </div>
               </div>
@@ -152,22 +155,12 @@ export default {
   },
   mounted() {},
   computed: {
-    ...mapGetters(["filterDates"]),
+    ...mapGetters(["worklist_filter"]),
     name() {
       return this.getItem().name;
     },
     details() {
       return this.getItem().description;
-    },
-    test() {
-      return {
-        start: new Date(
-          "Sun Apr 01 2018 00:00:00 GMT-0400 (Eastern Daylight Time)"
-        ),
-        end: new Date(
-          "Sat Feb 03 2018 00:00:00 GMT-0500 (Eastern Standard Time)"
-        )
-      };
     }
   },
   data() {
@@ -181,7 +174,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["setFilterDates", "filterDashboardData"]),
+    ...mapActions(["setFilterDates", "filterDashboardData", "filterWorklistData"]),
     onDateSelected: function(daterange) {
       //this.selectedDate = daterange;
       console.log(daterange, daterange.end, daterange.start);

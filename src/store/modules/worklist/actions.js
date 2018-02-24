@@ -25,3 +25,8 @@ export const getAllCases = ({
     }
   });
 }
+
+export const filterWorklistData = ({commit}) => {
+  commit(types.FILTER_WORKLIST_DATA)
+  commit(globalTypes.LOADED_SUCCESS)
+}

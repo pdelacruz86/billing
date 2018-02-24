@@ -7,6 +7,9 @@ const moment = require("moment");
 const mutation = {
   [types.GET_ALL](state, list) {
     state.accessions = list;
+  },
+  [types.SET_FILTERS_WORKLIST](state, filterValue) {
+  	state.worklist_filter = filterValue;
   }
 }
 export default mutation

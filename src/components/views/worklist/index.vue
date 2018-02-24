@@ -14,11 +14,9 @@
           <vue-good-table
             styleClass="table table-striped table-bordered table-advance table-hover"
             :columns="columns"
-            :rows="accessions"
+            :rows="worklist_data_filtered"
             :paginate="true"
             :lineNumbers="false"
-            :globalSearch="true"
-            :globalSearchFn="searchFn"
             >
             <template slot="table-row-after" slot-scope="props"> 
               <td>
@@ -71,7 +69,7 @@ export default {
     this.removeLoading();
   },
   computed: {
-    ...mapGetters(["accessions"])
+    ...mapGetters(["worklist_data_filtered"])
   },
   data() {
     return {
@@ -127,13 +125,6 @@ export default {
           // filterable: true,
           placeholder: "Filter"
         },
-        // {
-        //   label: 'LIS Status',
-        //   field: 'LISCaseStatus',
-        //   width: '100px',
-        //   // filterable: true,
-        //   placeholder: 'Filter'
-        // },
         {
           label: "Status",
           field: "TriageStatus",
@@ -152,8 +143,6 @@ export default {
       "removeLoading"
     ]),
     onClickFn(row, index) {
-      console.log(row, index);
-      debugger;
       this.setSelectedAccession(row);
       this.$router.push({ path: "/billing/" + row.AccessionID.toString() });
     },
@@ -164,10 +153,6 @@ export default {
       return moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
     },
     searchFn(row, col, cellValue, searchTerm) {
-      debugger;
-      // return row.Cases.map(function(item) {
-      //   return item.CaseNumber == searchTerm;
-      // });
     }
   }
 };
