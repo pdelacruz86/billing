@@ -3,6 +3,7 @@ import * as types from '../types'
 import router from '../../router'
 
 const state = {
+  username: '',
   isLoggedIn: !!localStorage.getItem('token'),
   AllAccessions: []
 }
@@ -11,9 +12,13 @@ const mutations = {
   [types.LOGIN](state) {
     state.pending = true
   },
-  [types.LOGIN_SUCCESS](state) {
+  [types.LOGIN_SUCCESS](state, username) {
+    console.log(username)
+    debugger;
+
     state.isLoggedIn = true
     state.pending = false
+    state.username = username
   },
   [types.LOGOUT](state) {
     state.isLoggedIn = false
@@ -25,10 +30,12 @@ const actions = {
   login({
     commit
   }, creds) {
+    debugger;
     commit(types.LOGIN)
 
-    localStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTA1ODkzNzY2MjF9.MqHRSfGklBn610d2JNRedcwm251UQZDO79axeq2w6Fc')
 
+    localStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTA1ODkzNzY2MjF9.MqHRSfGklBn610d2JNRedcwm251UQZDO79axeq2w6Fc')
+    commit(types.LOGIN_SUCCESS, creds.username)
     router.push('/')
     // show spinner
     // api.localLogin(creds).then(response => {
@@ -59,7 +66,8 @@ const getters = {
   },
   Accessions: state => {
     return state.AllAccessions;
-  }
+  },
+  currentUserName: state => state.username
 }
 
 export default {

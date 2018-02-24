@@ -8,25 +8,134 @@
         </h1>
       </div>
       <!-- END PAGE TITLE -->
-      <div class="page-toolbar" v-if="name === 'Dashboard'">
+      <div class="page-toolbar" >
         <!-- BEGIN THEME PANEL -->
-        <div :class="{'btn-group btn-theme-panel':true,  'open': showFilter}" >
-            <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" @click="showFilter = !showFilter">
+        <div :class="{'btn-group btn-theme-panel':true,  'open': showFilter}" v-if="name === 'Dashboard'">
+            <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
+              @click="showFilter = !showFilter">
                 <i class="fa fa-filter">Filter</i>
             </a>
-            <div class="dropdown-menu theme-panel pull-right dropdown-custom hold-on-click">
+            <div class="dropdown-menu pull-right dropdown-custom hold-on-click">
               <div class="row">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
                     <vue-rangedate-picker 
-                    :initRange="test"
-                    format="YYYY-MM-DD"
-                       @selected="onDateSelected" righttoleft="true" i18n="EN">
+                      :initRange="test"
+                      format="YYYY-MM-DD"
+                        @selected="onDateSelected" righttoleft="true" i18n="EN">
                     </vue-rangedate-picker>
                   </div>
               </div>
             </div>
         </div>
         <!-- END THEME PANEL -->
+        <div :class="{'btn-group btn-theme-panel':true,  'open': showFilterWorklist}" 
+          v-if="name === 'Worklist'">
+          <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
+            @click="showFilterWorklist = !showFilterWorklist">
+              <i class="icon-settings"></i>
+          </a>
+          <div  class="dropdown-menu theme-panel pull-right dropdown-custom hold-on-click">
+              <div class="row">
+                  <div class="col-md-6 col-sm-6 col-xs-12" style="margin-left:0px">
+                      <h3>CASES BY STATUS</h3>
+                      <div class="row">
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <ul class="theme-colors">
+                              <li class="theme-color theme-color-gray" data-theme="yellow-crusta">
+                                <input type="text" placeholder="AccessionID" style="width:125px!important"
+                                class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
+                              </li>
+                               <li class="theme-color theme-color-blue-hoki" data-theme="green-seagreen">
+                                  <span class="theme-color-view"></span>
+                                  <span class="theme-color-name">All</span>
+                              </li>
+                              <li class="theme-color theme-color-yellow-crusta" data-theme="yellow-crusta">
+                                  <span class="theme-color-view"></span>
+                                  <span class="theme-color-name">Insurance</span>
+                              </li>
+                                <li class="theme-color theme-color-purple-plum" data-theme="purple-plum">
+                                  <span class="theme-color-view"></span>
+                                  <span class="theme-color-name">Direct</span>
+                              </li>
+                                <li class="theme-color theme-color-green-haze" data-theme="purple-plum">
+                                  <span class="theme-color-view"></span>
+                                  <span class="theme-color-name">Split</span>
+                              </li>
+                                
+                            </ul>
+                          </div>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                              <ul class="theme-colors">
+                                <li class="theme-color theme-color-yellow-orange">
+                                   <input type="text" placeholder="Case Number" style="width:125px!important"
+                                   class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
+                                </li>
+                                  <li class="theme-color theme-color-yellow-orange" data-theme="yellow-orange">
+                                      <span class="theme-color-view"></span>
+                                      <span class="theme-color-name">Pending</span>
+                                  </li>
+                                   <li class="theme-color theme-color-green-haze" data-theme="yellow-orange">
+                                      <span class="theme-color-view"></span>
+                                      <span class="theme-color-name">Categorized</span>
+                                  </li>
+                                  <li class="theme-color theme-color-blue-steel" data-theme="red-sunglo">
+                                      <span class="theme-color-view"></span>
+                                      <span class="theme-color-name">Complete</span>
+                                  </li>
+                                  <li class="theme-color theme-color-red-intense" data-theme="red-intense">
+                                      <span class="theme-color-view"></span>
+                                      <span class="theme-color-name">Incomplete</span>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-12 seperator" >
+                      <h3>GENERAL</h3>
+                      <ul class="theme-settings">
+                          <li> First Name:
+                              <input type="text" 
+                                class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
+                                data-original-title="Change theme style" data-container="body" data-placement="left" />
+                          </li>
+                          <li> Last Name:
+                           <input type="text" 
+                                class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
+                                data-original-title="Change theme style" data-container="body" data-placement="left" />
+                          </li>
+                          <li> Patient ID:
+                            <input type="text" 
+                                class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
+                                data-original-title="Change theme style" data-container="body" data-placement="left" />
+                          </li>
+                           <li> Client Name:
+                               <input type="text" 
+                                class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
+                                data-original-title="Change theme style" data-container="body" data-placement="left" />
+                          </li>
+                          <li> Client Number:
+                               <input type="text" 
+                                class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
+                                data-original-title="Change theme style" data-container="body" data-placement="left" />
+                          </li>
+                           <li> Insurance Type:
+                              <select class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
+                                  <option value="fixed">Fixed</option>
+                                  <option value="not-fixed" selected="selected">Not Fixed</option>
+                              </select>
+                          </li>
+                           <li> Hospital Status: 
+                              <select class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
+                                  <option value="fixed">Fixed</option>
+                                  <option value="not-fixed" selected="selected">Not Fixed</option>
+                              </select>
+                          </li>
+                          <li><button data-v-5e837f70="" class="calendar-btn-apply">Apply</button></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
       </div>
     </div>
   </div>
@@ -41,10 +150,7 @@ export default {
   components: {
     VueRangedatePicker
   },
-  mounted() {
-    document.getElementsByClassName("input-date").innerHTML =
-      "2017-01-01 - 2018-01-31";
-  },
+  mounted() {},
   computed: {
     ...mapGetters(["filterDates"]),
     name() {
@@ -67,17 +173,17 @@ export default {
   data() {
     return {
       showFilter: false,
+      showFilterWorklist: false,
       selectedDate: {
         start: "",
         end: ""
       }
     };
   },
-
   methods: {
     ...mapActions(["setFilterDates", "filterDashboardData"]),
     onDateSelected: function(daterange) {
-      // this.selectedDate = daterange;
+      //this.selectedDate = daterange;
       console.log(daterange, daterange.end, daterange.start);
 
       let payload = {
@@ -86,7 +192,7 @@ export default {
       };
 
       this.setFilterDates(daterange);
-      // this.filterDashboardData(payload);
+      //this.filterDashboardData(payload);
     },
     getItem() {
       let matched = this.$route.matched.filter(item => item.name);
@@ -96,7 +202,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .btn-theme-panel {
   margin-top: 25px;
 }

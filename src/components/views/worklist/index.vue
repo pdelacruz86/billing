@@ -63,6 +63,7 @@ var moment = require("moment");
 export default {
   components: {},
   mounted() {
+    debugger;
     if (this.accessions.length === 0) this.getAllCases();
 
     this.setSelectedAccession({});

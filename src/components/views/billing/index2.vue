@@ -115,13 +115,20 @@ export default {
     }
   },
   mounted() {
-    if (this.selectedAccession.AccessionID !== undefined) {
-      this.updateTextSearch(this.selectedAccession.AccessionID.toString());
-      this.currentstep = 2;
+    debugger;
+    var querystring = this.$router.history.current.query.filter;
+    if (querystring !== undefined) {
+      this.updateTextSearch(querystring);
     } else {
-      this.currentstep = 1;
-      this.updateTextSearch("");
+      if (this.selectedAccession.AccessionID !== undefined) {
+        this.updateTextSearch(this.selectedAccession.AccessionID.toString());
+        this.currentstep = 2;
+      } else {
+        this.currentstep = 1;
+        this.updateTextSearch("");
+      }
     }
+
     this.steps = stepsData.steps();
   },
   data() {

@@ -38,6 +38,7 @@ const actions = {
   setLoading({
     commit
   }, loaded, message) {
+    debugger;
     if (loaded) {
       commit(types.LOADING_START, message) // show spinner
     } else {

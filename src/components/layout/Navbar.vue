@@ -8,13 +8,16 @@
 					<div class="container">
 						<!-- BEGIN LOGO -->
 						<div class="page-logo">
-							<a >
+							<!-- <a >
 								<img src="../../assets/global/logo-default.png" alt="logo" class="logo-default" @click="goHome()">
-							</a>
+							</a> -->
+              	<router-link :to="{ path: '/' }">
+							<img src="../../assets/global/logo-default.png" alt="logo" class="logo-default" @click="goHome()">
+						</router-link>
 						</div>
 						<!-- END LOGO -->
 						<!-- BEGIN RESPONSIVE MENU TOGGLER -->
-						<a href="javascript:;" class="menu-toggler" @click="menutoggler"></a>
+						<a href="javascript:;" class="menu-toggler" @click="mobileMenuIsOpen = !mobileMenuIsOpen"></a>
 						<!-- END RESPONSIVE MENU TOGGLER -->
 						<!-- BEGIN TOP NAVIGATION MENU -->
 						<app-top-header></app-top-header>
@@ -24,13 +27,13 @@
 				</div>
 				<!-- END HEADER TOP -->
 				<!-- BEGIN HEADER MENU -->
-				<div class="page-header-menu" v-show="true">
+				<div class="page-header-menu" :style="{display: this.mobileMenuIsOpen ? 'block!important' : 'none!important'}">
 					<div class="container">
-          <form class="search-form" action="http://localhost:8080/#/billing" method="GET">
+          <form class="search-form" v-on:submit.prevent="onSubmit">
               <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search" name="query" id="inputSearch">
+                  <input type="text" v-model="searchInputText" @keyup.enter="onSubmit" class="form-control" placeholder="Search" name="query" id="inputSearch" v-on:keyup.enter="onSubmit()">
                   <span class="input-group-btn">
-                      <a href="javascript:;" class="btn submit">
+                      <a href="javascript:;" class="btn submit" @click="onSubmit">
                           <i class="icon-magnifier"></i>
                       </a>
                   </span>
@@ -41,47 +44,59 @@
 						<!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
 						<div class="hor-menu">
 							<ul class="nav navbar-nav">
-								<li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
-                  <router-link :to="{ path: 'home' }">
+								<li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown" >
+                  <router-link :to="{ path: '/' }">
                     Dashboard
                     <span class="arrow"></span>
                   </router-link>
                 </li>
-                <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown"  >
                   <router-link :to="{ path: '/worklist' }">
                     Worklist
                     <span class="arrow"></span>
                   </router-link>
                 </li>
-                <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
-                <a href="javascript:;"> Actions
+                <li aria-haspopup="true" :class="{'menu-dropdown':true, 'classic-menu-dropdown':true, opened: actionMenuIsOpen}">
+                <a href="javascript:;" @click="actionMenuIsOpen = !actionMenuIsOpen"> Actions
                    <span class="arrow"></span>
                  </a>
                  <ul class="dropdown-menu pull-left">
-                   <li aria-haspopup="true" class="">
+                   <li aria-haspopup="true" class="" >
                     <router-link :to="{ path: '/billing' }">
                       Process Bill
                         <span class="arrow"></span>
                       </router-link>
                   </li>
                    <li aria-haspopup="true" class=" ">
-                    <a href="layout_mega_menu_light.html" class="nav-link  "> Process Bill in Batch </a>
+                     <router-link :to="{ path: '/soon' }">
+                      Process Bill in Batch
+                        <span class="arrow"></span>
+                      </router-link>
                   </li>
                     <li aria-haspopup="true" class=" ">
-                    <a href="layout_top_bar_light.html" class="nav-link  "> Create Feedback </a>
+                    <router-link :to="{ path: '/soon' }">
+                      Create Feedback
+                        <span class="arrow"></span>
+                      </router-link>
                   </li>
                 </ul>
               </li>
-              <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown ">
-                <a href="javascript:;"> Reports
+              <li aria-haspopup="true" :class="{'menu-dropdown':true, 'classic-menu-dropdown':true, opened: reportMenuIsOpen}">
+                <a @click="reportMenuIsOpen = !reportMenuIsOpen" href="javascript:;"> Reports
                    <span class="arrow"></span>
                  </a>
                  <ul class="dropdown-menu pull-left">
                    <li aria-haspopup="true" class=" ">
-                    <a href="layout_mega_menu_light.html" class="nav-link  "> Pending / Completed </a>
+                    <router-link :to="{ path: '/soon' }">
+                      Pending / Completed
+                        <span class="arrow"></span>
+                      </router-link>
                   </li>
                   <li aria-haspopup="true" class=" ">
-                    <a href="layout_top_bar_light.html" class="nav-link  "> Report 2 </a>
+                    <router-link :to="{ path: '/soon' }">
+                       Missing Information
+                        <span class="arrow"></span>
+                      </router-link>
                   </li>
                 </ul>
               </li>
@@ -98,37 +113,45 @@
 </template>
 
 <script>
-  import TopHeader from './TopHeader.vue'
+import TopHeader from "./TopHeader.vue";
 
-  export default {
-    components: { appTopHeader: TopHeader },
-    methods: {
-        menutoggler: () => {
-          debugger;
-          var current = document.getElementsByClassName("page-header-menu")[0].style.display;
-
-          if (current === undefined){
-            document.getElementsByClassName("page-header-menu")[0].style.display = "block";
-          }
-          else
-          if(current === "block") {
-            document.getElementsByClassName("page-header-menu")[0].style.display = "none";
-          }
-          else
-          if(current === "none") {
-            document.getElementsByClassName("page-header-menu")[0].style.display = "block";
-          }
-
-          return true;
-        },
-        goHome: () => {
-          //this.$router.push({ name: 'home'});
-        }
+export default {
+  components: { appTopHeader: TopHeader },
+  mounted() {
+    // var current = document.getElementsByClassName("page-header-menu")[0].style
+    //   .display;
+    // if (current === undefined) {
+    //   this.mobileMenuIsOpen = true;
+    // } else if (current === "block") {
+    //   this.mobileMenuIsOpen = false;
+    // } else if (current === "none") {
+    //   this.mobileMenuIsOpen = true;
+    // }
+  },
+  data() {
+    return {
+      mobileMenuIsOpen: true,
+      actionMenuIsOpen: false,
+      reportMenuIsOpen: false,
+      searchInputText: ""
+    };
+  },
+  methods: {
+    goHome: () => {
+      this.$router.push({ path: "/home" });
+    },
+    onSubmit: function() {
+      debugger;
+      this.$router.push({ path: "/billing?filter=" + this.searchInputText });
     }
-  }
+  },
+  computed: {}
+};
 </script>
 
 <style>
-
+.page-header .page-header-top .page-logo .logo-default {
+  margin: 19.5px 0 0 !important;
+}
 </style>
 
