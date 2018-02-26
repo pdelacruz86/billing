@@ -1,5 +1,6 @@
 import api from '../../../api/billing.js'
 import * as types from './mutation-types'
+import * as worklistTypes from '../worklist/mutation-types'
 import * as globalTypes from '../../types'
 import router from '../../../router'
 var _ = require('lodash')
@@ -31,23 +32,21 @@ export const updateAccession = ({
 }, accession) => {
   commit(globalTypes.LOADING_START, 'Saving current Accession...');
   debugger;
+  api.create(accession).then(function (response) {
+    if (response.data.Status == "Error") {
+      var error = {
+        title: 'error saving',
+        message: 'Please contact support',
+        type: 'error'
+      }
 
-  // api.create(accession).then(function (response) {
-  //   if (response.data.Status == "Error") {
-  //     var error = {
-  //       title: 'error saving',
-  //       message: 'Please contact support',
-  //       type: 'error'
-  //     }
-
-  //     commit(globalTypes.NOTIFY_ERRORS, error)
-  //   } else {
-  commit(types.UPDATE_ACCESSION, accession)
-  commit(globalTypes.LOADED_SUCCESS)
-  // }
-  // });
-
-
+      commit(globalTypes.NOTIFY_ERRORS, error)
+    } else {
+      commit(types.UPDATE_ACCESSION, accession)
+      commit(worklistTypes.UPDATE_WORKLIST_DATA, accession)
+      commit(globalTypes.LOADED_SUCCESS)
+    }
+  });
 }
 
 export const setSelectedAccession = ({

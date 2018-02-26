@@ -1,14 +1,16 @@
 <template> 
-	<div class="row">
-		<div class="portlet light">
+	<div class="row" @keyup.enter.native="keymonitor()">
+		<div :class="{'portlet-fullscreen': wizardfullscreen, 'portlet light': true}" >
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-cogs"></i>Billing Wizard </div>
-					<div class="tools">
-					<!-- <input type="buttons" class="btn btn-success" value="New Search" @click="newSearch"> -->
-					<button type="button" class="btn btn-info" @click="newSearch">New Search</button>
-					<button type="button" class="btn btn-info" @click="openCaseContentCentral">Content Central</button>
-					</div>
+          <div class="actions">
+             <button type="button" class="btn btn-info" @click="newSearch">New Search</button>
+					  <button type="button" class="btn btn-info" @click="openCaseContentCentral">Content Central</button>
+              <a @click="wizardfullscreen = !wizardfullscreen" 
+                    class="btn btn-circle btn-icon-only btn-default fullscreen" href="#" data-original-title="" title=""> 
+                    </a>
+          </div>
 				</div>
 				<div class="portlet-body">
 					<div id="pro-wizard">
@@ -66,7 +68,11 @@
 			  </div>
 			</div>
 		</modal>
+     <modal-confirmation v-if="showConfirmationModal" @close="showConfirmationModal = false" @submitAccession="submitAccessionConfirmationHandler">
+    </modal-confirmation>
 	</div>
+
+ 
 </template>
 
 <script>
@@ -89,6 +95,7 @@ import CheckIn from "./wizard_steps/checkin";
 import Review from "./wizard_steps/review";
 
 import Modal from "../utils/modal-template.vue";
+import ModalConfirmation from "../utils/modal-confirmation.vue";
 
 import VueNotifications from "vue-notifications";
 
@@ -103,7 +110,11 @@ export default {
     MissingInfo,
     CheckIn,
     Review,
-    Modal
+    Modal,
+    ModalConfirmation
+  },
+  created: function() {
+    window.addEventListener("keyup", this.keymonitor);
   },
   watch: {
     $route(to, from) {
@@ -115,7 +126,6 @@ export default {
     }
   },
   mounted() {
-    debugger;
     var querystring = this.$router.history.current.query.filter;
     if (querystring !== undefined) {
       this.updateTextSearch(querystring);
@@ -144,7 +154,9 @@ export default {
       steps: [],
       // selectedAccession : {},
       Accessions: {},
-      showModal: false
+      showModal: false,
+      showConfirmationModal: false,
+      wizardfullscreen: false
     };
   },
   computed: {
@@ -329,6 +341,88 @@ export default {
       "updateTextSearch",
       "updateAccession"
     ]),
+    keymonitor: function(event) {
+      console.log(event.key);
+      if (event.key == "Enter") {
+        // this.stepChanged(this.currentstep + 1);
+      }
+    },
+    submitAccessionConfirmationHandler: function() {
+      this.submitAccession();
+    },
+    submitAccession: function() {
+      console.log(JSON.stringify(this.selectedAccession));
+      let date = new Date();
+      let savedDateTime =
+        date.toLocaleDateString() + " " + date.toLocaleTimeString();
+
+      //get the current accession
+      let _accession = this.selectedAccession;
+      //get the caselist
+      let caselist = _accession.Cases;
+
+      // let savedDateTime = moment().format("YYYY-mm-dd HH:mm:ss");
+      //iterate through currentAccession cases
+      for (var i = 0; i < caselist.length; i++) {
+        var currentCase = caselist[i];
+
+        if (currentCase.BillingType === "Select One") {
+          _accession.TrigueStatus = "Pending";
+        } else if (currentCase.BillingType === "Not Provided") {
+          _accession.TrigueStatus = "Incomplete";
+          currentCase.BillingTypeSavedDate = savedDateTime;
+          continue;
+        } else if (
+          currentCase.BillingType === "Direct" ||
+          currentCase.BillingType === "Split"
+        ) {
+          _accession.TrigueStatus = "Complete";
+          currentCase.BillingTypeSavedDate = savedDateTime;
+          continue;
+        } else if (currentCase.BillingType === "Insurance") {
+          if (currentCase.InsuranceType === "Not Provided") {
+            _accession.TrigueStatus = "Incomplete";
+            currentCase.InsuranceTypeSavedDate = savedDateTime;
+            continue;
+          } else if (currentCase.InsuranceType === "Not Provided") {
+            _accession.TrigueStatus = "Incomplete";
+            currentCase.InsuranceTypeSavedDate = savedDateTime;
+            continue;
+          } else if (currentCase.InsuranceType === "Medicare") {
+            if (currentCase.HospitalStatus === "Not Provided") {
+              _accession.TrigueStatus = "Incomplete";
+              currentCase.HospitalStatusSavedDate = savedDateTime;
+              continue;
+            } else if (currentCase.HospitalTrigueStatus === "Not Provided") {
+              _accession.TrigueStatus = "Incomplete";
+              currentCase.HospitalStatusSavedDate = savedDateTime;
+              continue;
+            } else {
+              _accession.TrigueStatus = "Complete";
+              currentCase.HospitalStatusSavedDate = savedDateTime;
+              continue;
+            }
+          } else {
+            _accession.TrigueStatus = "Complete";
+            currentCase.InsuranceTypeSavedDate = savedDateTime;
+            continue;
+          }
+          break;
+        }
+      }
+
+      console.log(JSON.stringify(_accession));
+
+      this.$store.dispatch("updateAccession", _accession);
+      this.$router.push({ path: "/worklist" });
+      // var success = {
+      //   title: "Done",
+      //   message: "Order saved.",
+      //   type: "success"
+      // };
+
+      // VueNotifications.success(success);
+    },
     missingRemoved: function(missingInfo) {
       var missing = this.selectedAccession.MissingInformation.filter(
         e => e !== missingInfo
@@ -623,70 +717,15 @@ export default {
             this.currentstep = this.StepCheckIn.id;
           }
         } else {
-          console.log(JSON.stringify(this.selectedAccession));
-
-          let date = new Date();
-          let finaldate =
-            date.toLocaleDateString() + " " + date.toLocaleTimeString();
-          debugger;
-
-          //get the current accession
-          let _accession = this.selectedAccession;
-          //get the caselist
-          let caselist = _accession.Cases;
-
-          //iterate through currentAccession cases
-          for (var i = 0; i < caselist.length; i++) {
-            var currentCase = caselist[i];
-
-            if (currentCase.BillingType === "Select One") {
-              _accession.TrigueStatus = "Pending";
-            } else if (currentCase.BillingType === "Not Provided") {
-              _accession.TrigueStatus = "Incomplete";
-              break;
-            } else if (
-              currentCase.BillingType === "Direct" ||
-              currentCase.BillingType === "Split"
-            ) {
-              _accession.TrigueStatus = "Complete";
-            } else if (currentCase.BillingType === "Insurance") {
-              if (currentCase.InsuranceType === "Not Provided") {
-                _accession.TrigueStatus = "Incomplete";
-                break;
-              } else if (currentCase.InsuranceType === "Not Provided") {
-                _accession.TrigueStatus = "Incomplete";
-                break;
-              } else if (currentCase.InsuranceType === "Medicare") {
-                if (currentCase.HospitalStatus === "Not Provided") {
-                  _accession.TrigueStatus = "Incomplete";
-                  break;
-                } else if (
-                  currentCase.HospitalTrigueStatus === "Not Provided"
-                ) {
-                  _accession.TrigueStatus = "Incomplete";
-                  break;
-                } else {
-                  _accession.TrigueStatus = "Complete";
-                }
-              } else {
-                _accession.TrigueStatus = "Complete";
-              }
-
-              break;
+          if (this.selectedAccession.TrigueStatus === "Incomplete") {
+            this.showConfirmationModal = true;
+          } else {
+            if (this.selectedAccession.TrigueStatus === "Complete") {
+              this.$router.push({ path: "/worklist" });
+            } else {
+              this.submitAccession();
             }
           }
-
-          console.log(JSON.stringify(_accession));
-
-          this.$store.dispatch("updateAccession", _accession);
-          this.$router.push({ path: "/worklist" });
-          var success = {
-            title: "Done",
-            message: "Order saved.",
-            type: "success"
-          };
-
-          VueNotifications.success(success);
         }
         return;
       }

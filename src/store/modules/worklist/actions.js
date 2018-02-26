@@ -4,29 +4,27 @@ import * as globalTypes from '../../types'
 import router from '../../../router'
 var _ = require('lodash')
 
-export const getAllCases = ({
-  commit
+export const getAllCasesWorklist = ({
+  commit,
+  rootState
 }) => {
   commit(globalTypes.LOADING_START, 'Loading Cases...');
-  debugger;
-
-  api.getAll().then(function (response) {
-    if (response.data.Status == "Error") {
-      var error = {
-        title: 'Loading pending cases Failed',
-        message: 'Please contact support',
-        type: 'error'
-      }
-
-      commit(globalTypes.NOTIFY_ERRORS, error)
-    } else {
-      commit(types.GET_ALL, response.data.Data)
-      commit(globalTypes.LOADED_SUCCESS)
-    }
-  });
-}
-
-export const filterWorklistData = ({commit}) => {
-  commit(types.FILTER_WORKLIST_DATA)
+  commit(types.GET_ALL, rootState.accessions)
+  console.log(rootState.accessions)
   commit(globalTypes.LOADED_SUCCESS)
 }
+
+export const setWorklistFilters = ({
+  commit,
+  rootState
+}, filterValue) => {
+  // commit(types.GET_ALL, rootState.accessions)
+  commit(types.SET_FILTERS_WORKLIST, filterValue)
+  commit(globalTypes.LOADED_SUCCESS)
+}
+
+// export const updateWorklistData = ({
+//   commit
+// }, accession) = {
+//   commit(worklistTypes.UPDATE_WORKLIST_DATA, accession)
+// }

@@ -5,18 +5,18 @@ import mutations from './mutations'
 
 const state = {
   worklist_data: [],
+  worklist_data_filtered: [],
   worklist_filter: {
-    caseNumber: '',
-    accessionID: '',
-    billingType: '',
-    insuranceType: '',
-    hospitalStatus: '',
-    firstName: '',
-    lastName: '',
-    patientID: '',
-    TriageStatus: '',
-    ClientName: '',
-    ClientNumber: ''
+    caseNumber: "",
+    accessionID: "",
+    billingType: "",
+    insuranceType: "",
+    hospitalStatus: "",
+    patientFullName: "",
+    patientID: "",
+    triageStatus: "",
+    clientName: "",
+    clientNumber: ""
   },
 }
 

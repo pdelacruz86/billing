@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import login from './modules/login'
 import billing from './modules/billing'
+import worklist from './modules/worklist'
 import appGlobal from './modules/app-global.js'
 
 //components
@@ -15,11 +16,10 @@ const store = new Vuex.Store({
   modules: {
     login,
     billing,
-    appGlobal
+    appGlobal,
+    worklist
   },
-  plugins: process.env.NODE_ENV !== 'production' ?
-    [createLogger(), createPersistedState()] :
-    [createPersistedState()]
+  plugins: process.env.NODE_ENV !== 'production' ? [createLogger(), createPersistedState()] : [createPersistedState()]
 })
 
 export default store

@@ -185,7 +185,9 @@
                     <span class="caption-helper "> stats...</span>
                 </div>
                   <div class="actions">
-                    <a @click="summaryChartfullscreen = !summaryChartfullscreen" class="btn btn-circle btn-icon-only btn-default fullscreen" href="#" data-original-title="" title=""> </a>
+                    <a @click="summaryChartfullscreen = !summaryChartfullscreen" 
+                    class="btn btn-circle btn-icon-only btn-default fullscreen" href="#" data-original-title="" title=""> 
+                    </a>
                 </div>
             </div>
             <div class="portlet-body">

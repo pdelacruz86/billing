@@ -49,9 +49,9 @@ export const pendingCasesPercent = state => {
 
   var percentage = (accessionCategorized / accessionTotal) * 100;
 
-  console.log(percentage)
+  var rounded = Math.round(percentage * 10) / 10;
 
-  return parseInt(percentage);
+  return rounded;
 }
 export const insuranceCasesPercent = state => {
   //pending
@@ -85,7 +85,9 @@ export const insuranceCasesPercent = state => {
 
   var percentage = (InsuranceCount / accessionCategorized) * 100;
 
-  return parseInt(percentage);
+  var rounded = Math.round(percentage * 10) / 10;
+
+  return rounded;
 }
 export const directSplitCasesPercent = state => {
   //pending
@@ -118,7 +120,9 @@ export const directSplitCasesPercent = state => {
 
   var percentage = (directSplitCount / accessionCategorized) * 100;
 
-  return parseInt(percentage);
+  var rounded = Math.round(percentage * 10) / 10;
+
+  return rounded;
 }
 export const completedCasesPercent = state => {
   //pending
@@ -152,7 +156,9 @@ export const completedCasesPercent = state => {
 
   var percentage = (completedCases / accessionCategorized) * 100;
 
-  return parseInt(percentage);
+  var rounded = Math.round(percentage * 10) / 10;
+
+  return rounded;
 }
 export const incompletedCasesPercent = state => {
   //pending
@@ -186,5 +192,7 @@ export const incompletedCasesPercent = state => {
 
   var percentage = (incompletedCases / accessionCategorized) * 100;
 
-  return parseInt(percentage);
+  var rounded = Math.round(percentage * 10) / 10;
+
+  return rounded;
 }

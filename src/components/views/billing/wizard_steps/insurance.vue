@@ -13,7 +13,7 @@
 											<a class="btn btn-sm btn-info dropdown-toggle btn-outline btn-circle btn-sm active" href="javascript:;" data-toggle="dropdown" aria-expanded="true"> Select All
 													<i class="fa fa-angle-down"></i>
 											</a>
-											<ul class="dropdown-menu pull-right">
+											<ul class="dropdown-menu pull-right ">
 													<li>
 															<a href="javascript:;" @click="selectAllTypes('Medicare')">
 																	 Medicare </a>
@@ -32,8 +32,8 @@
 									</div>
 							</div>
 					</div>
-					<div class="portlet-body white">
-					<table class="table table-striped" >
+					<div class="portlet-body white ">
+					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th class="col-xs-3">Case Number</th>
@@ -44,15 +44,15 @@
 						<tbody>
 							<tr v-for="item in Accession.Cases">
 								<td>{{item.CaseNumber}}</td>
-								<td v-if="item.BillingType === 'Insurance'"> 
-									<select v-model="item.InsuranceType" @change="selectEvt">
+								<td v-if="item.BillingType === 'Insurance' && item.Status !== 'Complete'"> 
+									<select v-model="item.InsuranceType" @change="selectEvt" >
 										<option>Select One</option>	
 										<option>Medicare</option>	
 										<option>Not Medicare</option>	
 										<option>Not Provided</option>	
 									</select>
 								</td>
-								<td v-else="">
+								<td v-else>
 									{{item.BillingType}}
 								</td>
 							</tr>

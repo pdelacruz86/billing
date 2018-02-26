@@ -7,11 +7,11 @@
 					<div class="caption">
 						<i class="fa fa-money"></i>Billing Categorization </div>
 					<div class="tools">
-						<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-						<a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+						<a href="javascript:;" class="collapse" data-original-title="" title="" v-if="!billingCollapse" @click="billingCollapse = !billingCollapse"> </a>
+						<a href="javascript:;" class="expand" data-original-title="" title="" v-if="billingCollapse" @click="billingCollapse = !billingCollapse"> </a>
 					</div>
 				</div>
-				<div class="portlet-body">
+				<div class="portlet-body" :style="{'display':  billingCollapse ? 'none' : 'block'}">
 					<div class="table-scrollable">
 						<table class="table table-striped table-bordered table-advance table-hover">
 							<thead>
@@ -38,14 +38,14 @@
 										<div v-if="item.BillingType === 'Select One'">
 											Not Selected
 										</div>
-										<div v-else="">
+										<div v-else>
 											{{item.BillingType}}
 										</div>
 									</td>
 									<td> 
 										<div v-if="item.BillingType === 'Select One'">
 										</div>
-										<div v-else="">
+										<div v-else>
 											{{item.BillingTypeSavedDate}}
 										</div> 
 									</td>
@@ -53,14 +53,14 @@
 										<div v-if="item.InsuranceType === 'Select One'">
 											Not Selected
 										</div>
-										<div v-else="">
+										<div v-else>
 											{{item.InsuranceType}}
 										</div>
 									</td>
 									<td>
 										<div v-if="item.InsuranceType === 'Select One'">
 										</div>
-										<div v-else="">
+										<div v-else>
 											{{item.InsuranceTypeSavedDate}}
 										</div>
 									</td>
@@ -68,7 +68,7 @@
 										<div v-if="item.HospitalStatus === 'Select One'">
 											Not Selected
 										</div>
-										<div v-else="">
+										<div v-else>
 											{{item.HospitalStatus}}
 										</div>
 									</td>
@@ -76,7 +76,7 @@
 										<div v-if="item.HospitalStatus === 'Select One'">
 											
 										</div>
-										<div v-else="">
+										<div v-else>
 											{{item.HospitalStatusSavedDate}}
 										</div>
 									</td>
@@ -98,11 +98,11 @@
 					<i class="fa fa-bar-chart-o"></i>Triage Status
 				</div>
 				<div class="tools">
-					<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-					<a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+					<a href="javascript:;" class="collapse" data-original-title="" title="" v-if="!StatusCollapse" @click="StatusCollapse = !StatusCollapse"> </a>
+					<a href="javascript:;" class="expand" data-original-title="" title="" v-if="StatusCollapse" @click="StatusCollapse = !StatusCollapse"> </a>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body" :style="{'display':  StatusCollapse ? 'none' : 'block'}">
 				<div class="table-scrollable">
 					<table class="table table-striped table-bordered table-advance table-hover">
 						<thead>
@@ -130,20 +130,22 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		<div class="col-md-12">
 			<div class="portlet">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-info-circle"></i>Missing Information</div>
 				<div class="tools">
-					<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+					<a href="javascript:;" class="collapse" data-original-title="" title="" v-if="!missingCollapse" @click="missingCollapse = !missingCollapse"> </a>
+					<a href="javascript:;" class="expand" data-original-title="" title="" v-if="missingCollapse" @click="missingCollapse = !missingCollapse"> </a>
 				</div>
 				<div class="actions">
 					<a href="javascript:;" class="btn btn-outline btn-circle btn-sm red" @click="goToMissingInformation">
                                                                                 <i class="fa fa-edit"></i> Edit </a>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body" :style="{'display':  missingCollapse ? 'none' : 'block'}">
 				<div class="table-scrollable">
 					<table class="table table-striped table-bordered table-advance table-hover" v-if="Accession.MissingInformation.length > 0">
 						<thead>
@@ -169,8 +171,6 @@
 				</div>
 			</div>
 		</div>
-		</div>
-		
 	</div>
 </div>
 </template>
@@ -178,6 +178,13 @@
 <script>
 export default {
   props: ["Accession", "CurrentDate"],
+  data() {
+    return {
+      billingCollapse: false,
+      StatusCollapse: false,
+      missingCollapse: false
+    };
+  },
   methods: {
     goToMissingInformation: function() {
       this.$emit("go-to-missing", 6);

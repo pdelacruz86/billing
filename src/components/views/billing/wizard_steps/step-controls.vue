@@ -2,18 +2,18 @@
 	<div class="step-wrapper" :class="{ 'active': active }">
 		<div v-if="laststep">
 			<button class="btn btn-primary" @click="lastStep()" :disabled="firststep">Back</button>
-			<button class="btn btn-primary col-md-offset-10" v-on:keyup.enter="nextStep()" @click="nextStep()">Submit</button>
+			<button class="btn btn-primary col-md-offset-10" @click="nextStep()">Submit</button>
 		</div>
-		<div v-else="">
+		<div v-else>
 			<button class="btn btn-primary" @click="lastStep()" :disabled="firststep">Back</button>
-			<button class="btn btn-primary col-md-offset-10" v-on:keyup.enter="nextStep()"  @click="nextStep()" :disabled="laststep">Next</button>
+			<button class="btn btn-primary col-md-offset-10"  @click="nextStep()" :disabled="laststep">Next</button>
 		</div>
-		<!-- <button class="btn btn-primary" v-if="laststep">Submit</button> -->
 	</div>
 </template>
 
 <script>
 export default {
+  created() {},
   props: ["step", "stepcount", "currentstep"],
 
   computed: {

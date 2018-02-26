@@ -45,7 +45,6 @@ export default {
   },
   watch: {
     $route(to, from) {
-      debugger;
       // react to route changes...
       if (to.fullPath === "/blank") {
         document.body.className = "page-404-full-page";

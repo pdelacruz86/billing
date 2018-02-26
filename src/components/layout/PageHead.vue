@@ -19,7 +19,6 @@
               <div class="row">
                   <div class="col-md-4 col-sm-4 col-xs-12">
                     <vue-rangedate-picker 
-                      :initRange="test"
                       format="YYYY-MM-DD"
                         @selected="onDateSelected" righttoleft="true" i18n="EN">
                     </vue-rangedate-picker>
@@ -28,8 +27,7 @@
             </div>
         </div>
         <!-- END THEME PANEL -->
-        <div :class="{'btn-group btn-theme-panel':true,  'open': showFilterWorklist}" 
-          v-if="name === 'Worklist'">
+        <div :class="{'btn-group btn-theme-panel':true,  'open': showFilterWorklist}" v-if="name === 'Worklist'">
           <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
             @click="showFilterWorklist = !showFilterWorklist">
               <i class="icon-settings"></i>
@@ -42,22 +40,22 @@
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <ul class="theme-colors">
                               <li class="theme-color theme-color-gray" data-theme="yellow-crusta">
-                                <input type="text" :model="worklist_filter.accessionID" placeholder="AccessionID" style="width:125px!important"
+                                <input type="text" v-model="worklist_filter.accessionID" placeholder="AccessionID" style="width:125px!important"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
                               </li>
-                               <li class="theme-color theme-color-blue-hoki" data-theme="green-seagreen" @click="setWorklistFilter('Pending')">
+                               <li :class="{'theme-color theme-color-yellow-crusta':true,  'selected': isBillingAllSelected}" @click="loadDetail('Select One')">
                                   <span class="theme-color-view"></span>
                                   <span class="theme-color-name">All</span>
                               </li>
-                              <li class="theme-color theme-color-yellow-crusta" data-theme="yellow-crusta">
+                              <li :class="{'theme-color theme-color-yellow-crusta open':true,  'selected': isInsuranceSelected}" @click="loadDetail('Insurance')">
                                   <span class="theme-color-view"></span>
                                   <span class="theme-color-name">Insurance</span>
                               </li>
-                                <li class="theme-color theme-color-purple-plum" data-theme="purple-plum">
+                                <li :class="{'theme-color theme-color-purple-plum':true,  'selected': isDirectSelected}" @click="loadDetail('Direct')">
                                   <span class="theme-color-view"></span>
                                   <span class="theme-color-name">Direct</span>
                               </li>
-                                <li class="theme-color theme-color-green-haze" data-theme="purple-plum">
+                                <li :class="{'theme-color theme-color-green-haze':true,  'selected': isSplitSelected}" @click="loadDetail('Split')">
                                   <span class="theme-color-view"></span>
                                   <span class="theme-color-name">Split</span>
                               </li>
@@ -67,25 +65,25 @@
                           <div class="col-md-6 col-sm-6 col-xs-12">
                               <ul class="theme-colors">
                                 <li class="theme-color theme-color-yellow-orange">
-                                   <input type="text" :model="worklist_filter.caseNumber" placeholder="Case Number" style="width:125px!important"
+                                   <input type="text" v-model="worklist_filter.caseNumber" placeholder="Case Number" style="width:125px!important"
                                    class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
                                 </li>
-                                  <li class="theme-color theme-color-yellow-orange" data-theme="yellow-orange">
-                                      <span class="theme-color-view"></span>
-                                      <span class="theme-color-name">Pending</span>
-                                  </li>
-                                   <li class="theme-color theme-color-green-haze" data-theme="yellow-orange">
-                                      <span class="theme-color-view"></span>
-                                      <span class="theme-color-name">Categorized</span>
-                                  </li>
-                                  <li class="theme-color theme-color-blue-steel" data-theme="red-sunglo">
-                                      <span class="theme-color-view"></span>
-                                      <span class="theme-color-name">Complete</span>
-                                  </li>
-                                  <li class="theme-color theme-color-red-intense" data-theme="red-intense">
-                                      <span class="theme-color-view"></span>
-                                      <span class="theme-color-name">Incomplete</span>
-                                  </li>
+                                <li :class="{'theme-color theme-color-yellow-crusta':true,  'selected': isAllSelected}" @click="loadDetail2('Select One')">
+                                  <span class="theme-color-view"></span>
+                                  <span class="theme-color-name">All</span>
+                                </li>
+                                <li :class="{'theme-color theme-color-yellow-orange':true,  'selected': isPendingSelected}" @click="loadDetail2('Pending')">
+                                    <span class="theme-color-view"></span>
+                                    <span class="theme-color-name">Pending</span>
+                                </li>
+                                <li :class="{'theme-color theme-color-blue-steel':true,  'selected': isCompleteSelected}" @click="loadDetail2('Complete')">
+                                    <span class="theme-color-view"></span>
+                                    <span class="theme-color-name">Complete</span>
+                                </li>
+                                <li :class="{'theme-color theme-color-red-intense':true,  'selected': isIncompleteSelected}"  @click="loadDetail2('Incomplete')">
+                                    <span class="theme-color-view"></span>
+                                    <span class="theme-color-name">Incomplete</span>
+                                </li>
                               </ul>
                           </div>
                       </div>
@@ -93,47 +91,52 @@
                   <div class="col-md-6 col-sm-6 col-xs-12 seperator" >
                       <h3>GENERAL</h3>
                       <ul class="theme-settings">
-                          <li> First Name:
-                              <input type="text" :model="worklist_filter.firstName"
-                                class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
-                                data-original-title="Change theme style" data-container="body" data-placement="left" />
-                          </li>
-                          <li> Last Name:
-                           <input type="text" :model="worklist_filter.lastName"
+                          <li> Full Name:
+                              <input type="text" v-model="worklist_filter.patientFullName"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                           <li> Patient ID:
-                            <input type="text" :model="worklist_filter.patientID"
+                            <input type="text" v-model="worklist_filter.patientID"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                            <li> Client Name:
-                               <input type="text" :model="worklist_filter.clientName"
+                               <input type="text" v-model="worklist_filter.clientName"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                           <li> Client Number:
-                               <input type="text" :model="worklist_filter.clientNumber"
+                               <input type="text" v-model="worklist_filter.clientNumber"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                            <li> Insurance Type:
-                              <select :model="worklist_filter.insuranceType"
+                              <select v-model="worklist_filter.insuranceType"
                               class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
+                                  <option>Select One </option>
                                   <option>Medicare </option>
                                   <option>Not Medicare</option>
                               </select>
                           </li>
                            <li> Hospital Status: 
-                              <select :model="worklist_filter.hospitalStatus"
+                              <select v-model="worklist_filter.hospitalStatus"
                               class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
+                                  <option>Select One </option>
                                   <option>Inpatient</option>
                                   <option>Outpatient</option>
                                   <option>Non-hospital</option>
                               </select>
                           </li>
-                          <li><button data-v-5e837f70="" class="calendar-btn-apply" @click="filterWorklistData">Apply</button></li>
+                          <li>
+                            <div class="btn-group btn-group-justified">
+                                <a href="javascript:;" class="btn btn-default" @click="getAllCases"> Reload Data </a>
+                                <a href="javascript:;" class="btn btn-default" @click="clearFields"> Clear Fields </a>
+                                <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
+            @click="showFilterWorklist = !showFilterWorklist"> Close </a>
+                            </div>
+                            <!-- <button data-v-5e837f70="" class="calendar-btn-apply" @click="filterData">Apply</button> -->
+                          </li>
                       </ul>
                   </div>
               </div>
@@ -153,7 +156,10 @@ export default {
   components: {
     VueRangedatePicker
   },
-  mounted() {},
+  mounted() {
+    // if (this.worklist_filter.accessionID !== undefined)
+    //   this.worklistFilterModel = this.worklist_filter;
+  },
   computed: {
     ...mapGetters(["worklist_filter"]),
     name() {
@@ -170,11 +176,119 @@ export default {
       selectedDate: {
         start: "",
         end: ""
-      }
+      },
+      worklistFilterModel: {},
+      isAllSelected: true,
+      isPendingSelected: false,
+      isCompleteSelected: false,
+      isIncompleteSelected: false,
+      isBillingAllSelected: true,
+      isInsuranceSelected: false,
+      isDirectSelected: false,
+      isSplitSelected: false
     };
   },
   methods: {
-    ...mapActions(["setFilterDates", "filterDashboardData", "filterWorklistData"]),
+    ...mapActions([
+      "setFilterDates",
+      "filterDashboardData",
+      "setWorklistFilters",
+      "getAllCases"
+    ]),
+    clearFields: function() {
+      var filtersEmptyCopy = {
+        caseNumber: "",
+        accessionID: "",
+        billingType: "",
+        insuranceType: "",
+        hospitalStatus: "",
+        patientFullName: "",
+        patientID: "",
+        triageStatus: "",
+        clientName: "",
+        clientNumber: ""
+      };
+      this.isBillingAllSelected = true;
+      this.isInsuranceSelected = false;
+      this.isDirectSelected = false;
+      this.isSplitSelected = false;
+
+      this.isAllSelected = true;
+      this.isPendingSelected = false;
+      this.isCompleteSelected = false;
+      this.isIncompleteSelected = false;
+
+      this.setWorklistFilters(filtersEmptyCopy);
+    },
+    loadDetail(billingType) {
+      let filters = this.worklist_filter;
+      filters.billingType = billingType;
+      this.setWorklistFilters(filters);
+
+      switch (billingType) {
+        case "Select One":
+          this.isBillingAllSelected = true;
+          this.isInsuranceSelected = false;
+          this.isDirectSelected = false;
+          this.isSplitSelected = false;
+          break;
+        case "Insurance":
+          this.isBillingAllSelected = false;
+          this.isInsuranceSelected = true;
+          this.isDirectSelected = false;
+          this.isSplitSelected = false;
+          break;
+        case "Direct":
+          this.isBillingAllSelected = false;
+          this.isInsuranceSelected = false;
+          this.isDirectSelected = true;
+          this.isSplitSelected = false;
+          break;
+        case "Split":
+          this.isBillingAllSelected = false;
+          this.isInsuranceSelected = false;
+          this.isDirectSelected = false;
+          this.isSplitSelected = true;
+          break;
+
+        default:
+          break;
+      }
+    },
+    loadDetail2(triageStatus) {
+      let filters = this.worklist_filter;
+      filters.triageStatus = triageStatus;
+      this.setWorklistFilters(filters);
+
+      switch (triageStatus) {
+        case "Select One":
+          this.isAllSelected = true;
+          this.isPendingSelected = false;
+          this.isCompleteSelected = false;
+          this.isIncompleteSelected = false;
+          break;
+        case "Pending":
+          this.isAllSelected = false;
+          this.isPendingSelected = true;
+          this.isCompleteSelected = false;
+          this.isIncompleteSelected = false;
+          break;
+        case "Complete":
+          this.isAllSelected = false;
+          this.isPendingSelected = false;
+          this.isCompleteSelected = true;
+          this.isIncompleteSelected = false;
+          break;
+        case "Incomplete":
+          this.isAllSelected = false;
+          this.isPendingSelected = false;
+          this.isCompleteSelected = false;
+          this.isIncompleteSelected = true;
+          break;
+        default:
+          break;
+      }
+    },
     onDateSelected: function(daterange) {
       //this.selectedDate = daterange;
       console.log(daterange, daterange.end, daterange.start);
@@ -191,6 +305,9 @@ export default {
       let matched = this.$route.matched.filter(item => item.name);
       let item = matched[matched.length - 1];
       return item;
+    },
+    filterData() {
+      this.setWorklistFilters(this.worklistFilterModel);
     }
   }
 };
@@ -244,7 +361,7 @@ export default {
   padding: 8px 12px;
 }
 
-.theme-panel .theme-colors > li.theme-color.active,
+.theme-panel .theme-colors > li.theme-color.selected,
 .theme-panel .theme-colors > li.theme-color:hover {
   background: #f5f7f8;
 }

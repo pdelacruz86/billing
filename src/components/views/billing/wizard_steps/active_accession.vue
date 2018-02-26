@@ -48,7 +48,7 @@
 						<tbody>
 							<tr v-for="item in Accession.Cases">
 								<td>{{item.CaseNumber}}</td>
-								<td>
+							<td v-if="item.Status !== 'Complete'"> 
 									<select v-model="item.BillingType">
 										<option>Select One</option>	
 										<option>Direct</option>	
@@ -56,6 +56,9 @@
 										<option>Split</option>	
 										<option>Not Provided</option>	
 									</select>
+								</td>
+									<td v-else="">
+									{{item.BillingType}}
 								</td>
 							</tr>
 						</tbody>

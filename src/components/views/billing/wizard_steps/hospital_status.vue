@@ -48,7 +48,7 @@
 							<tbody>
 								<tr v-for="item in Accession.Cases">
 									<td>{{ item.CaseNumber }}</td>
-									<td v-if="item.InsuranceType === 'Medicare'"> 
+									<td v-if="item.InsuranceType === 'Medicare'  && item.Status !== 'Complete'"> 
 										<select v-model="item.HospitalStatus">
 											<option>Select One</option>	
 											<option>Inpatient</option>	
@@ -57,7 +57,7 @@
 											<option>Not Provided</option>	
 										</select>
 									</td>
-									<td v-else="">
+									<td v-else>
 										<div v-if="item.BillingType === 'Direct' || item.BillingType === 'Split'">
 											{{ item.BillingType }}
 										</div>
