@@ -11,7 +11,7 @@
 							<!-- <a >
 								<img src="../../assets/global/logo-default.png" alt="logo" class="logo-default" @click="goHome()">
 							</a> -->
-              	<router-link :to="{ path: '/' }">
+              	<router-link :to="{ path: '/billing' }">
 							<img src="../../assets/global/logo-default.png" alt="logo" class="logo-default" @click="goHome()">
 						</router-link>
 						</div>
@@ -45,13 +45,13 @@
 						<div class="hor-menu">
 							<ul class="nav navbar-nav">
 								<li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown" >
-                  <router-link :to="{ path: '/' }">
+                  <router-link :to="{ path: '/billing' }">
                     Dashboard
                     <span class="arrow"></span>
                   </router-link>
                 </li>
                 <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown"  >
-                  <router-link :to="{ path: '/worklist' }">
+                  <router-link :to="{ path: '/billing/worklist' }">
                     Worklist
                     <span class="arrow"></span>
                   </router-link>
@@ -62,19 +62,19 @@
                  </a>
                  <ul class="dropdown-menu pull-left">
                    <li aria-haspopup="true" class="" >
-                    <router-link :to="{ path: '/billing' }">
+                    <router-link :to="{ path: '/billing/new' }">
                       Process Bill
                         <span class="arrow"></span>
                       </router-link>
                   </li>
                    <li aria-haspopup="true" class=" ">
-                     <router-link :to="{ path: '/soon' }">
+                     <router-link :to="{ path: '/billing/soon' }">
                       Process Bill in Batch
                         <span class="arrow"></span>
                       </router-link>
                   </li>
                     <li aria-haspopup="true" class=" ">
-                    <router-link :to="{ path: '/soon' }">
+                    <router-link :to="{ path: '/billing/soon' }">
                       Create Feedback
                         <span class="arrow"></span>
                       </router-link>
@@ -87,13 +87,13 @@
                  </a>
                  <ul class="dropdown-menu pull-left">
                    <li aria-haspopup="true" class=" ">
-                    <router-link :to="{ path: '/soon' }">
+                    <router-link :to="{ path: '/billing/soon' }">
                       Pending / Completed
                         <span class="arrow"></span>
                       </router-link>
                   </li>
                   <li aria-haspopup="true" class=" ">
-                    <router-link :to="{ path: '/soon' }">
+                    <router-link :to="{ path: '/billing/soon' }">
                        Missing Information
                         <span class="arrow"></span>
                       </router-link>
@@ -138,11 +138,13 @@ export default {
   },
   methods: {
     goHome: () => {
-      this.$router.push({ path: "/home" });
+      this.$router.push({ path: "/billing" });
     },
     onSubmit: function() {
       debugger;
-      this.$router.push({ path: "/billing?filter=" + this.searchInputText });
+      this.$router.push({
+        path: "/billing/search?filter=" + this.searchInputText
+      });
     }
   },
   computed: {}

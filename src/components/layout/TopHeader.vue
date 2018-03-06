@@ -1,6 +1,6 @@
 <template>
 	<div class="top-menu">
-		<ul class="nav navbar-nav pull-right">
+		<ul class="nav navbar-nav pull-right" v-on-click-outside="closeEvent">
 			<!-- BEGIN NOTIFICATION DROPDOWN -->
 			<li :class="taskClass" id="header_notification_bar" >
 				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" 
@@ -13,7 +13,7 @@
 						<h3>You have
 							<strong>{{pendingCasesCount}} pending</strong> tasks
 						</h3>
-						<router-link :to="{ path: '/worklist' }">
+						<router-link :to="{ path: '/billing/worklist' }">
 							view all
 						</router-link>
 					</li>
@@ -32,13 +32,13 @@
 				</a>
 				<ul class="dropdown-menu dropdown-menu-default">
 					<li>
-						<router-link :to="{ path: '/soon' }">
+						<router-link :to="{ path: '/billing/soon' }">
 							<i class="icon-user"></i> 
 							My Profile 
 						</router-link>
 					</li>
 					<li>
-						<router-link :to="{ path: '/soon' }">
+						<router-link :to="{ path: '/billing/soon' }">
 							<i class="icon-calendar"></i> 
 							My Calendar 
 						</router-link>
@@ -63,9 +63,11 @@
 </template>
 
 <script>
+import { mixin as onClickOutside } from "vue-on-click-outside";
 import { mapGetters } from "vuex";
 
 export default {
+  mixins: [onClickOutside],
   mounted() {},
   data() {
     return {
@@ -74,7 +76,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["pendingCasesCount", "currentUserName"]),
+    ...mapGetters(["accessions", "currentUserName"]),
+    pendingCasesCount() {
+      //pending
+      let accessionPending = 0;
+      for (const element of this.accessions || []) {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Pending") accessionPending++;
+        });
+      }
+
+      return accessionPending;
+    },
     taskClass() {
       if (this.showTastMenu) {
         return "dropdown dropdown-extended dropdown-notification dropdown-dark open";
@@ -106,6 +119,9 @@ export default {
       if (this.showTastMenu) {
         this.showTastMenu = false;
       }
+    },
+    closeEvent() {
+      this.showTastMenu = this.showUserMenu = false;
     }
     //  documentClick(e){
     //      let el = this.$refs.dropdownMenu

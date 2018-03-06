@@ -1,5 +1,5 @@
 // import api from '../../api'
-import * as types from '../types'
+import * as types from '../mutation-types'
 import router from '../../router'
 
 const state = {
@@ -14,7 +14,6 @@ const mutations = {
   },
   [types.LOGIN_SUCCESS](state, username) {
     console.log(username)
-    debugger;
 
     state.isLoggedIn = true
     state.pending = false
@@ -30,13 +29,11 @@ const actions = {
   login({
     commit
   }, creds) {
-    debugger;
     commit(types.LOGIN)
-
 
     localStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTA1ODkzNzY2MjF9.MqHRSfGklBn610d2JNRedcwm251UQZDO79axeq2w6Fc')
     commit(types.LOGIN_SUCCESS, creds.username)
-    router.push('/')
+    router.push('/billing')
     // show spinner
     // api.localLogin(creds).then(response => {
     //   if (response.statusText !== 'OK') {

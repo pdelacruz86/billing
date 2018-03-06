@@ -9,25 +9,8 @@
       </div>
       <!-- END PAGE TITLE -->
       <div class="page-toolbar" >
-        <!-- BEGIN THEME PANEL -->
-        <div :class="{'btn-group btn-theme-panel':true,  'open': showFilter}" v-if="name === 'Dashboard'">
-            <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
-              @click="showFilter = !showFilter">
-                <i class="fa fa-filter">Filter</i>
-            </a>
-            <div class="dropdown-menu pull-right dropdown-custom hold-on-click">
-              <div class="row">
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <vue-rangedate-picker 
-                      format="YYYY-MM-DD"
-                        @selected="onDateSelected" righttoleft="true" i18n="EN">
-                    </vue-rangedate-picker>
-                  </div>
-              </div>
-            </div>
-        </div>
-        <!-- END THEME PANEL -->
-        <div :class="{'btn-group btn-theme-panel':true,  'open': showFilterWorklist}" v-if="name === 'Worklist'">
+        <div v-on-click-outside="closeEvent" :class="{'btn-group btn-theme-panel':true,  'open': showFilterWorklist}" 
+          v-if="name === 'Worklist' || name === 'Dashboard'">
           <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
             @click="showFilterWorklist = !showFilterWorklist">
               <i class="icon-settings"></i>
@@ -36,11 +19,12 @@
               <div class="row">
                   <div class="col-md-6 col-sm-6 col-xs-12" style="margin-left:0px">
                       <h3>CASES BY STATUS</h3>
+                      
                       <div class="row">
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <ul class="theme-colors">
                               <li class="theme-color theme-color-gray" data-theme="yellow-crusta">
-                                <input type="text" v-model="worklist_filter.accessionID" placeholder="AccessionID" style="width:125px!important"
+                                <input type="text" v-model="accessions_filter.accessionID" placeholder="AccessionID" style="width:125px!important"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
                               </li>
                                <li :class="{'theme-color theme-color-yellow-crusta':true,  'selected': isBillingAllSelected}" @click="loadDetail('Select One')">
@@ -65,14 +49,14 @@
                           <div class="col-md-6 col-sm-6 col-xs-12">
                               <ul class="theme-colors">
                                 <li class="theme-color theme-color-yellow-orange">
-                                   <input type="text" v-model="worklist_filter.caseNumber" placeholder="Case Number" style="width:125px!important"
+                                   <input type="text" v-model="accessions_filter.caseNumber" placeholder="Case Number" style="width:125px!important"
                                    class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" />
                                 </li>
                                 <li :class="{'theme-color theme-color-yellow-crusta':true,  'selected': isAllSelected}" @click="loadDetail2('Select One')">
                                   <span class="theme-color-view"></span>
                                   <span class="theme-color-name">All</span>
                                 </li>
-                                <li :class="{'theme-color theme-color-yellow-orange':true,  'selected': isPendingSelected}" @click="loadDetail2('Pending')">
+                                <li :class="{'theme-color theme-color-yellow-gold':true,  'selected': isPendingSelected}" @click="loadDetail2('Pending')">
                                     <span class="theme-color-view"></span>
                                     <span class="theme-color-name">Pending</span>
                                 </li>
@@ -90,29 +74,43 @@
                   </div>
                   <div class="col-md-6 col-sm-6 col-xs-12 seperator" >
                       <h3>GENERAL</h3>
+                      
                       <ul class="theme-settings">
+                          <li> 
+                            <div class="row">
+                              <div class="col-md-2">
+                                <span>Dates:</span>
+                              </div>
+                              <div class="col-md-9">
+                              <vue-rangedate-picker 
+                                  format="YYYY-MM-DD" :initRange="selectedDate"
+                                    @selected="onDateSelected" righttoleft="true" i18n="EN">
+                                </vue-rangedate-picker>
+                              </div>
+                            </div>
+                          </li>
                           <li> Full Name:
-                              <input type="text" v-model="worklist_filter.patientFullName"
+                              <input type="text" v-model="accessions_filter.patientFullName"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                           <li> Patient ID:
-                            <input type="text" v-model="worklist_filter.patientID"
+                            <input type="text" v-model="accessions_filter.patientID"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                            <li> Client Name:
-                               <input type="text" v-model="worklist_filter.clientName"
+                               <input type="text" v-model="accessions_filter.clientName"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                           <li> Client Number:
-                               <input type="text" v-model="worklist_filter.clientNumber"
+                               <input type="text" v-model="accessions_filter.clientNumber"
                                 class="theme-setting theme-setting-style form-control input-sm input-small input-inline tooltips" 
                                 data-original-title="Change theme style" data-container="body" data-placement="left" />
                           </li>
                            <li> Insurance Type:
-                              <select v-model="worklist_filter.insuranceType"
+                              <select v-model="accessions_filter.insuranceType"
                               class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
                                   <option>Select One </option>
                                   <option>Medicare </option>
@@ -120,7 +118,7 @@
                               </select>
                           </li>
                            <li> Hospital Status: 
-                              <select v-model="worklist_filter.hospitalStatus"
+                              <select v-model="accessions_filter.hospitalStatus"
                               class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
                                   <option>Select One </option>
                                   <option>Inpatient</option>
@@ -128,6 +126,7 @@
                                   <option>Non-hospital</option>
                               </select>
                           </li>
+                         
                           <li>
                             <div class="btn-group btn-group-justified">
                                 <a href="javascript:;" class="btn btn-default" @click="getAllCases"> Reload Data </a>
@@ -135,8 +134,8 @@
                                 <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
             @click="showFilterWorklist = !showFilterWorklist"> Close </a>
                             </div>
-                            <!-- <button data-v-5e837f70="" class="calendar-btn-apply" @click="filterData">Apply</button> -->
                           </li>
+                          
                       </ul>
                   </div>
               </div>
@@ -151,17 +150,27 @@
 const moment = require("moment");
 
 import VueRangedatePicker from "vue-rangedate-picker";
+import { mixin as onClickOutside } from "vue-on-click-outside";
+
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     VueRangedatePicker
   },
+  mixins: [onClickOutside],
+  created() {},
   mounted() {
-    // if (this.worklist_filter.accessionID !== undefined)
-    //   this.worklistFilterModel = this.worklist_filter;
+    this.selectedDate = {
+      start: this.accessions_filter.startDate || null,
+      end: this.accessions_filter.endDate || null
+    };
+
+    console.log(this.selectedDate);
+    // if (this.accessions_filter.accessionID !== undefined)
+    //   this.worklistFilterModel = this.accessions_filter;
   },
   computed: {
-    ...mapGetters(["worklist_filter"]),
+    ...mapGetters(["accessions_filter"]),
     name() {
       return this.getItem().name;
     },
@@ -171,11 +180,16 @@ export default {
   },
   data() {
     return {
+      result1: null,
+      result2: null,
+      result3: null,
+      startDatetime: moment(),
+      endDatetime: null,
       showFilter: false,
       showFilterWorklist: false,
       selectedDate: {
-        start: "",
-        end: ""
+        start: new Date(),
+        end: new Date()
       },
       worklistFilterModel: {},
       isAllSelected: true,
@@ -195,7 +209,7 @@ export default {
       "setWorklistFilters",
       "getAllCases"
     ]),
-    clearFields: function() {
+    clearFields() {
       var filtersEmptyCopy = {
         caseNumber: "",
         accessionID: "",
@@ -206,7 +220,9 @@ export default {
         patientID: "",
         triageStatus: "",
         clientName: "",
-        clientNumber: ""
+        clientNumber: "",
+        startDate: new Date(),
+        endDate: new Date()
       };
       this.isBillingAllSelected = true;
       this.isInsuranceSelected = false;
@@ -219,9 +235,13 @@ export default {
       this.isIncompleteSelected = false;
 
       this.setWorklistFilters(filtersEmptyCopy);
+      this.selectedDate = {
+        start: new Date(),
+        end: new Date()
+      };
     },
     loadDetail(billingType) {
-      let filters = this.worklist_filter;
+      let filters = this.accessions_filter;
       filters.billingType = billingType;
       this.setWorklistFilters(filters);
 
@@ -256,7 +276,7 @@ export default {
       }
     },
     loadDetail2(triageStatus) {
-      let filters = this.worklist_filter;
+      let filters = this.accessions_filter;
       filters.triageStatus = triageStatus;
       this.setWorklistFilters(filters);
 
@@ -289,7 +309,7 @@ export default {
           break;
       }
     },
-    onDateSelected: function(daterange) {
+    onDateSelected(daterange) {
       //this.selectedDate = daterange;
       console.log(daterange, daterange.end, daterange.start);
 
@@ -297,6 +317,8 @@ export default {
         end: daterange.end,
         start: daterange.start
       };
+
+      this.selectedDate = payload;
 
       this.setFilterDates(daterange);
       //this.filterDashboardData(payload);
@@ -308,6 +330,9 @@ export default {
     },
     filterData() {
       this.setWorklistFilters(this.worklistFilterModel);
+    },
+    closeEvent() {
+      this.showFilterWorklist = false;
     }
   }
 };
@@ -451,6 +476,13 @@ export default {
   > li.theme-color.theme-color-yellow-crusta
   .theme-color-view {
   background: #f3c200;
+}
+
+.theme-panel
+  .theme-colors
+  > li.theme-color.theme-color-yellow-gold
+  .theme-color-view {
+  background: #e87e04;
 }
 
 .theme-panel .theme-settings {

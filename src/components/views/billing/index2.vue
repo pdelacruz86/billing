@@ -119,7 +119,7 @@ export default {
   watch: {
     $route(to, from) {
       // react to route changes...
-      if (to.fullPath === "/billing") {
+      if (to.fullPath === "/billing/new") {
         this.currentstep = 1;
         this.updateTextSearch("");
       }
@@ -413,8 +413,10 @@ export default {
 
       console.log(JSON.stringify(_accession));
 
-      this.$store.dispatch("updateAccession", _accession);
-      this.$router.push({ path: "/worklist" });
+      this.updateAccession(_accession).then(() => {
+        this.$router.push({ path: "/billing/worklist" });
+      });
+      // this.$router.push({ path: "/worklist" });
       // var success = {
       //   title: "Done",
       //   message: "Order saved.",

@@ -166,7 +166,7 @@
 						</tbody>
 					</table>
 					<div class="alert alert-info" v-else="">
-						<strong>Info!</strong> There is not missing information.
+						<strong>Info!</strong> There is no missing information.
 					</div>
 				</div>
 			</div>

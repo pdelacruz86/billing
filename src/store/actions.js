@@ -1,14 +1,10 @@
-import api from '../../../api/billing.js'
 import * as types from './mutation-types'
-import * as worklistTypes from '../worklist/mutation-types'
-import * as globalTypes from '../../types'
-import router from '../../../router'
-var _ = require('lodash')
+import api from '../api/billing.js'
 
 export const getAllCases = ({
   commit
 }) => {
-  commit(globalTypes.LOADING_START, 'Loading Cases...');
+  commit(types.LOADING_START, 'Loading Cases...');
 
   api.getAll().then(function (response) {
     if (response.data.Status == "Error") {
@@ -18,18 +14,51 @@ export const getAllCases = ({
         type: 'error'
       }
 
-      commit(globalTypes.NOTIFY_ERRORS, error)
+      commit(types.NOTIFY_ERRORS, error)
     } else {
       commit(types.GET_ALL, response.data.Data)
-      commit(globalTypes.LOADED_SUCCESS)
+      commit(types.LOADED_SUCCESS)
     }
   });
+}
+
+export const setWorklistFilters = ({
+  commit,
+  state
+}, filterValue) => {
+  debugger;
+  // commit(types.GET_ALL, rootState.accessions)
+  commit(types.SET_FILTERS_WORKLIST, filterValue)
+  commit(types.LOADED_SUCCESS)
+}
+
+export const setFilterDates = ({
+  commit
+}, dates) => {
+  commit(types.SET_FILTER_DATES, dates)
+}
+
+
+export const setLoading = ({
+  commit
+}, loaded, message) => {
+  if (loaded) {
+    commit(types.LOADING_START, message) // show spinner
+  } else {
+    commit(types.LOADED_SUCCESS) // hide spinner
+  }
+}
+
+export const removeLoading = ({
+  commit
+}) => {
+  commit(types.LOADED_SUCCESS) // hide spinner
 }
 
 export const updateAccession = ({
   commit
 }, accession) => {
-  commit(globalTypes.LOADING_START, 'Saving current Accession...');
+  commit(types.LOADING_START, 'Saving current Accession...');
 
   api.create(accession).then(function (response) {
     if (response.data.Status == "Error") {
@@ -39,11 +68,10 @@ export const updateAccession = ({
         type: 'error'
       }
 
-      commit(globalTypes.NOTIFY_ERRORS, error)
+      commit(types.NOTIFY_ERRORS, error)
     } else {
       commit(types.UPDATE_ACCESSION, accession)
-      commit(worklistTypes.UPDATE_WORKLIST_DATA, accession)
-      commit(globalTypes.LOADED_SUCCESS)
+      commit(types.LOADED_SUCCESS)
     }
   });
 }
@@ -59,15 +87,3 @@ export const updateTextSearch = ({
 }, text) => {
   commit(types.UPDATE_TEXT_SEARCH, text)
 };
-
-export const filterDashboardData = ({
-  commit
-}, filter) => {
-  commit(types.FILTER_DASHBOARD_DATA, filter)
-}
-
-export const setFilterDates = ({
-  commit
-}, dates) => {
-  commit(types.SET_FILTER_DATES, dates)
-}

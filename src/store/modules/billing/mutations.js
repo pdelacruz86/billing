@@ -15,7 +15,6 @@ const mutation = {
     state.searchText = text;
   },
   [types.UPDATE_ACCESSION](state, currentAccession) {
-
     //iterate through all accessions
     for (var i = 0; i < state.accessions.length; i++) {
       //if it is the accession
@@ -35,10 +34,8 @@ const mutation = {
 
     //   if (moment.unix(item.CreatedDate).isBetween(beginDate, endDate)) return item
     // });
-
   },
   [types.SET_FILTER_DATES](state, data) {
-    debugger
     state.filterDates = data;
   }
 }

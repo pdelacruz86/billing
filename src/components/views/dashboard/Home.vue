@@ -7,7 +7,7 @@
                     <div class="display">
                             <div class="number">
                             <h3 class="font-yellow-gold">
-                                <span data-counter="counterup" data-value="7800">{{viewModel.PendingTotal}}</span>
+                                <span data-counter="counterup" data-value="7800">{{dashboardSummarizedData.PendingTotal || 0}}</span>
                             </h3>
                             <small>PENDING</small>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="display">
                         <div class="number">
                             <h3 class="font-green-sharp">
-                                <span data-counter="counterup" data-value="1349">{{viewModel.CategorizedTotal}}</span>
+                                <span data-counter="counterup" data-value="1349">{{dashboardSummarizedData.CategorizedTotal}}</span>
                             </h3>
                             <small>CATEGORIZED</small>
                         </div>
@@ -54,14 +54,14 @@
                 </a>
             </div>
         </div>
-         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
             <div class="dashboard-stat2 ">
                 <a href="javascript:;" @click="loadDetail('Insurance')">
                 
                     <div class="display">
                         <div class="number">
                             <h3 class="font-yellow-lemon">
-                                <span data-counter="counterup" data-value="276">{{viewModel.InsuranceTotal}}</span>
+                                <span data-counter="counterup" data-value="276">{{dashboardSummarizedData.InsuranceTotal}}</span>
                             </h3>
                             <small>INSURANCE</small>
                         </div>
@@ -81,14 +81,14 @@
                 </a>
             </div>
         </div>
-         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
             <div class="dashboard-stat2 ">
                 <a href="javascript:;" @click="loadDetail('DirectSplit')">
                     
                     <div class="display">
                         <div class="number">
                             <h3 class="font-purple-soft">
-                                <span data-counter="counterup" data-value="276">{{viewModel.DirectSplit}}</span>
+                                <span data-counter="counterup" data-value="276">{{dashboardSummarizedData.DirectSplit}}</span>
                             </h3>
                             <small>Direct/Split</small>
                         </div>
@@ -107,31 +107,31 @@
                 </a>
             </div>
         </div>
-                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-            <div class="dashboard-stat2 ">
-                <a href="javascript:;" @click="loadDetail('Completed')">
-                
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-blue-sharp">
-                                <span data-counter="counterup" data-value="567">{{viewModel.CompletedTotal}}</span>
-                            </h3>
-                            <small>COMPLETED</small>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span :style="{width: completedCasesPercent + '%'}" class="progress-bar progress-bar-success blue-sharp">
-                                <span class="sr-only">{{completedCasesPercent}}% grow</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> percent </div>
-                            <div class="status-number"> {{completedCasesPercent}}% </div>
-                        </div>
-                    </div>
-                </a>   
-            </div>
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+          <div class="dashboard-stat2 ">
+              <a href="javascript:;" @click="loadDetail('Completed')">
+              
+                  <div class="display">
+                      <div class="number">
+                          <h3 class="font-blue-sharp">
+                              <span data-counter="counterup" data-value="567">{{dashboardSummarizedData.CompletedTotal}}</span>
+                          </h3>
+                          <small>COMPLETED</small>
+                      </div>
+                  </div>
+                  <div class="progress-info">
+                      <div class="progress">
+                          <span :style="{width: completedCasesPercent + '%'}" class="progress-bar progress-bar-success blue-sharp">
+                              <span class="sr-only">{{completedCasesPercent}}% grow</span>
+                          </span>
+                      </div>
+                      <div class="status">
+                          <div class="status-title"> percent </div>
+                          <div class="status-number"> {{completedCasesPercent}}% </div>
+                      </div>
+                  </div>
+              </a>   
+          </div>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
             <div class="dashboard-stat2 ">
@@ -140,7 +140,7 @@
                     <div class="display">
                         <div class="number">
                             <h3 class="font-red-haze">
-                                <span data-counter="counterup" data-value="276">{{viewModel.IncompleteTotal}}</span>
+                                <span data-counter="counterup" data-value="276">{{dashboardSummarizedData.IncompleteTotal}}</span>
                             </h3>
                             <small>INCOMPLETED</small>
                         </div>
@@ -229,29 +229,208 @@ import export_min from "ammap3/ammap/plugins/export/export.min.js";
 import themelight from "ammap3/ammap/themes/light.js";
 export default {
   mounted() {
-    // this.accessions = this.accessions;
+    console.log(this.accessions);
     this.removeLoading();
     this.loadDetail("Pending");
     this.loadSummary();
     this.loadMaps("Pending");
-    document.getElementsByClassName("input-date").value =
-      "01 Feb 2018 - 28 Feb 2018";
   },
   computed: {
-    ...mapGetters([
-      "dashboardData",
-      "accessions",
-      "pendingCasesPercent",
-      "insuranceCasesPercent",
-      "directSplitCasesPercent",
-      "completedCasesPercent",
-      "incompletedCasesPercent"
-    ]),
-    viewModel() {
+    ...mapGetters(["accessions"]),
+    pendingCasesPercent() {
+      let accessions = this.accessions || [];
+      //pending
+      let accessionPending = 0;
+
       //accession total
       let accessionTotal = 0;
 
-      this.dashboardData.forEach(element => {
+      accessions.forEach(element => {
+        accessionTotal = accessionTotal + element.Cases.length;
+      });
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Pending") accessionPending++;
+        });
+      });
+
+      let accessionCategorized = accessionTotal - accessionPending;
+
+      var percentage = accessionCategorized / accessionTotal * 100;
+
+      var rounded = Math.round(percentage * 10) / 10;
+
+      return rounded || 0;
+    },
+    insuranceCasesPercent() {
+      let accessions = this.accessions || [];
+      //pending
+      let accessionPending = 0;
+
+      //accession total
+      let accessionTotal = 0;
+
+      accessions.forEach(element => {
+        accessionTotal = accessionTotal + element.Cases.length;
+      });
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Pending") accessionPending++;
+        });
+      });
+
+      let accessionCategorized = accessionTotal - accessionPending;
+
+      //insurance
+      let InsuranceCount = 0;
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (
+            item.BillingType === "Insurance" &&
+            item.InsuranceType !== "Not Provided" &&
+            item.HospitalStatus !== "Not Provided"
+          ) {
+            InsuranceCount++;
+          }
+        });
+      });
+
+      var percentage = InsuranceCount / accessionCategorized * 100;
+
+      var rounded = Math.round(percentage * 10) / 10;
+
+      return rounded || 0;
+    },
+    directSplitCasesPercent() {
+      let accessions = this.accessions || [];
+      //pending
+      let accessionPending = 0;
+
+      //accession total
+      let accessionTotal = 0;
+
+      accessions.forEach(element => {
+        accessionTotal = accessionTotal + element.Cases.length;
+      });
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Pending") accessionPending++;
+        });
+      });
+
+      let accessionCategorized = accessionTotal - accessionPending;
+
+      //direct / split
+      let directSplitCount = 0;
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.BillingType === "Direct") directSplitCount++;
+          if (item.BillingType === "Split") directSplitCount++;
+        });
+      });
+
+      var percentage = directSplitCount / accessionCategorized * 100;
+
+      var rounded = Math.round(percentage * 10) / 10;
+
+      return rounded || 0;
+    },
+    completedCasesPercent() {
+      let accessions = this.accessions || [];
+      //pending
+      let accessionPending = 0;
+
+      //accession total
+      let accessionTotal = 0;
+
+      accessions.forEach(element => {
+        accessionTotal = accessionTotal + element.Cases.length;
+      });
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Pending") accessionPending++;
+        });
+      });
+
+      let accessionCategorized = accessionTotal - accessionPending;
+
+      //complete cases details
+      let completedCases = 0;
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Complete") {
+            completedCases++;
+          }
+        });
+      });
+
+      var percentage = completedCases / accessionCategorized * 100;
+
+      var rounded = Math.round(percentage * 10) / 10;
+
+      return rounded || 0;
+    },
+    incompletedCasesPercent() {
+      let accessions = this.accessions || [];
+      //pending
+      let accessionPending = 0;
+
+      //accession total
+      let accessionTotal = 0;
+
+      accessions.forEach(element => {
+        accessionTotal = accessionTotal + element.Cases.length;
+      });
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Pending") accessionPending++;
+        });
+      });
+
+      let accessionCategorized = accessionTotal - accessionPending;
+
+      //complete cases details
+      let incompletedCases = 0;
+
+      accessions.forEach(element => {
+        element.Cases.filter(function(item) {
+          if (item.Status === "Incomplete") {
+            incompletedCases++;
+          }
+        });
+      });
+
+      var percentage = incompletedCases / accessionCategorized * 100;
+
+      var rounded = Math.round(percentage * 10) / 10;
+
+      return rounded || 0;
+    },
+    dashboardSummarizedData() {
+      var accessions = this.accessions || [];
+
+      if (accessions.length === 0)
+        return {
+          AccessionTotal: 0,
+          CategorizedTotal: 0,
+          CompletedTotal: 0,
+          IncompleteTotal: 0,
+          InsuranceTotal: 0,
+          DirectSplit: 0,
+          PendingTotal: 0
+        };
+
+      let accessionTotal = 0;
+
+      accessions.forEach(element => {
         accessionTotal = accessionTotal + element.Cases.length;
       });
 
@@ -260,7 +439,7 @@ export default {
       let accessionComplete = 0;
       let accessionIncomplete = 0;
 
-      this.dashboardData.forEach(element => {
+      accessions.forEach(element => {
         element.Cases.filter(function(item) {
           if (item.Status === "Pending") accessionPending++;
           if (item.Status === "Complete") accessionComplete++;
@@ -271,7 +450,7 @@ export default {
       //insurance
       let InsuranceCount = 0;
 
-      this.dashboardData.forEach(element => {
+      accessions.forEach(element => {
         element.Cases.filter(function(item) {
           if (
             item.BillingType === "Insurance" &&
@@ -286,7 +465,7 @@ export default {
       //direct split
       let DirectSplitCount = 0;
 
-      this.dashboardData.forEach(element => {
+      accessions.forEach(element => {
         element.Cases.filter(function(item) {
           if (item.BillingType === "Direct" || item.BillingType === "Split")
             DirectSplitCount++;
@@ -295,6 +474,7 @@ export default {
 
       //categorized total
       let accessionCategorized = accessionTotal - accessionPending;
+
       var data = {
         AccessionTotal: accessionTotal,
         CategorizedTotal: accessionCategorized,
@@ -309,16 +489,16 @@ export default {
     }
   },
   watch: {
-    dashboardData: function(val) {
+    accessions: function(val) {
       debugger;
       this.loadDetail("Pending");
       this.loadSummary();
-      loadMaps("Pending");
+      this.loadMaps("Pending");
     }
   },
   data() {
     return {
-      //   dashboardData: [],
+      //   accessions: [],
       chartType: "",
       barChartfullscreen: false,
       summaryChartfullscreen: false,
@@ -334,7 +514,7 @@ export default {
       var types = [];
       let accessionTotal = 0;
 
-      this.dashboardData.forEach(element => {
+      this.accessions.forEach(element => {
         accessionTotal = accessionTotal + element.Cases.length;
       });
 
@@ -343,7 +523,7 @@ export default {
       let accessionComplete = 0;
       let accessionIncomplete = 0;
 
-      this.dashboardData.forEach(element => {
+      this.accessions.forEach(element => {
         element.Cases.filter(function(item) {
           if (item.Status === "Pending") accessionPending++;
           if (item.Status === "Complete") accessionComplete++;
@@ -373,14 +553,13 @@ export default {
       });
     },
     loadDetail(typename) {
-      this.loadSummary();
       var chart;
       var legend;
       var selected;
 
       this.chartType = typename;
 
-      var types = getTypelist(typename, this.dashboardData);
+      var types = getTypelist(typename, this.accessions);
 
       window.AmCharts.makeChart("mainchartdiv", {
         type: "pie",
@@ -677,6 +856,10 @@ function generateChartData(types, selected) {
 }
 
 function getTypelist(typename, accessionList) {
+  if (accessionList.length < 0) {
+    return;
+  }
+
   var types = [];
   let accessionTotal = 0;
 

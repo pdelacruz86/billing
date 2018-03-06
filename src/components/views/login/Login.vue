@@ -45,34 +45,34 @@
 </template>
 
 <script>
-  require('../../../assets/layouts/layout3/css/login.css')
-  export default {
-    validators: {
-      email: function (val) {
-        return /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(val)
+require("../../../assets/layouts/layout3/css/login.css");
+export default {
+  validators: {
+    email: function(val) {
+      return /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(val);
+    }
+  },
+  data() {
+    return {
+      user: {
+        username: "",
+        password: ""
       }
-    },
-    data () {
-      return {
-        user: {
-          username: '',
-          password: ''
-        }
-      }
-    },
-    route: {
-      activate: function (transition) {
-        this.token ? transition.redirect('/') : transition.next()
-      }
-    },
-    created () {
-      this.$store.dispatch('logout')
-      document.body.className = 'login'
-    },
-    methods: {
-      login () {
-        this.$store.dispatch('login', this.user)
-      }
+    };
+  },
+  route: {
+    activate: function(transition) {
+      this.token ? transition.redirect("/") : transition.next();
+    }
+  },
+  created() {
+    this.$store.dispatch("logout");
+    document.body.className = "login";
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("login", this.user);
     }
   }
+};
 </script>

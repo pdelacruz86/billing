@@ -3,23 +3,24 @@
     <vue-good-table
       styleClass="table table-striped table-bordered table-advance table-hover"
       :columns="columns"
-      :rows="worklist_data_filtered"
+      :rows="accessions"
       :paginate="true"
       :lineNumbers="false">
       <template slot="table-row-after" slot-scope="props"> 
         <td>
-            <a href="#" class="btn btn-sm btn-circle btn-default btn-editable"><i class="fa fa-download"></i></a>
+            <a href="javascript:;" class="btn btn-sm btn-circle btn-default btn-editable" 
+              @click="window.open('google.com')"><i class="fa fa-download"></i></a>
         </td>
       </template>
         <template slot="table-row" scope="props">
           <td class="highlight"><div class="success"></div>
           <a @click="onClickFn(props.row, props.index)" href="javascript:;">{{ props.row.AccessionID }}</a></td>
           <td>
-                <a href="javascript:;" @click="onClickFn(props.row, props.index)" v-for="item in props.row.Cases"
-                    v-bind:item="item"
-                    v-bind:index="item.CaseNumber"
-                    v-bind:key="item.CaseID"> {{ item.CaseNumber }}
-                </a>
+            <a href="javascript:;" @click="onClickFn(props.row, props.index)" v-for="item in props.row.Cases"
+                v-bind:item="item"
+                v-bind:index="item.CaseNumber"
+                v-bind:key="item.CaseID"> {{ item.CaseNumber }}
+            </a>
           </td>
           <td>{{ props.row.PatientInformation.PatientID }}</td>
           <td>{{ props.row.PatientInformation.PatientName }}</td>
@@ -28,8 +29,8 @@
           <td>{{ timestamp(props.row.CreatedDate) }}</td>
           <!-- <td>{{ props.row.LISCaseStatus }}</td> -->
           <td>
-            <span v-if="props.row.TrigueStatus=='Pending'" class="label label-sm label-success">Pending</span>
-            <span v-if="props.row.TrigueStatus=='Incomplete'" class="label label-sm label-danger">Incomplete</span>
+            <span v-if="props.row.TrigueStatus=='Pending'" class="label bg-yellow-gold bg-font-yellow-gold">Pending</span>
+            <span v-if="props.row.TrigueStatus=='Incomplete'" class="label label-danger">Incomplete</span>
             <span v-if="props.row.TrigueStatus=='Complete'" class="label label-sm label-info">Complete</span>
           </td>
         </template>
@@ -37,68 +38,89 @@
       No Acessions.
     </div>
     </vue-good-table>
-    
+     <!-- use the modal component, pass in the prop -->
+		<modal v-if="showModal" @close="showModal = false">
+			<!--
+			you can use custom content here to overwrite
+			default content
+			-->
+			<div slot="body">
+				<div class="intrinsic-container intrinsic-container-16x9">
+					<iframe allowfullscreen src="http://csi-dis-one/ContentCentral/Search/Search.aspx?c=Operations Medical Records&dt=Requisitions&f2&v2=FIG17-006633">
+				  </iframe>
+			  </div>
+			</div>
+		</modal>
   </div>
-   
- </template>
- <script>
+</template>
+
+<script>
 import { mapGetters, mapActions } from "vuex";
 var moment = require("moment");
+import Modal from "../utils/modal-template.vue";
 
 export default {
-  components: {},
+  components: { Modal },
   mounted() {
-    if (this.worklist_data_filtered.length === 0) this.getAllCases();
+    if (this.accessions.length === 0) this.getAllCases();
     this.setSelectedAccession({});
     this.updateTextSearch("");
     this.removeLoading();
   },
   computed: {
-    ...mapGetters(["worklist_data_filtered", "accessions"])
+    ...mapGetters(["accessions"])
   },
   data() {
     return {
+      showModal: false,
       columns: [
         {
           label: "Accession",
           field: "AccessionID",
-          type: "number",
-          width: "70px"
+          width: "70px",
+          sortable: false
         },
         {
           label: "Case No",
           field: "CaseNumber",
-          width: "135px"
+          width: "135px",
+          sortable: false
         },
         {
           label: "Patient",
           field: "PatientID",
-          width: "70px"
+          width: "70px",
+          sortable: false
         },
         {
           label: "Patient Name",
           field: "PatientName",
-          width: "210px"
+          width: "210px",
+          sortable: false
         },
         {
           label: "Client",
           field: "Client",
-          width: "50px"
+          width: "50px",
+          sortable: false
         },
         {
           label: "Client Name",
           field: "ClientName",
-          width: "310px"
+          width: "310px",
+          sortable: false
         },
         {
           label: "Created",
           field: "CaseCreatedDate",
-          width: "180px"
+          width: "180px",
+          sortable: false
         },
         {
           label: "Status",
           field: "TriageStatus",
-          width: "70px"
+          width: "70px",
+          sortable: false
         }
       ]
     };
@@ -119,7 +141,9 @@ export default {
     ]),
     onClickFn(row, index) {
       this.setSelectedAccession(row);
-      this.$router.push({ path: "/billing/" + row.AccessionID.toString() });
+      this.$router.push({
+        path: "/billing/details/" + row.AccessionID.toString()
+      });
     },
     reloadData() {
       this.getAllCases();

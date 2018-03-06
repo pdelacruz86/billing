@@ -34,7 +34,7 @@
 					</tbody>
 				</table>
 					<div class="alert alert-info" v-if="this.Accession.MissingInformation.length == 0">
-									<strong>Info!</strong> There is not missing Information 
+									<strong>Info!</strong> There is no missing Information 
 								</div>
 			</div>
 		</div>
