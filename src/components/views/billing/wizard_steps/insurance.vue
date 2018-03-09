@@ -36,8 +36,8 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th class="col-xs-3">Case Number</th>
-								<th class="col-xs-3"> Insurance Type </th>
+								<th >Case Number</th>
+								<th > Insurance Type </th>
 							</tr>
 						</thead>
 

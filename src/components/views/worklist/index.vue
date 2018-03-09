@@ -4,7 +4,7 @@
       <div class="portlet-title">
           <div class="caption caption-md">
               <i class="icon-bar-chart font-dark hide"></i>
-              <span class="caption-subject font-green-steel bold uppercase">Accessions Activity</span>
+              <span class="caption-subject font-green-steel bold uppercase">Accession Activity</span>
           </div>
           <div class="actions">
              
@@ -38,12 +38,6 @@
             :rows="accessions_ordered_by"
             :paginate="true"
             :lineNumbers="false">
-            <template slot="table-row-after" slot-scope="props"> 
-              <!-- <td>
-                  <a href="javascript:;" class="btn btn-sm btn-circle btn-default btn-editable" 
-                    @click="openNewWindowContentCentral(props.row, props.index)"><i class="fa fa-download"></i></a>
-              </td> -->
-            </template>
               <template slot="table-row" scope="props">
                 <td class="highlight"><div class="success"></div>
                 <a @click="onClickFn(props.row, props.index)" href="javascript:;">{{ props.row.AccessionID }}</a></td>
@@ -91,7 +85,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 var moment = require("moment");
-import Modal from "../utils/modal-template.vue";
+import Modal from "../../utils/modal-template.vue";
 import _ from "lodash";
 export default {
   components: { Modal },

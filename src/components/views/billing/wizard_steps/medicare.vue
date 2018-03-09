@@ -9,8 +9,8 @@
 					<table class="table table-striped" >
 						<thead>
 							<tr>
-								<th class="col-xs-3">Case Number</th>
-								<th class="col-xs-3"> Billing type</th>
+								<th >Case Number</th>
+								<th > Billing type</th>
 							</tr>
 						</thead>
 
@@ -45,15 +45,14 @@
 	</div>
 </template>
 <script>
+import WizardHeader from "./../patientInfo";
 
-	import WizardHeader from './../patientInfo'
-
-	export default {
-		props: {
-			Accession: {
-				type: Object,
-				default: () => { }	
-			}
-		}
-	}
+export default {
+  props: {
+    Accession: {
+      type: Object,
+      default: () => {}
+    }
+  }
+};
 </script>

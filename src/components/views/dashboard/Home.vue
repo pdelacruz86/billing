@@ -983,7 +983,7 @@ function getTypelist(typename, accessionList) {
         ]
       });
       types.push({
-        type: "Incompleted",
+        type: "Incomplete",
         percent: accessionIncomplete,
         color: "#D91E18",
         subs: [

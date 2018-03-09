@@ -33,14 +33,14 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 /* modal styles */
 .modal-mask {
   position: relative;
   z-index: 9998;
   top: 0;
-  left: 20%;
-  width: 60%;
+  left: 0%;
+  width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: table;

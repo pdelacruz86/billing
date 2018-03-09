@@ -24,7 +24,9 @@ import {
 import BlockUI from 'vue-blockui'
 import VeeValidate from 'vee-validate';
 import VueGoodTable from 'vue-good-table';
-import VueRangedatePicker from 'vue-rangedate-picker'
+
+// import VueRangedatePicker from './components/utils/vue-rangedate-picker.js'
+// Vue.use(VueRangedatePicker)
 
 // If using mini-toastr, provide additional configuration
 const toastTypes = {
@@ -62,7 +64,6 @@ const options = {
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
 
-Vue.use(VueRangedatePicker)
 
 Vue.use(VueNotifications, options) // VueNotifications have auto install but if we want to specify options we've got to do it manually.
 Vue.use(VeeValidate);

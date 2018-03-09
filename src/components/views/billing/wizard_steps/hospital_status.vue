@@ -40,8 +40,8 @@
 						<table class="table table-striped" >
 							<thead>
 								<tr>
-									<th class="col-xs-3">Case Number</th>
-									<th class="col-xs-3"> Status </th>
+									<th >Case Number</th>
+									<th > Status </th>
 								</tr>
 							</thead>
 

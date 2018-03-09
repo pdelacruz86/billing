@@ -24,9 +24,9 @@
               <button v-else type="button" class="btn btn-group btn-info active" style="height: 29.5px;" @click="openCaseContentCentral('')">Content Central</button>
               <button type="button" class="btn btn-group btn-info active" style="height: 29.5px;" @click="newSearch">New Search</button>
             </div>
-            <a @click="wizardfullscreen = !wizardfullscreen" 
-            class="btn btn-circle btn-icon-only btn-default fullscreen" href="#" data-original-title="" title=""> 
-            </a>
+            <div href="javascript:;" @click="wizardfullscreen = !wizardfullscreen" 
+              class="btn btn-circle btn-icon-only btn-default fullscreen"  data-original-title="" title=""> 
+            </div>
           </div>
 				</div>
 				<div class="portlet-body">
@@ -111,8 +111,8 @@ import MissingInfo from "./wizard_steps/missing_information";
 import CheckIn from "./wizard_steps/checkin";
 import Review from "./wizard_steps/review";
 
-import Modal from "../utils/modal-template.vue";
-import ModalConfirmation from "../utils/modal-confirmation.vue";
+import Modal from "../../utils/modal-template.vue";
+import ModalConfirmation from "../../utils/modal-confirmation.vue";
 
 import VueNotifications from "vue-notifications";
 
