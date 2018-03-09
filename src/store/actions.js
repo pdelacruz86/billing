@@ -87,3 +87,9 @@ export const updateTextSearch = ({
 }, text) => {
   commit(types.UPDATE_TEXT_SEARCH, text)
 };
+
+export const resetState = ({
+  commit
+}) => {
+  commit(types.RESET_STATE)
+}

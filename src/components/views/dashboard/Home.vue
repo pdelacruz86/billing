@@ -142,7 +142,7 @@
                             <h3 class="font-red-haze">
                                 <span data-counter="counterup" data-value="276">{{dashboardSummarizedData.IncompleteTotal}}</span>
                             </h3>
-                            <small>INCOMPLETED</small>
+                            <small>INCOMPLETE</small>
                         </div>
                     </div>
                     <div class="progress-info">
@@ -198,7 +198,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-          <div :class="{'portlet-fullscreen': mapChartfullscreen, 'portlet light': true}">
+          <!-- <div :class="{'portlet-fullscreen': mapChartfullscreen, 'portlet light': true}">
               <div class="portlet-title">
                   <div class="caption">
                       <span class="caption-subject bold uppercase font-dark">Country Stats</span>
@@ -211,7 +211,7 @@
               <div class="portlet-body">
                   <div id="dashboard_amchart_2"  style="width: 100%; height: 500px;"></div>
               </div>
-          </div>
+          </div> -->
       </div>
     </div>
   </div>
@@ -229,11 +229,14 @@ import export_min from "ammap3/ammap/plugins/export/export.min.js";
 import themelight from "ammap3/ammap/themes/light.js";
 export default {
   mounted() {
-    console.log(this.accessions);
+    debugger;
+    if (this.accessions.length === 0) {
+      this.getAllCases();
+    }
     this.removeLoading();
     this.loadDetail("Pending");
     this.loadSummary();
-    this.loadMaps("Pending");
+    // this.loadMaps("Pending");
   },
   computed: {
     ...mapGetters(["accessions"]),
@@ -493,7 +496,7 @@ export default {
       debugger;
       this.loadDetail("Pending");
       this.loadSummary();
-      this.loadMaps("Pending");
+      // this.loadMaps("Pending");
     }
   },
   data() {
@@ -509,7 +512,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["removeLoading"]),
+    ...mapActions(["removeLoading", "getAllCases", "resetState"]),
     loadSummary() {
       var types = [];
       let accessionTotal = 0;

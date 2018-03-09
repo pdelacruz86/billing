@@ -5,11 +5,28 @@
 				<div class="caption">
 					<i class="fa fa-cogs"></i>Billing Wizard </div>
           <div class="actions">
-             <button type="button" class="btn btn-info" @click="newSearch">New Search</button>
-					  <button type="button" class="btn btn-info" @click="openCaseContentCentral">Content Central</button>
-              <a @click="wizardfullscreen = !wizardfullscreen" 
-                    class="btn btn-circle btn-icon-only btn-default fullscreen" href="#" data-original-title="" title=""> 
-                    </a>
+            <div class="btn-group btn-group" data-toggle="buttons">
+              <div v-if="selectedAccession.Cases !== undefined" :class="{'btn-group':true,  'open': toggleContentCentral}" @click="toggleContentCentral = !toggleContentCentral">
+                <a  class="btn btn-sm btn-info dropdown-toggle btn-outline btn-sm active" 
+                    href="javascript:;" 
+                    data-toggle="dropdown" 
+                    aria-expanded="true"> Content Central
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu pull-right"  >
+                  <li  v-for="item in selectedAccession.Cases">
+                      <a href="javascript:;" @click="openCaseContentCentral(item.CaseNumber)">
+                            {{item.CaseNumber}} </a>
+                  </li>
+                </ul>
+                
+              </div>
+              <button v-else type="button" class="btn btn-group btn-info active" style="height: 29.5px;" @click="openCaseContentCentral('')">Content Central</button>
+              <button type="button" class="btn btn-group btn-info active" style="height: 29.5px;" @click="newSearch">New Search</button>
+            </div>
+            <a @click="wizardfullscreen = !wizardfullscreen" 
+            class="btn btn-circle btn-icon-only btn-default fullscreen" href="#" data-original-title="" title=""> 
+            </a>
           </div>
 				</div>
 				<div class="portlet-body">
@@ -126,6 +143,7 @@ export default {
     }
   },
   mounted() {
+    debugger;
     var querystring = this.$router.history.current.query.filter;
     if (querystring !== undefined) {
       this.updateTextSearch(querystring);
@@ -156,7 +174,8 @@ export default {
       Accessions: {},
       showModal: false,
       showConfirmationModal: false,
-      wizardfullscreen: false
+      wizardfullscreen: false,
+      toggleContentCentral: false
     };
   },
   computed: {
@@ -411,6 +430,12 @@ export default {
         }
       }
 
+      if (_accession.TrigueStatus === "Complete") {
+        _accession.CompletedDate = moment.unix(date.toDateString());
+      } else {
+        _accession.CompletedDate = "";
+      }
+
       console.log(JSON.stringify(_accession));
 
       this.updateAccession(_accession).then(() => {
@@ -436,7 +461,7 @@ export default {
       this.currentstep = 1;
       this.updateTextSearch("");
       this.showModal = false;
-      this.$router.push({ path: "/billing" });
+      this.$router.push({ path: "/billing/new" });
     },
     selectAllTypes: function(status, type) {
       switch (status) {
@@ -469,8 +494,11 @@ export default {
           break;
       }
     },
-    openCaseContentCentral: function() {
-      this.showModal = true;
+    openCaseContentCentral: function(casenumber) {
+      window.open(
+        "http://csi-dis-one/ContentCentral/Search/Search.aspx?_fts=" +
+          casenumber
+      );
     },
     missingAdded: function(info) {
       var date = new Date();
@@ -512,7 +540,7 @@ export default {
 
       if (selfStep === 1) {
         var accessions = this.accessions;
-        var tinput = this.searchText;
+        var tinput = this.searchText.trim();
 
         //identify a case number or accession id
         var isCaseNumber = tinput.indexOf("-") > -1;
@@ -737,56 +765,6 @@ export default {
 </script>
 
 <style>
-fieldset {
-  border: 1px solid #ddd !important;
-  margin: 0;
-  xmin-width: 0;
-  padding: 10px;
-  position: relative;
-  border-radius: 4px;
-  background-color: #f5f5f5;
-  padding-left: 10px !important;
-}
-
-fieldset {
-  min-width: 0;
-  padding: 0;
-  margin: 0;
-  border: 0;
-}
-
-fieldset {
-  padding: 0.35em 0.625em 0.75em;
-  margin: 0 2px;
-  border: 1px solid silver;
-}
-legend {
-  font-size: 14px !important;
-  font-weight: bold;
-  margin-bottom: 0px;
-  width: 35%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 5px 5px 5px 10px;
-  background-color: #ffffff;
-}
-
-legend {
-  display: block;
-  width: 100%;
-  padding: 0;
-  margin-bottom: 20px;
-  font-size: 21px;
-  line-height: inherit;
-  color: #333;
-  border: 0;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-legend {
-  padding: 0;
-  border: 0;
-}
 .step-wrapper {
   padding: 20px 0;
   display: none;

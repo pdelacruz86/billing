@@ -72,11 +72,15 @@
 										<label class="control-label">Missing Info: 
 										</label>
 											<select name="Name" v-model="MissingInfo.Name" v-validate="'required'" :class="{'form-control input-sm': true, 'is-danger': errors.has('Name') }">
-												<option>Missing information 1</option>	
-												<option>Missing information 2</option>	
-												<option>Missing information 3</option>	
-												<option>Missing information 4</option>	
-												<option>Missing information 5</option>	
+												<option>Missing requisition</option>	
+												<option>Billing not market</option>	
+												<option>Hospital status missing</option>	
+												<option>Insurance name missing</option>	
+												<option>Insurance policy number missing</option>	
+												<option>No patient demographics</option>	
+												<option>DOB missing</option>	
+												<option>Patient address missing</option>	
+												<option>Patient gender missing</option>	
 												<option>Other</option>	
 											</select>
 											<p class="text-danger" v-if="errors.has('Name')">{{ errors.first('Name') }}</p>

@@ -8,8 +8,8 @@
 									<i class="fa fa-file-o"></i>
 									<span class="caption"> Current</span>
 							</div>
-							<div class="actions">
-									<div :class="{'btn-group':true,  'open': toggleSelectAll}" @click="toggleSelectAll = !toggleSelectAll">
+							<div class="actions" v-if="Accession.TrigueStatus !== 'Complete' && Accession.Cases.length > 1">
+									<div :class="{'btn-group':true,  'open': toggleSelectAll}" @click="Accession.TrigueStatus !== 'Complete' ? toggleSelectAll = !toggleSelectAll : toggleSelectAll = false">
 											<a class="btn btn-sm btn-info dropdown-toggle btn-outline btn-circle btn-sm active" href="javascript:;" data-toggle="dropdown" aria-expanded="true"> Select All
 													<i class="fa fa-angle-down"></i>
 											</a>
@@ -42,6 +42,7 @@
 							<tr>
 								<th class="col-xs-3">Case Number</th>
 								<th class="col-xs-3"> Billing type</th>
+								<th></th>
 							</tr>
 						</thead>
 
@@ -60,6 +61,10 @@
 									<td v-else="">
 									{{item.BillingType}}
 								</td>
+								<td>
+									 <a href="javascript:;" @click="openCaseContentCentral(item.CaseNumber)">
+                         <i class="fa fa-file-pdf-o"></i></a>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -76,7 +81,7 @@
 					</div>
 					<div class="portlet-body">
 							<div class="alert alert-info">
-								<strong>Info!</strong> There is not previous accession.
+								<strong>Info!</strong> There is no previous accession.
 							</div>
 					</div>
 			</div>
@@ -104,6 +109,12 @@ export default {
   methods: {
     selectAllTypes: function(type) {
       this.$emit("select-all-types", "Billing", type);
+    },
+    openCaseContentCentral: function(casenumber) {
+      window.open(
+        "http://csi-dis-one/ContentCentral/Search/Search.aspx?_fts=" +
+          casenumber
+      );
     }
   }
 };

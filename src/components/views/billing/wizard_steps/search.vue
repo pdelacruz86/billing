@@ -25,7 +25,7 @@ export default {
     ...mapActions(["updateTextSearch"]),
     updateText(e) {
       debugger;
-      this.updateTextSearch(e.target.value);
+      this.updateTextSearch(e.target.value.trim());
     }
   },
   watch: {

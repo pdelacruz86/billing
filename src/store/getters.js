@@ -7,7 +7,7 @@ export const accessions = state => state.app.accessions_by_date.filter((accessio
     let hasDataFromFilter = false;
 
     for (var propertyName in accessionFilter) {
-      if (propertyName !== "startDate" && propertyName !== "endDate") {
+      if (propertyName !== "startDate" && propertyName !== "endDate" && propertyName !== "completedDate") {
         if (accessionFilter[propertyName] !== '' && accessionFilter[propertyName] !== "Select One") {
           hasDataFromFilter = true;
           break;
@@ -140,6 +140,7 @@ export const accessions = state => state.app.accessions_by_date.filter((accessio
 
 export const selectedAccession = state => state.app.selectedAccession
 export const accessions_filter = state => state.app.accessions_filter
+export const accessions_sorting = state => state.app.accessions_sorting
 export const searchText = state => state.app.searchText
 export const filterDates = state => state.app.filterDates
 

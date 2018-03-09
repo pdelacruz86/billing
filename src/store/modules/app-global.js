@@ -4,7 +4,7 @@ import loadingUrl from '../../assets/global/img/ajax-loading.gif'
 import VueNotifications from 'vue-notifications'
 const moment = require("moment");
 
-const state = {
+const initialState = {
   accessions: [],
   accessions_by_date: [],
   selectedAccession: {},
@@ -19,14 +19,23 @@ const state = {
     triageStatus: "",
     clientName: "",
     clientNumber: "",
-    startDate: "",
-    endDate: ""
+    startDate: moment()
+      .subtract(7, "days")
+      .toDate(),
+    endDate: new Date(),
+    completedDate: ""
+  },
+  accessions_sorting: {
+    sortBy: 'Accesssion',
+    sortDirection: 'Desc'
   },
   showBlockUI: false,
   loadingImage: loadingUrl,
   loadingMessage: 'loading...',
   searchText: ''
 }
+
+const state = Object.assign({}, initialState)
 
 const mutations = {
   [types.GET_ALL](state, list) {
@@ -37,11 +46,9 @@ const mutations = {
       let endDate = moment(accessionFilter.endDate);
 
       if (accessionFilter !== undefined) {
-        debugger;
         if (beginDate.format("YYYYMMDD HH:mm") === endDate.format("YYYYMMDD HH:mm")) {
           let begin_time = `${beginDate.format('YYYY-MM-DD')}T00:00:00.000Z`
           let end_time = `${endDate.format('YYYY-MM-DD')}T23:59:00.000Z`
-          console.log(begin_time, '::::', end_time)
 
           if (moment.unix(accession.CreatedDate).isBetween(begin_time, end_time)) return accession
         } else {
@@ -132,6 +139,11 @@ const mutations = {
       VueNotifications.info(data)
 
     state.showBlockUI = false
+  },
+  [types.RESET_STATE](state) {
+    for (let prop in state) {
+      state[prop] = initialState[prop]
+    }
   }
 }
 

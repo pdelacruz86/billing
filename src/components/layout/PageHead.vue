@@ -126,13 +126,23 @@
                                   <option>Non-hospital</option>
                               </select>
                           </li>
-                         
+                          <li v-if="isCompleteSelected">
+                            <div class="row">
+                            <div class="col-md-6">Completed Date:</div> 
+                            <div class="col-md-6">
+                              <datepicker placeholder="Select Date" 
+                                v-model="accessions_filter.completedDate"
+                                @selected="completedDateSelected" 
+                                :input-class="'theme-setting theme-setting-style form-control input-sm input-small '" 
+                                :wrapper-class="'datepicker-calendar'"></datepicker></div> 
+                            </div>
+                          </li>
                           <li>
                             <div class="btn-group btn-group-justified">
                                 <a href="javascript:;" class="btn btn-default" @click="getAllCases"> Reload Data </a>
                                 <a href="javascript:;" class="btn btn-default" @click="clearFields"> Clear Fields </a>
                                 <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" 
-            @click="showFilterWorklist = !showFilterWorklist"> Close </a>
+                                  @click="showFilterWorklist = !showFilterWorklist"> Close </a>
                             </div>
                           </li>
                           
@@ -150,25 +160,33 @@
 const moment = require("moment");
 
 import VueRangedatePicker from "vue-rangedate-picker";
+import Datepicker from "vuejs-datepicker";
 import { mixin as onClickOutside } from "vue-on-click-outside";
 
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
-    VueRangedatePicker
+    VueRangedatePicker,
+    Datepicker
   },
   mixins: [onClickOutside],
-  created() {},
-  mounted() {
+  created() {
+    console.log(
+      moment(this.accessions_filter.startDate).toDate(),
+      moment()
+        .subtract(7, "days")
+        .toDate()
+    );
     this.selectedDate = {
-      start: this.accessions_filter.startDate || null,
-      end: this.accessions_filter.endDate || null
+      start:
+        this.accessions_filter.startDate ||
+        moment()
+          .subtract(7, "days")
+          .toDate(),
+      end: this.accessions_filter.endDate || new Date()
     };
-
-    console.log(this.selectedDate);
-    // if (this.accessions_filter.accessionID !== undefined)
-    //   this.worklistFilterModel = this.accessions_filter;
   },
+  mounted() {},
   computed: {
     ...mapGetters(["accessions_filter"]),
     name() {
@@ -188,7 +206,9 @@ export default {
       showFilter: false,
       showFilterWorklist: false,
       selectedDate: {
-        start: new Date(),
+        start: moment()
+          .subtract(7, "days")
+          .toDate(),
         end: new Date()
       },
       worklistFilterModel: {},
@@ -209,6 +229,7 @@ export default {
       "setWorklistFilters",
       "getAllCases"
     ]),
+    completedDateSelected() {},
     clearFields() {
       var filtersEmptyCopy = {
         caseNumber: "",
@@ -221,8 +242,11 @@ export default {
         triageStatus: "",
         clientName: "",
         clientNumber: "",
-        startDate: new Date(),
-        endDate: new Date()
+        startDate: moment()
+          .subtract(7, "days")
+          .toDate(),
+        endDate: new Date(),
+        completedDate: ""
       };
       this.isBillingAllSelected = true;
       this.isInsuranceSelected = false;
@@ -236,7 +260,9 @@ export default {
 
       this.setWorklistFilters(filtersEmptyCopy);
       this.selectedDate = {
-        start: new Date(),
+        start: moment()
+          .subtract(7, "days")
+          .toDate(),
         end: new Date()
       };
     },
@@ -278,7 +304,8 @@ export default {
     loadDetail2(triageStatus) {
       let filters = this.accessions_filter;
       filters.triageStatus = triageStatus;
-      this.setWorklistFilters(filters);
+
+      console.log(filters);
 
       switch (triageStatus) {
         case "Select One":
@@ -286,12 +313,14 @@ export default {
           this.isPendingSelected = false;
           this.isCompleteSelected = false;
           this.isIncompleteSelected = false;
+          filters.completedDate = "";
           break;
         case "Pending":
           this.isAllSelected = false;
           this.isPendingSelected = true;
           this.isCompleteSelected = false;
           this.isIncompleteSelected = false;
+          filters.completedDate = "";
           break;
         case "Complete":
           this.isAllSelected = false;
@@ -304,10 +333,14 @@ export default {
           this.isPendingSelected = false;
           this.isCompleteSelected = false;
           this.isIncompleteSelected = true;
+          filters.completedDate = "";
           break;
         default:
           break;
       }
+      console.log(filters);
+
+      this.setWorklistFilters(filters);
     },
     onDateSelected(daterange) {
       //this.selectedDate = daterange;
@@ -338,6 +371,13 @@ export default {
 };
 </script>
 <style scoped>
+.datepicker-calendar {
+  /* position: absolute; */
+  float: right;
+  z-index: 100;
+  width: 300px;
+}
+
 .btn-theme-panel {
   margin-top: 25px;
 }
