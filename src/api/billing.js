@@ -1,5 +1,6 @@
 import myAPI from './resources'
 import config from '../config'
+import axios from 'axios'
 
 export default {
   getAll: function () {
@@ -9,10 +10,10 @@ export default {
       })
   },
   create: function (accession) {
-    console.log(accession)
-    return myAPI.post(config.api_root + config.api_root_path + '/cases', accession).
-    then(function (response) {
-      return response
-    })
+    debugger;
+    return myAPI.post(config.api_root + config.api_root_path + '/cases', accession)
+      .then(function (response) {
+        return response
+      })
   }
 }

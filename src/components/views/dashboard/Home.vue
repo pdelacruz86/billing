@@ -229,7 +229,6 @@ import export_min from "ammap3/ammap/plugins/export/export.min.js";
 import themelight from "ammap3/ammap/themes/light.js";
 export default {
   mounted() {
-    debugger;
     if (this.accessions.length === 0) {
       this.getAllCases();
     }
@@ -493,7 +492,6 @@ export default {
   },
   watch: {
     accessions: function(val) {
-      debugger;
       this.loadDetail("Pending");
       this.loadSummary();
       // this.loadMaps("Pending");

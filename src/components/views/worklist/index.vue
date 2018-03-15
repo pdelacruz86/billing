@@ -90,7 +90,6 @@ import _ from "lodash";
 export default {
   components: { Modal },
   mounted() {
-    debugger;
     if (this.accessions.length === 0) this.getAllCases();
     this.setSelectedAccession({});
     this.updateTextSearch("");
@@ -99,7 +98,6 @@ export default {
   computed: {
     ...mapGetters(["accessions", "accessions_sorting", "accessions_filter"]),
     accessions_ordered_by() {
-      debugger;
       let sortBy = this.accessions_sorting.sortBy;
       let data = _.orderBy(
         this.accessions,
@@ -132,7 +130,6 @@ export default {
         },
         this.accessions_sorting.sortDirection
       );
-      debugger;
       if (this.accessions_filter.triageStatus === "Complete") {
         var self = this;
         if (self.accessions_filter.completedDate !== "") {
@@ -205,7 +202,6 @@ export default {
   },
   watch: {
     accessions: function(val) {
-      debugger;
       // this.getAllCasesWorklist();
     },
     accessions_sorting: function(val) {

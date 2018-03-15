@@ -143,7 +143,6 @@ export default {
     }
   },
   mounted() {
-    debugger;
     var querystring = this.$router.history.current.query.filter;
     if (querystring !== undefined) {
       this.updateTextSearch(querystring);
@@ -430,23 +429,9 @@ export default {
         }
       }
 
-      if (_accession.TrigueStatus === "Complete") {
-        _accession.CompletedDate = moment.unix(date.toDateString());
-      } else {
-        _accession.CompletedDate = "";
-      }
-
-      console.log(JSON.stringify(_accession));
-
       this.updateAccession(_accession).then(() => {
         this.$router.push({ path: "/billing/worklist" });
       });
-      // this.$router.push({ path: "/worklist" });
-      // var success = {
-      //   title: "Done",
-      //   message: "Order saved.",
-      //   type: "success"
-      // };
 
       // VueNotifications.success(success);
     },

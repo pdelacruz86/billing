@@ -5,7 +5,7 @@
 				<tbody>
 					<tr>
 						<td><span class="primary-link">Accession ID:</span> </td>
-						<td><span>{{this.selectedAccession.AccessionID}}</span> </td>
+						<td><span><b>{{this.selectedAccession.AccessionID}}</b></span> </td>
 						<td><span class="primary-link">Gender:</span> </td>
 						<td>	<span>{{this.selectedAccession.PatientInformation.Gender}}</span> 
 						</td>
@@ -14,7 +14,6 @@
 						
 						<td><span class="primary-link">DOB:</span> </td>
 						<td><span>{{dob_timestamp(this.selectedAccession.PatientInformation.DateOfBirth)}}</span></td>
-						
 					</tr>
 				</tbody>
 			</table>
@@ -33,7 +32,7 @@
 						</td>
 					
 						<td><span class="primary-link">Client:</span> </td>
-						<td>	<span>{{this.selectedAccession.PatientInformation.ClientName}}</span> 
+						<td>	<span>{{this.selectedAccession.PatientInformation.ClientName}} / <b>{{this.selectedAccession.PatientInformation.Client}}</b></span> 
 						</td>
 					</tr>
 				</tbody>

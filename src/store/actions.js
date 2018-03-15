@@ -76,6 +76,12 @@ export const updateAccession = ({
   });
 }
 
+export const syncAccessionFromServer = ({
+  commit
+}, accession) => {
+  commit(types.UPDATE_ACCESSION, accession)
+}
+
 export const setSelectedAccession = ({
   commit
 }, selectedAccession) => {

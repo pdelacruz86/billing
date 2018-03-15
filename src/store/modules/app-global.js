@@ -64,7 +64,6 @@ const mutations = {
     state.searchText = text;
   },
   [types.UPDATE_ACCESSION](state, currentAccession) {
-    debugger;
     //iterate through all accessions
     for (var i = 0; i < state.accessions.length; i++) {
       //if it is the accession
@@ -80,7 +79,6 @@ const mutations = {
       let endDate = moment(accessionFilter.endDate);
 
       if (accessionFilter !== undefined) {
-        debugger;
         if (beginDate.format("YYYYMMDD HH:mm") === endDate.format("YYYYMMDD HH:mm")) {
           let begin_time = `${beginDate.format('YYYY-MM-DD')}T00:00:00.000Z`
           let end_time = `${endDate.format('YYYY-MM-DD')}T23:59:00.000Z`
@@ -106,7 +104,6 @@ const mutations = {
       let endDate = moment(accessionFilter.endDate);
 
       if (accessionFilter !== undefined) {
-        debugger;
         if (beginDate.format("YYYYMMDD HH:mm") === endDate.format("YYYYMMDD HH:mm")) {
           let begin_time = `${beginDate.format('YYYY-MM-DD')}T00:00:00.000Z`
           let end_time = `${endDate.format('YYYY-MM-DD')}T23:59:00.000Z`
