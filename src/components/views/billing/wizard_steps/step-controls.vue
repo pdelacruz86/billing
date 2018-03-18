@@ -6,7 +6,7 @@
 		</div>
 		<div v-else>
 			<button class="btn btn-primary" @click="lastStep()" :disabled="firststep">Back</button>
-			<button class="btn btn-primary col-md-offset-10"  @click="nextStep()" :disabled="laststep">Next</button>
+			<button class="btn btn-primary col-md-offset-10"  @click="nextStep()"  :disabled="laststep">Next</button>
 		</div>
 	</div>
 </template>

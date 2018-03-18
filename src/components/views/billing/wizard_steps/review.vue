@@ -1,8 +1,23 @@
 <template>
 	<div class="row">
 		<div class="col-md-12">
+			<div class="portlet"  @click="patientCollapse = !patientCollapse">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="fa fa-user"></i>Patient Information </div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse" data-original-title="" title="" v-if="!patientCollapse" @click="patientCollapse = !patientCollapse"> </a>
+						<a href="javascript:;" class="expand" data-original-title="" title="" v-if="patientCollapse" @click="patientCollapse = !patientCollapse"> </a>
+					</div>
+				</div>
+				<div class="portlet-body" :style="{'display':  patientCollapse ? 'none' : 'block'}">
+					<WizardHeader :selectedAccession="Accession"></WizardHeader>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
 			<!-- BEGIN SAMPLE TABLE PORTLET-->
-			<div class="portlet">
+			<div class="portlet"  @click="billingCollapse = !billingCollapse">
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="fa fa-money"></i>Billing Categorization </div>
@@ -23,9 +38,10 @@
 									<th class="hidden-xs"> <i class="fa fa-save "></i> Saved </th>
 									<th>  <i class="fa fa-hospital-o"></i> Hospital  </th>
 									<th class="hidden-xs"> <i class="fa fa-save "></i> Saved </th>
-										<!-- <th class="hiden-xs">
-											Status
-										</th> -->
+										<th class="hiden-xs">
+											<i class="fa fa-user" />
+											Username
+										</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -80,6 +96,14 @@
 											{{item.HospitalStatusSavedDate}}
 										</div>
 									</td>
+									<td>
+										<div v-if="item.UserName === null">
+											
+										</div>
+										<div v-else>
+											{{item.UserName}}
+										</div>
+									</td>
 									<!-- <td>
 										<span class="label label-sm label-info">Complete</span>
 									</td> -->
@@ -91,8 +115,8 @@
 			</div>
 			<!-- END SAMPLE TABLE PORTLET-->
 		</div>
-<div class="col-md-12">
-			<div class="portlet">
+		<div class="col-md-12">
+			<div class="portlet" @click="StatusCollapse = !StatusCollapse">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-bar-chart-o"></i>Triage Status
@@ -132,7 +156,7 @@
 		</div>
 		</div>
 		<div class="col-md-12">
-			<div class="portlet">
+			<div class="portlet" @click="missingCollapse = !missingCollapse">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-info-circle"></i>Missing Information</div>
@@ -176,13 +200,19 @@
 </template>
 
 <script>
+import WizardHeader from "../patientInfo";
+
 export default {
+  components: {
+    WizardHeader
+  },
   props: ["Accession", "CurrentDate"],
   data() {
     return {
       billingCollapse: false,
       StatusCollapse: false,
-      missingCollapse: false
+      missingCollapse: false,
+      patientCollapse: true
     };
   },
   methods: {

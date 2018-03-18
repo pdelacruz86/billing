@@ -3,7 +3,7 @@
             <div class="col-md-12 page-404">
                 <div class="number font-blue"> <i class="fa fa-cloud-download"></i> </div>
                 <div class="details">
-                    <h3>Oops! Comming soon...</h3>
+                    <h3>Oops! Coming soon...</h3>
                     <p> We are about to go live with this feature so watch this space.
                         <br/>
                           <router-link :to="{ path: '/' }">

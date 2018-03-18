@@ -4,7 +4,7 @@
 			<div class="col-md-4"></div>
 			<div class="col-md-4">
 				<p>Scan or enter Accession ID or Case Number</p>
-				<input type="text" id="inputSearchAccession" class="form-control" @input="updateText" >
+				<input type="text" id="inputSearchAccession" class="form-control" @input="updateText" ref='search' >
 			</div>
 			<div class="col-md-4"></div>
 		</div>
@@ -17,6 +17,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   mounted() {
     document.getElementById("inputSearchAccession").value = this.searchText;
+    this.$refs.search.focus();
   },
   computed: {
     ...mapGetters(["searchText"])

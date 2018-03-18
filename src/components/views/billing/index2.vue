@@ -1,5 +1,5 @@
 <template> 
-	<div class="row" @keyup.enter.native="keymonitor()">
+	<div class="row">
 		<div :class="{'portlet-fullscreen': wizardfullscreen, 'portlet light': true}" >
 			<div class="portlet-title">
 				<div class="caption">
@@ -63,7 +63,7 @@
 								<Review :Accession="selectedAccession" :CurrentDate="currentDate" @go-to-missing="stepChanged"></Review>
 							</div>
 						</div>
-            <step-controls v-for="step in steps" ref="stepControls"
+            <step-controls v-for="step in steps" ref="stepControls" 
               :step="step"
               :stepcount="steps.length"
               :currentstep="currentstep"
@@ -85,7 +85,8 @@
 			  </div>
 			</div>
 		</modal>
-     <modal-confirmation v-if="showConfirmationModal" @close="showConfirmationModal = false" @submitAccession="submitAccessionConfirmationHandler">
+     <modal-confirmation v-if="showConfirmationModal" @close="showConfirmationModal = false" 
+      @submitAccession="submitAccessionConfirmationHandler">
     </modal-confirmation>
 	</div>
 
@@ -133,6 +134,9 @@ export default {
   created: function() {
     window.addEventListener("keyup", this.keymonitor);
   },
+  destroyed: function() {
+    window.removeEventListener("keyup", this.keymonitor);
+  },
   watch: {
     $route(to, from) {
       // react to route changes...
@@ -143,9 +147,11 @@ export default {
     }
   },
   mounted() {
+    debugger;
     var querystring = this.$router.history.current.query.filter;
     if (querystring !== undefined) {
       this.updateTextSearch(querystring);
+      this.stepChanged(2);
     } else {
       if (this.selectedAccession.AccessionID !== undefined) {
         this.updateTextSearch(this.selectedAccession.AccessionID.toString());
@@ -178,7 +184,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["selectedAccession", "accessions", "searchText"]),
+    ...mapGetters([
+      "selectedAccession",
+      "accessions",
+      "searchText",
+      "currentUserName1"
+    ]),
     currentDate() {
       var date = new Date();
 
@@ -360,16 +371,54 @@ export default {
       "updateAccession"
     ]),
     keymonitor: function(event) {
+      debugger;
       console.log(event.key);
-      if (event.key == "Enter") {
-        // this.stepChanged(this.currentstep + 1);
+      //when hit enter in missing information dont go next submit the MI
+      var missingInformationInstace = this.$children[8];
+      if (
+        event.key == "Enter" &&
+        missingInformationInstace.showModal !== undefined
+      ) {
+        if (!missingInformationInstace.showModal) {
+          this.stepChanged(this.currentstep + 1);
+        } else {
+          missingInformationInstace.validateBeforeSubmit();
+        }
+      } else if (
+        event.key == "Enter" &&
+        this.currentstep === 6 &&
+        missingInformationInstace.showModal
+      ) {
+        missingInformationInstace.validateBeforeSubmit();
+      } else if (
+        event.key == "Enter" &&
+        this.currentstep === 7 &&
+        this.showConfirmationModal
+      ) {
+        this.submitAccessionConfirmationHandler();
+      } else {
+        if (event.key == "Enter" && this.currentstep === 7) {
+          if (this.selectedAccession.TrigueStatus === "Incomplete") {
+            this.showConfirmationModal = true;
+          } else {
+            if (
+              event.key == "Enter" &&
+              this.selectedAccession.TrigueStatus === "Complete"
+            ) {
+              this.$router.push({ path: "/billing/worklist" });
+            } else {
+              if (event.key == "Enter") this.submitAccession();
+            }
+          }
+        } else {
+          if (event.key == "Enter") this.stepChanged(this.currentstep + 1);
+        }
       }
     },
     submitAccessionConfirmationHandler: function() {
       this.submitAccession();
     },
     submitAccession: function() {
-      console.log(JSON.stringify(this.selectedAccession));
       let date = new Date();
       let savedDateTime =
         date.toLocaleDateString() + " " + date.toLocaleTimeString();
@@ -378,7 +427,7 @@ export default {
       let _accession = this.selectedAccession;
       //get the caselist
       let caselist = _accession.Cases;
-
+      debugger;
       // let savedDateTime = moment().format("YYYY-mm-dd HH:mm:ss");
       //iterate through currentAccession cases
       for (var i = 0; i < caselist.length; i++) {
@@ -388,40 +437,53 @@ export default {
           _accession.TrigueStatus = "Pending";
         } else if (currentCase.BillingType === "Not Provided") {
           _accession.TrigueStatus = "Incomplete";
-          currentCase.BillingTypeSavedDate = savedDateTime;
+          currentCase.UserName = this.currentUserName1;
+          currentCase.InsuranceTypeSavedDate = "";
+          currentCase.HospitalStatusSavedDate = "";
           continue;
         } else if (
           currentCase.BillingType === "Direct" ||
           currentCase.BillingType === "Split"
         ) {
           _accession.TrigueStatus = "Complete";
+          currentCase.UserName = this.currentUserName1;
           currentCase.BillingTypeSavedDate = savedDateTime;
+          currentCase.InsuranceTypeSavedDate = "";
+          currentCase.HospitalStatusSavedDate = "";
           continue;
         } else if (currentCase.BillingType === "Insurance") {
           if (currentCase.InsuranceType === "Not Provided") {
             _accession.TrigueStatus = "Incomplete";
+            currentCase.UserName = this.currentUserName1;
             currentCase.InsuranceTypeSavedDate = savedDateTime;
+            currentCase.HospitalStatusSavedDate = "";
             continue;
           } else if (currentCase.InsuranceType === "Not Provided") {
             _accession.TrigueStatus = "Incomplete";
+            currentCase.UserName = this.currentUserName1;
             currentCase.InsuranceTypeSavedDate = savedDateTime;
+            currentCase.HospitalStatusSavedDate = "";
             continue;
           } else if (currentCase.InsuranceType === "Medicare") {
             if (currentCase.HospitalStatus === "Not Provided") {
               _accession.TrigueStatus = "Incomplete";
+              currentCase.UserName = this.currentUserName1;
               currentCase.HospitalStatusSavedDate = savedDateTime;
               continue;
-            } else if (currentCase.HospitalTrigueStatus === "Not Provided") {
+            } else if (currentCase.HospitalStatus === "Not Provided") {
               _accession.TrigueStatus = "Incomplete";
+              currentCase.UserName = this.currentUserName1;
               currentCase.HospitalStatusSavedDate = savedDateTime;
               continue;
             } else {
               _accession.TrigueStatus = "Complete";
+              currentCase.UserName = this.currentUserName1;
               currentCase.HospitalStatusSavedDate = savedDateTime;
               continue;
             }
           } else {
             _accession.TrigueStatus = "Complete";
+            currentCase.UserName = this.currentUserName1;
             currentCase.InsuranceTypeSavedDate = savedDateTime;
             continue;
           }
@@ -429,7 +491,10 @@ export default {
         }
       }
 
+      console.log(JSON.stringify(_accession));
+
       this.updateAccession(_accession).then(() => {
+        this.currentstep = 1;
         this.$router.push({ path: "/billing/worklist" });
       });
 
@@ -558,7 +623,7 @@ export default {
             title:
               "There is no information for that number-either the case or accession was deleted or you have a typo.",
             message:
-              "Try again, but if it happends again check the case number in the LIS",
+              "Try again, but if it happens again check the case number in the LIS",
             type: "error"
           };
 
@@ -721,7 +786,7 @@ export default {
           this.currentstep = step;
         }
       }
-
+      debugger;
       //step 7 -- Last Step
       if (selfStep === 7) {
         if (isback) {
@@ -736,7 +801,7 @@ export default {
             this.showConfirmationModal = true;
           } else {
             if (this.selectedAccession.TrigueStatus === "Complete") {
-              this.$router.push({ path: "/worklist" });
+              this.$router.push({ path: "/billing/worklist" });
             } else {
               this.submitAccession();
             }

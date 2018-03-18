@@ -35,6 +35,8 @@ import PageHead from "./PageHead";
 import Navbar from "./Navbar.vue";
 import { hubConnection } from "signalr-no-jquery";
 
+import config from "../../config.js";
+
 import { mapActions } from "vuex";
 
 export default {
@@ -44,7 +46,7 @@ export default {
     Navbar
   },
   mounted() {
-    const connection = hubConnection("http://localhost:43331");
+    const connection = hubConnection(config.api_root);
     const hubProxy = connection.createHubProxy("AccessionCases");
 
     var self1 = this;

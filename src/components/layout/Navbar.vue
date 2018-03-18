@@ -31,7 +31,9 @@
 					<div class="container">
           <form class="search-form" v-on:submit.prevent="onSubmit">
               <div class="input-group">
-                  <input type="text" v-model="searchInputText" @keyup.enter="onSubmit" class="form-control" placeholder="Search" name="query" id="inputSearch" v-on:keyup.enter="onSubmit()">
+                  <input type="text" v-model="searchInputText" 
+                  class="form-control" placeholder="Search" name="query" id="inputSearch" 
+                  v-on:keyup.enter="onSubmit()">
                   <span class="input-group-btn">
                       <a href="javascript:;" class="btn submit" @click="onSubmit">
                           <i class="icon-magnifier"></i>

@@ -10,7 +10,7 @@
         <!-- BEGIN LOGIN -->
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
-            <form method="post" action="/login" class="login-form" @submit.prevent="login" >
+            <form  class="login-form" @submit.prevent="login" >
                 <h3 class="form-title font-green">Sign In</h3>
                 <div class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
@@ -26,7 +26,7 @@
                     <input class="form-control form-control-solid placeholder-no-fix" type="password" v-model="user.password" autocomplete="off" placeholder="Password" name="password" /> 
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn green uppercase" @click="login">Login</button>
+                    <button type="submit" class="btn green uppercase">Login</button>
                     <label class="rememberme check mt-checkbox mt-checkbox-outline">
                         <input type="checkbox" name="remember" value="1" />Remember
                         <span></span>

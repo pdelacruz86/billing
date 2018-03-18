@@ -60,7 +60,7 @@
                 </td>
               </template>
           <div slot="emptystate">
-            No Acessions.
+            No Accessions.
           </div>
         </vue-good-table>
       </div>

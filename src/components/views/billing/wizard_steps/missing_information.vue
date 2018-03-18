@@ -100,7 +100,7 @@
 			<div slot="footer">
 				<div class="form-actions right">
 						<button type="button" class="btn default" @click="clearFields">Clear Fields</button>
-						<button type="submit" class="btn red" @click="validateBeforeSubmit()">Submit</button>
+						<button type="submit" class="btn red"  v-on:keyup.enter="validateBeforeSubmit()" @click="validateBeforeSubmit()">Submit</button>
 				</div>
 			</div>
 		</modal>
@@ -155,15 +155,18 @@ export default {
     },
     openMissingModal: function() {
       this.showModal = true;
+      debugger;
     },
     validateBeforeSubmit() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          // eslint-disable-next-line
-          this.saveMissing();
-          return;
-        }
-      });
+      if (this.showModal) {
+        this.$validator.validateAll().then(result => {
+          if (result) {
+            // eslint-disable-next-line
+            this.saveMissing();
+            return;
+          }
+        });
+      }
     },
     saveMissing() {
       this.showModal = false;

@@ -1,11 +1,10 @@
-// import api from '../../api'
+import api from '../../api'
 import * as types from '../mutation-types'
 import router from '../../router'
 
 const state = {
-  username: '',
-  isLoggedIn: !!localStorage.getItem('token'),
-  AllAccessions: []
+  username: localStorage.token === undefined ? '' : localStorage.token.match("[^:]*")[0].split(' ')[1],
+  isLoggedIn: !!localStorage.getItem('token')
 }
 
 const mutations = {
@@ -30,23 +29,29 @@ const actions = {
     commit
   }, creds) {
     commit(types.LOGIN)
-
-    localStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTA1ODkzNzY2MjF9.MqHRSfGklBn610d2JNRedcwm251UQZDO79axeq2w6Fc')
-    commit(types.LOGIN_SUCCESS, creds.username)
-    router.push('/billing')
+    commit(types.LOADING_START, 'Validating crendentials...');
     // show spinner
-    // api.localLogin(creds).then(response => {
-    //   if (response.statusText !== 'OK') {
-    //     return
-    //   }
-    //   const token = response.data.token
-    //   localStorage.setItem('token', token)
-    //   commit(types.LOGIN_SUCCESS)
-    //   console.log(response)
-    //   router.push('/')
-    // },
-    // response => {
-    // })
+    api.localLogin(creds)
+      .then(response => {
+          if (response.data.Status === 'Error') {
+            var error = {
+              title: 'Error',
+              message: 'Incorrect username or password',
+              type: 'error'
+            }
+
+            commit(types.NOTIFY_ERRORS, error)
+            return;
+          }
+
+          const token = response.data.token
+          localStorage.setItem('token', token)
+          commit(types.LOGIN_SUCCESS, creds.username)
+          commit(types.LOADED_SUCCESS)
+          console.log(response)
+          router.push('/billing')
+        },
+        response => {})
   },
   logout({
     commit
