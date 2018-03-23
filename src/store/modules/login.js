@@ -29,7 +29,7 @@ const actions = {
     commit
   }, creds) {
     commit(types.LOGIN)
-    commit(types.LOADING_START, 'Validating crendentials...');
+    commit(types.LOADING_START, 'Validating credentials...');
     // show spinner
     api.localLogin(creds)
       .then(response => {
@@ -49,7 +49,7 @@ const actions = {
           commit(types.LOGIN_SUCCESS, creds.username)
           commit(types.LOADED_SUCCESS)
           console.log(response)
-          router.push('/billing')
+          router.push('/')
         },
         response => {})
   },

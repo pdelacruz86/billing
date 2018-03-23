@@ -13,7 +13,7 @@
 						<h3>You have
 							<strong>{{pendingCasesCount}} pending</strong> tasks
 						</h3>
-						<router-link :to="{ path: '/billing/worklist' }">
+						<router-link :to="{ path: '/worklist' }">
 							view all
 						</router-link>
 					</li>
@@ -32,13 +32,13 @@
 				</a>
 				<ul class="dropdown-menu dropdown-menu-default">
 					<li>
-						<router-link :to="{ path: '/billing/soon' }">
+						<router-link :to="{ path: '/soon' }">
 							<i class="icon-user"></i> 
 							My Profile 
 						</router-link>
 					</li>
 					<li>
-						<router-link :to="{ path: '/billing/soon' }">
+						<router-link :to="{ path: '/soon' }">
 							<i class="icon-calendar"></i> 
 							My Calendar 
 						</router-link>

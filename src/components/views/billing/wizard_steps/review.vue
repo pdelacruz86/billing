@@ -45,7 +45,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="item in Accession.Cases">
+								<tr v-for="item in newCaseList.Cases">
 									<td class="highlight">
 										<div class="success"></div>
 										<a href="javascript:;" @click="goToBilling"> {{item.CaseNumber}} </a>
@@ -137,7 +137,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="item in Accession.Cases">
+							<tr v-for="item in newCaseList.Cases">
 								<td>{{item.CaseNumber}}</td>
 								<td>
 									<span v-if="item.Status=='Pending'" class="label label-sm label-success">{{item.Status}}</span>
@@ -200,6 +200,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import WizardHeader from "../patientInfo";
 
 export default {
@@ -207,13 +208,76 @@ export default {
     WizardHeader
   },
   props: ["Accession", "CurrentDate"],
+  mounted() {
+    debugger;
+    this.fakeAccession = this.Accession;
+  },
   data() {
     return {
+      fakeAccession: {},
       billingCollapse: false,
       StatusCollapse: false,
       missingCollapse: false,
       patientCollapse: true
     };
+  },
+  computed: {
+    ...mapGetters(["currentUserName1", "selectedAccession"]),
+    newCaseList() {
+      debugger;
+
+      //get the current accession
+      let _accession = _.cloneDeep(this.Accession);
+
+      for (var i = 0; i < _accession.Cases.length; i++) {
+        let currentCase = _accession.Cases[i];
+
+        if (currentCase.BillingType === "Select One") {
+          currentCase.Status = "Pending";
+        } else if (currentCase.BillingType === "Not Provided") {
+          currentCase.Status = "Incomplete";
+          currentCase.Comments = "Billing Type not provided.";
+          currentCase.UserName = this.currentUserName1;
+          continue;
+        } else if (
+          currentCase.BillingType === "Direct" ||
+          currentCase.BillingType === "Split"
+        ) {
+          currentCase.Status = "Complete";
+          currentCase.UserName = this.currentUserName1;
+          continue;
+        } else if (currentCase.BillingType === "Insurance") {
+          if (currentCase.InsuranceType === "Not Provided") {
+            currentCase.Status = "Incomplete";
+            currentCase.Comments = "Insurance not provided.";
+            currentCase.UserName = this.currentUserName1;
+            continue;
+          } else if (currentCase.InsuranceType === "Medicare") {
+            if (currentCase.HospitalStatus === "Not Provided") {
+              currentCase.Status = "Incomplete";
+              currentCase.UserName = this.currentUserName1;
+              continue;
+            } else if (currentCase.HospitalStatus === "Not Provided") {
+              currentCase.Status = "Incomplete";
+              currentCase.Comments = "Hospital Status not provided.";
+              currentCase.UserName = this.currentUserName1;
+              continue;
+            } else {
+              currentCase.Status = "Complete";
+              currentCase.UserName = this.currentUserName1;
+              continue;
+            }
+          } else {
+            currentCase.Status = "Complete";
+            currentCase.UserName = this.currentUserName1;
+            continue;
+          }
+          break;
+        }
+      }
+
+      return _accession;
+    }
   },
   methods: {
     goToMissingInformation: function() {

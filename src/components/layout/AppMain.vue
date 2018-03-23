@@ -49,26 +49,40 @@ export default {
     const connection = hubConnection(config.api_root);
     const hubProxy = connection.createHubProxy("AccessionCases");
 
-    var self1 = this;
+    let self = this;
     // set up event listeners i.e. for incoming "message" event
     hubProxy.on("update_accession", function(accesssion) {
-      console.log(accesssion);
-      self1.syncAccessionFromServer(accesssion);
+      debugger;
+      self.syncAccessionFromServer(accesssion);
     });
 
-    console.log(hubProxy);
+    // set up event listeners i.e. for incoming "message" event
+    hubProxy.on("lock_accession", function(accesssion) {
+      debugger;
+      self.syncAccessionLockingFromServer(accesssion);
+    });
+
+    // set up event listeners i.e. for incoming "message" event
+    hubProxy.on("unlock_accession", function(accesssion) {
+      debugger;
+      self.syncAccessionLockingFromServer(accesssion);
+    });
 
     // connect
     connection
       .start({ jsonp: true })
       .done(function() {
         console.log("Now connected, connection ID=" + connection.id);
+        self.setConnectionID(connection.id);
       })
       .fail(function() {
         console.log("Could not connect");
       });
 
     document.body.className = "page-container-bg-solid";
+  },
+  destroyed() {
+    this.$store.dispatch("logout");
   },
   data() {
     return {
@@ -78,7 +92,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["syncAccessionFromServer"])
+    ...mapActions([
+      "syncAccessionFromServer",
+      "syncAccessionLockingFromServer",
+      "lockAccession",
+      "setConnectionID"
+    ])
   },
   watch: {
     $route(to, from) {

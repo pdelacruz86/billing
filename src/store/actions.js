@@ -38,7 +38,6 @@ export const setFilterDates = ({
   commit(types.SET_FILTER_DATES, dates)
 }
 
-
 export const setLoading = ({
   commit
 }, loaded, message) => {
@@ -79,13 +78,25 @@ export const updateAccession = ({
 export const syncAccessionFromServer = ({
   commit
 }, accession) => {
-  commit(types.UPDATE_ACCESSION, accession)
+  commit(types.SYNC_UPDATE_ACCESSION_FROM_SERVER, accession)
+};
+
+export const syncAccessionLockingFromServer = ({
+  commit
+}, accession) => {
+  commit(types.UPDATE_ACCESSION_LOCKING, accession)
 }
 
 export const setSelectedAccession = ({
   commit
 }, selectedAccession) => {
   commit(types.SET_SELECTED_ACCESSION, selectedAccession)
+};
+
+export const setCurrentStep = ({
+  commit
+}, stepValue) => {
+  commit(types.SET_CURRENT_STEP, stepValue)
 };
 
 export const updateTextSearch = ({
@@ -98,4 +109,28 @@ export const resetState = ({
   commit
 }) => {
   commit(types.RESET_STATE)
+}
+
+export const lockAccession = ({
+  commit
+}, accession) => {
+  debugger;
+  api.lockAccession(accession).then(function () {
+    console.log('accession locked')
+  })
+}
+
+
+export const unlockAccession = ({
+  commit
+}, accession) => {
+  api.unlockAccession(accession).then(function () {
+    console.log('accession unlocked')
+  })
+}
+
+export const setConnectionID = ({
+  commit
+}, connectionid) => {
+  commit(types.SET_CONNECTION_ID, connectionid);
 }

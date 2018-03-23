@@ -225,7 +225,7 @@ export default {
     onClickFn(row, index) {
       this.setSelectedAccession(row);
       this.$router.push({
-        path: "/billing/details/" + row.AccessionID.toString()
+        path: "/details/" + row.AccessionID.toString()
       });
     },
     reloadData() {
@@ -235,7 +235,7 @@ export default {
       return moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
     },
     newSearch: function() {
-      this.$router.push({ path: "/billing/new" });
+      this.$router.push({ path: "/new" });
     },
     searchFn(row, col, cellValue, searchTerm) {}
   }

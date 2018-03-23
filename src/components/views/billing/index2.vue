@@ -29,7 +29,7 @@
             </div>
           </div>
 				</div>
-				<div class="portlet-body">
+				<div class="portlet-body" v-if="!isLocked">
 					<div id="pro-wizard">
 						<step-navigation :steps="steps" :currentstep="currentstep" @step-change="stepChanged">
 						</step-navigation>
@@ -40,15 +40,18 @@
 
 						<div v-if="selectedAccession">
 							<div v-if="currentstep == 2">
-								<StepActiveAccession :Accession="selectedAccession" @select-all-types="selectAllTypes"></StepActiveAccession>
+								<StepActiveAccession :Accession="selectedAccession" @select-all-types="selectAllTypes" 
+                  @update-saved-date="updateSavedDate"></StepActiveAccession>
 							</div>
 
 							<div v-if="currentstep == 3">
-								<Insurance :Accession="selectedAccession" @select-all-types="selectAllTypes"></Insurance>
+								<Insurance :Accession="selectedAccession" @select-all-types="selectAllTypes"  
+                  @update-saved-date="updateSavedDate"></Insurance>
 							</div>
 
 							<div v-if="currentstep == 4">
-								<HospitalStatus :Accession="selectedAccession" @select-all-types="selectAllTypes"></HospitalStatus>
+								<HospitalStatus :Accession="selectedAccession" @select-all-types="selectAllTypes"  
+                  @update-saved-date="updateSavedDate"></HospitalStatus>
 							</div>
 
 							<div v-if="currentstep == 5">
@@ -63,7 +66,8 @@
 								<Review :Accession="selectedAccession" :CurrentDate="currentDate" @go-to-missing="stepChanged"></Review>
 							</div>
 						</div>
-            <step-controls v-for="step in steps" ref="stepControls" 
+            <step-controls v-for="step in steps" 
+              ref="stepControls" 
               :step="step"
               :stepcount="steps.length"
               :currentstep="currentstep"
@@ -71,6 +75,13 @@
             </step-controls>
 				</div>
 			</div>
+      <div class="portlet-body" v-else>
+        <div id="pro-wizard">
+          <div class="alert alert-info">
+								<strong>Info!</strong> You cannot open this accession, it is locked by user {{selectedAccession.LockingInformation.UserName}} on {{selectedAccession.LockingInformation.LockDateTime}}.
+							</div>
+        </div>
+      </div>
 		</div>
 		 <!-- use the modal component, pass in the prop -->
 		<modal v-if="showModal" @close="showModal = false">
@@ -96,6 +107,7 @@
 <script>
 var stepsData = require("./wizard_steps/steps.js");
 const moment = require("moment");
+const _ = require("lodash");
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -106,7 +118,6 @@ import StepControls from "./wizard_steps/step-controls";
 import StepSearch from "./wizard_steps/search";
 import StepActiveAccession from "./wizard_steps/active_accession";
 import Insurance from "./wizard_steps/insurance";
-import Medicare from "./wizard_steps/medicare";
 import HospitalStatus from "./wizard_steps/hospital_status";
 import MissingInfo from "./wizard_steps/missing_information";
 import CheckIn from "./wizard_steps/checkin";
@@ -135,12 +146,15 @@ export default {
     window.addEventListener("keyup", this.keymonitor);
   },
   destroyed: function() {
+    debugger;
+    this.unlockAccession(this.selectedAccession);
     window.removeEventListener("keyup", this.keymonitor);
+    this.setSelectedAccession({});
   },
   watch: {
     $route(to, from) {
       // react to route changes...
-      if (to.fullPath === "/billing/new") {
+      if (to.fullPath === "/new") {
         this.currentstep = 1;
         this.updateTextSearch("");
       }
@@ -150,33 +164,32 @@ export default {
     debugger;
     var querystring = this.$router.history.current.query.filter;
     if (querystring !== undefined) {
+      if (this.selectedAccession.AccessionID !== undefined) {
+        if (!this.selectedAccession.LockingInformation.IsLocked) {
+          this.lockAccession(this.selectedAccession);
+        }
+      }
       this.updateTextSearch(querystring);
-      this.stepChanged(2);
+      this.setCurrentStep(2);
     } else {
       if (this.selectedAccession.AccessionID !== undefined) {
+        if (!this.selectedAccession.LockingInformation.IsLocked)
+          this.lockAccession(this.selectedAccession);
         this.updateTextSearch(this.selectedAccession.AccessionID.toString());
-        this.currentstep = 2;
+        this.setCurrentStep(2);
       } else {
-        this.currentstep = 1;
+        this.setCurrentStep(1);
         this.updateTextSearch("");
       }
     }
-
-    this.steps = stepsData.steps();
   },
   data() {
     return {
-      currentstep: 1,
       indicatorclass: true,
       step: 1,
       active: 1,
       firststep: true,
-      nextStep: "",
-      lastStep: "",
-      laststep: false,
-      steps: [],
       // selectedAccession : {},
-      Accessions: {},
       showModal: false,
       showConfirmationModal: false,
       wizardfullscreen: false,
@@ -188,8 +201,19 @@ export default {
       "selectedAccession",
       "accessions",
       "searchText",
-      "currentUserName1"
+      "currentUserName1",
+      "steps",
+      "currentstep",
+      "connectionID"
     ]),
+    isLocked() {
+      let lockinginfo = this.selectedAccession.LockingInformation;
+      if (lockinginfo !== undefined) {
+        return lockinginfo.isLocked;
+      } else {
+        return false;
+      }
+    },
     currentDate() {
       var date = new Date();
 
@@ -368,11 +392,49 @@ export default {
       "getAllCases",
       "setSelectedAccession",
       "updateTextSearch",
-      "updateAccession"
+      "updateAccession",
+      "unlockAccession",
+      "lockAccession",
+      "setCurrentStep"
     ]),
-    keymonitor: function(event) {
+    updateSavedDate: function(status, casenumber) {
       debugger;
+      let date = new Date();
+      let savedDateTime =
+        date.toLocaleDateString() + " " + date.toLocaleTimeString();
+
+      switch (status) {
+        case "Billing":
+          this.selectedAccession.Cases.forEach(function(item, index) {
+            if (item.CaseNumber === casenumber) {
+              item.BillingTypeSavedDate = savedDateTime;
+              return;
+            }
+          });
+          break;
+        case "Insurance":
+          this.selectedAccession.Cases.forEach(function(item, index) {
+            if (item.CaseNumber === casenumber) {
+              item.InsuranceTypeSavedDate = savedDateTime;
+              return;
+            }
+          });
+          break;
+        case "Hospital":
+          this.selectedAccession.Cases.forEach(function(item, index) {
+            if (item.CaseNumber === casenumber) {
+              item.HospitalStatusSavedDate = savedDateTime;
+              return;
+            }
+          });
+          break;
+        default:
+          break;
+      }
+    },
+    keymonitor: function(event) {
       console.log(event.key);
+      debugger;
       //when hit enter in missing information dont go next submit the MI
       var missingInformationInstace = this.$children[8];
       if (
@@ -405,7 +467,7 @@ export default {
               event.key == "Enter" &&
               this.selectedAccession.TrigueStatus === "Complete"
             ) {
-              this.$router.push({ path: "/billing/worklist" });
+              this.$router.push({ path: "/worklist" });
             } else {
               if (event.key == "Enter") this.submitAccession();
             }
@@ -425,9 +487,10 @@ export default {
 
       //get the current accession
       let _accession = this.selectedAccession;
+
       //get the caselist
       let caselist = _accession.Cases;
-      debugger;
+
       // let savedDateTime = moment().format("YYYY-mm-dd HH:mm:ss");
       //iterate through currentAccession cases
       for (var i = 0; i < caselist.length; i++) {
@@ -435,56 +498,47 @@ export default {
 
         if (currentCase.BillingType === "Select One") {
           _accession.TrigueStatus = "Pending";
+          currentCase.Status = "Pending";
         } else if (currentCase.BillingType === "Not Provided") {
           _accession.TrigueStatus = "Incomplete";
+          currentCase.Status = "Incomplete";
           currentCase.UserName = this.currentUserName1;
-          currentCase.InsuranceTypeSavedDate = "";
-          currentCase.HospitalStatusSavedDate = "";
           continue;
         } else if (
           currentCase.BillingType === "Direct" ||
           currentCase.BillingType === "Split"
         ) {
           _accession.TrigueStatus = "Complete";
+          currentCase.Status = "Complete";
           currentCase.UserName = this.currentUserName1;
-          currentCase.BillingTypeSavedDate = savedDateTime;
-          currentCase.InsuranceTypeSavedDate = "";
-          currentCase.HospitalStatusSavedDate = "";
           continue;
         } else if (currentCase.BillingType === "Insurance") {
           if (currentCase.InsuranceType === "Not Provided") {
             _accession.TrigueStatus = "Incomplete";
+            currentCase.Status = "Incomplete";
             currentCase.UserName = this.currentUserName1;
-            currentCase.InsuranceTypeSavedDate = savedDateTime;
-            currentCase.HospitalStatusSavedDate = "";
-            continue;
-          } else if (currentCase.InsuranceType === "Not Provided") {
-            _accession.TrigueStatus = "Incomplete";
-            currentCase.UserName = this.currentUserName1;
-            currentCase.InsuranceTypeSavedDate = savedDateTime;
-            currentCase.HospitalStatusSavedDate = "";
             continue;
           } else if (currentCase.InsuranceType === "Medicare") {
             if (currentCase.HospitalStatus === "Not Provided") {
               _accession.TrigueStatus = "Incomplete";
+              currentCase.Status = "Incomplete";
               currentCase.UserName = this.currentUserName1;
-              currentCase.HospitalStatusSavedDate = savedDateTime;
               continue;
             } else if (currentCase.HospitalStatus === "Not Provided") {
               _accession.TrigueStatus = "Incomplete";
+              currentCase.Status = "Incomplete";
               currentCase.UserName = this.currentUserName1;
-              currentCase.HospitalStatusSavedDate = savedDateTime;
               continue;
             } else {
               _accession.TrigueStatus = "Complete";
+              currentCase.Status = "Complete";
               currentCase.UserName = this.currentUserName1;
-              currentCase.HospitalStatusSavedDate = savedDateTime;
               continue;
             }
           } else {
             _accession.TrigueStatus = "Complete";
+            currentCase.Status = "Complete";
             currentCase.UserName = this.currentUserName1;
-            currentCase.InsuranceTypeSavedDate = savedDateTime;
             continue;
           }
           break;
@@ -494,8 +548,8 @@ export default {
       console.log(JSON.stringify(_accession));
 
       this.updateAccession(_accession).then(() => {
-        this.currentstep = 1;
-        this.$router.push({ path: "/billing/worklist" });
+        this.setCurrentStep(1);
+        this.$router.push({ path: "/worklist" });
       });
 
       // VueNotifications.success(success);
@@ -508,10 +562,11 @@ export default {
       this.selectedAccession.MissingInformation = missing;
     },
     newSearch: function() {
-      this.currentstep = 1;
+      this.setCurrentStep(1);
       this.updateTextSearch("");
+      this.setSelectedAccession({});
       this.showModal = false;
-      this.$router.push({ path: "/billing/new" });
+      this.$router.push({ path: "/new" });
     },
     selectAllTypes: function(status, type) {
       switch (status) {
@@ -587,7 +642,6 @@ export default {
       if (selfStep > step) {
         isback = true;
       }
-
       if (selfStep === 1) {
         var accessions = this.accessions;
         var tinput = this.searchText.trim();
@@ -606,6 +660,7 @@ export default {
 
             if (current) {
               tinput = a.AccessionID;
+              break;
             }
           }
         } else {
@@ -615,9 +670,10 @@ export default {
         var accession = accessions.filter(function(item) {
           return item.AccessionID === tinput;
         })[0];
+
         if (accession) {
           this.setSelectedAccession(accession);
-          this.currentstep = step;
+          this.setCurrentStep(step);
         } else {
           var error = {
             title:
@@ -634,7 +690,7 @@ export default {
       // step 2
       if (selfStep === 2) {
         if (isback) {
-          this.currentstep = step;
+          this.setCurrentStep(step);
         } else {
           if (this.hasSelectOneBilling) {
             var error = {
@@ -648,9 +704,9 @@ export default {
             //if has insurance
             if (this.hasInsurance) {
               //go next
-              this.currentstep = step;
+              this.setCurrentStep(step);
             } else {
-              this.currentstep = this.StepCheckIn.id;
+              this.setCurrentStep(this.StepCheckIn.id);
             }
           }
           return;
@@ -660,7 +716,7 @@ export default {
       // step 3
       if (selfStep === 3) {
         if (isback) {
-          this.currentstep = step;
+          this.setCurrentStep(step);
         } else {
           if (this.hasSelectOneInsurance) {
             var error = {
@@ -674,9 +730,9 @@ export default {
             //if has insurance
             if (this.hasMedicare) {
               //go next
-              this.currentstep = step;
+              this.setCurrentStep(step);
             } else {
-              this.currentstep = this.StepCheckIn.id;
+              this.setCurrentStep(this.StepCheckIn.id);
             }
           }
           return;
@@ -686,7 +742,7 @@ export default {
       // step 4 ===== Hospital status ========
       if (selfStep === 4) {
         if (isback) {
-          this.currentstep = step;
+          this.setCurrentStep(step);
         } else {
           if (this.hasSelectOneHospitalStatus) {
             var error = {
@@ -697,7 +753,7 @@ export default {
 
             VueNotifications.error(error);
           } else {
-            this.currentstep = this.StepCheckIn.id;
+            this.setCurrentStep(this.StepCheckIn.id);
           }
         }
       }
@@ -707,17 +763,17 @@ export default {
         if (isback) {
           if (this.selectedAccession.CheckInMissingInformation === true) {
             //go next
-            this.currentstep = this.StepMissing.id;
+            this.setCurrentStep(this.StepMissing.id);
           } else {
             //check insurance
             if (this.hasMedicare) {
               //go next
-              this.currentstep = this.StepHospitalStatus.id;
+              this.setCurrentStep(this.StepHospitalStatus.id);
             } else {
               if (this.hasInsurance) {
-                this.currentstep = this.StepInsurance.id;
+                this.setCurrentStep(this.StepInsurance.id);
               } else {
-                this.currentstep = this.StepAccession.id;
+                this.setCurrentStep(this.StepAccession.id);
               }
             }
           }
@@ -725,44 +781,42 @@ export default {
           //if has insurance
           if (this.selectedAccession.CheckInMissingInformation === true) {
             //go next
-            this.currentstep = this.currentstep - 1;
+            this.setCurrentStep(this.currentstep - 1);
           } else {
             //
-            for (var i = 0; i < this.selectedAccession.Cases.length; i++) {
-              var _case = this.selectedAccession.Cases[i];
+            // for (var i = 0; i < this.selectedAccession.Cases.length; i++) {
+            //   var _case = this.selectedAccession.Cases[i];
 
-              if (_case.BillingType === "Select One") {
-                _case.Status = "Pending";
-                _case.Comments = "";
-              } else if (_case.BillingType === "Not Provided") {
-                _case.Status = "Incomplete";
-                _case.Comments = "Billing Type not provided.";
-              } else if (
-                _case.BillingType === "Direct" ||
-                _case.BillingType === "Split"
-              ) {
-                _case.Status = "Complete";
-              } else if (_case.BillingType === "Insurance") {
-                if (_case.InsuranceType === "Not Provided") {
-                  _case.Status = "Incomplete";
-                  _case.Comments = "Insurance not provided.";
-                } else if (_case.InsuranceType === "Not Provided") {
-                  _case.Status = "Incomplete";
-                } else if (_case.InsuranceType === "Medicare") {
-                  if (_case.HospitalStatus === "Not Provided") {
-                    _case.Status = "Incomplete";
-                    _case.Comments = "Hospital Status not provided.";
-                  } else if (_case.HospitalStatus === "Not Provided") {
-                    _case.Status = "Incomplete";
-                  } else {
-                    _case.Status = "Complete";
-                  }
-                } else {
-                  _case.Status = "Complete";
-                }
-              }
-            }
-            this.currentstep = step;
+            //   if (_case.BillingType === "Select One") {
+            //     _case.Status = "Pending";
+            //     _case.Comments = "";
+            //   } else if (_case.BillingType === "Not Provided") {
+            //     _case.Status = "Incomplete";
+            //     _case.Comments = "Billing Type not provided.";
+            //   } else if (
+            //     _case.BillingType === "Direct" ||
+            //     _case.BillingType === "Split"
+            //   ) {
+            //     _case.Status = "Complete";
+            //   } else if (_case.BillingType === "Insurance") {
+            //     if (_case.InsuranceType === "Not Provided") {
+            //       _case.Status = "Incomplete";
+            //       _case.Comments = "Insurance not provided.";
+            //     } else if (_case.InsuranceType === "Medicare") {
+            //       if (_case.HospitalStatus === "Not Provided") {
+            //         _case.Status = "Incomplete";
+            //         _case.Comments = "Hospital Status not provided.";
+            //       } else if (_case.HospitalStatus === "Not Provided") {
+            //         _case.Status = "Incomplete";
+            //       } else {
+            //         _case.Status = "Complete";
+            //       }
+            //     } else {
+            //       _case.Status = "Complete";
+            //     }
+            //   }
+            // }
+            this.setCurrentStep(step);
           }
         }
         return;
@@ -774,27 +828,26 @@ export default {
           //if has insurance
           if (this.hasMedicare) {
             //go next
-            this.currentstep = this.StepHospitalStatus.id;
+            this.setCurrentStep(this.StepHospitalStatus.id);
           } else {
             if (this.hasInsurance) {
-              this.currentstep = this.StepInsurance.id;
+              this.setCurrentStep(this.StepInsurance.id);
             } else {
-              this.currentstep = this.StepAccession.id;
+              this.setCurrentStep(this.StepAccession.id);
             }
           }
         } else {
-          this.currentstep = step;
+          this.setCurrentStep(step);
         }
       }
-      debugger;
       //step 7 -- Last Step
       if (selfStep === 7) {
         if (isback) {
           if (this.selectedAccession.CheckInMissingInformation === true) {
             //go next
-            this.currentstep = this.StepMissing.id;
+            this.setCurrentStep(this.StepMissing.id);
           } else {
-            this.currentstep = this.StepCheckIn.id;
+            this.setCurrentStep(this.StepCheckIn.id);
           }
         } else {
           if (this.selectedAccession.TrigueStatus === "Incomplete") {

@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-		<WizardHeader :selectedAccession="Accession"></WizardHeader>
+		<WizardHeader :selectedAccession="selectedAccession"></WizardHeader>
 		<div class="col-md-6">
 			<div class="portlet box blue">
 					<div class="portlet-title">
@@ -8,8 +8,8 @@
 									<i class="fa fa-file-o"></i>
 									<span class="caption"> Current</span>
 							</div>
-							<div class="actions" v-if="Accession.TrigueStatus !== 'Complete' && Accession.Cases.length > 1">
-									<div :class="{'btn-group':true,  'open': toggleSelectAll}" @click="Accession.TrigueStatus !== 'Complete' ? toggleSelectAll = !toggleSelectAll : toggleSelectAll = false">
+							<div class="actions" v-if="selectedAccession.TrigueStatus !== 'Complete' && selectedAccession.Cases.length > 1">
+									<div :class="{'btn-group':true,  'open': toggleSelectAll}" @click="selectedAccession.TrigueStatus !== 'Complete' ? toggleSelectAll = !toggleSelectAll : toggleSelectAll = false">
 											<a class="btn btn-sm btn-info dropdown-toggle btn-outline btn-circle btn-sm active" href="javascript:;" data-toggle="dropdown" aria-expanded="true"> Select All
 													<i class="fa fa-angle-down"></i>
 											</a>
@@ -47,24 +47,24 @@
 						</thead>
 
 						<tbody>
-							<tr v-for="item in Accession.Cases">
+							<tr v-for="item in selectedAccession.Cases">
 								<td>{{item.CaseNumber}}</td>
-							<td v-if="item.Status !== 'Complete'"> 
-									<select v-model="item.BillingType">
-										<option>Select One</option>	
-										<option>Direct</option>	
-										<option>Insurance</option>	
-										<option>Split</option>	
-										<option>Not Provided</option>	
-									</select>
-								</td>
+								<td v-if="item.Status !== 'Complete'" @change="updateSaveTime(item.CaseNumber)"> 
+										<select v-model="item.BillingType">
+											<option>Select One</option>	
+											<option>Direct</option>	
+											<option>Insurance</option>	
+											<option>Split</option>	
+											<option>Not Provided</option>	
+										</select>
+									</td>
 									<td v-else="">
-									{{item.BillingType}}
-								</td>
-								<td>
-									 <a href="javascript:;" @click="openCaseContentCentral(item.CaseNumber)">
-                         <i class="fa fa-file-pdf-o"></i></a>
-								</td>
+										{{item.BillingType}}
+									</td>
+									<td>
+										<a href="javascript:;" @click="openCaseContentCentral(item.CaseNumber)">
+													<i class="fa fa-file-pdf-o"></i></a>
+									</td>
 							</tr>
 						</tbody>
 					</table>
@@ -89,6 +89,7 @@
 	</div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import WizardHeader from "./../patientInfo";
 
 export default {
@@ -101,6 +102,9 @@ export default {
       default: () => {}
     }
   },
+  computed: {
+    ...mapGetters(["selectedAccession"])
+  },
   data() {
     return {
       toggleSelectAll: false
@@ -109,6 +113,9 @@ export default {
   methods: {
     selectAllTypes: function(type) {
       this.$emit("select-all-types", "Billing", type);
+    },
+    updateSaveTime(casenumber) {
+      this.$emit("update-saved-date", "Billing", casenumber);
     },
     openCaseContentCentral: function(casenumber) {
       window.open(

@@ -28,32 +28,32 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/billing',
+      path: '/',
       name: '',
       component: AppMain,
       children: [{
-        path: '/billing',
+        path: '/',
         component: Home,
         name: 'Dashboard',
         meta: {
           description: 'Worklist'
         }
       }, {
-        path: '/billing/worklist',
+        path: '/worklist',
         component: Worklist,
         name: 'Worklist',
         meta: {
           description: 'Worklist'
         }
       }, {
-        path: '/billing/new',
+        path: '/new',
         component: Billing,
         name: 'Billing',
         meta: {
           description: 'test'
         }
       }, {
-        path: '/billing/details/:id',
+        path: '/details/:id',
         component: Billing,
         name: 'Accession',
         meta: {
@@ -61,7 +61,7 @@ const router = new Router({
           description: "details"
         }
       }, {
-        path: '/billing/search',
+        path: '/search',
         component: Billing,
         name: 'Accession',
         meta: {
@@ -69,7 +69,7 @@ const router = new Router({
           description: "details"
         }
       }, {
-        path: '/billing/blank',
+        path: '/blank',
         alias: '',
         component: Blank,
         name: 'Blank',
@@ -77,7 +77,7 @@ const router = new Router({
           description: 'Blank Description'
         }
       }, {
-        path: '/billing/soon',
+        path: '/soon',
         alias: '',
         component: Soon,
         name: 'Blank',
@@ -88,7 +88,7 @@ const router = new Router({
     },
     {
       path: '*',
-      redirect: '/billing/'
+      redirect: '/'
     }
   ]
 })

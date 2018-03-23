@@ -1,6 +1,12 @@
 const moment = require("moment");
 export const currentUserName1 = state => state.login.username
+export const connectionID = state => state.app.connection_id
+//wizard
+export const selectedAccession = state => state.app.selectedAccession
+export const steps = state => state.wizard.steps
+export const currentstep = state => state.wizard.currentstep
 
+//worklist dashboard
 export const accessions = state => state.app.accessions_by_date.filter((accession) => {
   let accessionFilter = state.app.accessions_filter
 
@@ -139,13 +145,12 @@ export const accessions = state => state.app.accessions_by_date.filter((accessio
   }
 })
 
-export const selectedAccession = state => state.app.selectedAccession
 export const accessions_filter = state => state.app.accessions_filter
 export const accessions_sorting = state => state.app.accessions_sorting
 export const searchText = state => state.app.searchText
 export const filterDates = state => state.app.filterDates
 
-
+//global
 export const showBlockUI = state => {
   return state.app.showBlockUI
 }

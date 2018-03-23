@@ -49,7 +49,7 @@
 								<tr v-for="item in Accession.Cases">
 									<td>{{ item.CaseNumber }}</td>
 									<td v-if="item.InsuranceType === 'Medicare'  && item.Status !== 'Complete'"> 
-										<select v-model="item.HospitalStatus">
+										<select v-model="item.HospitalStatus" @change="updateSaveTime(item.CaseNumber)">
 											<option>Select One</option>	
 											<option>Inpatient</option>	
 											<option>Outpatient</option>	
@@ -118,6 +118,10 @@ export default {
     selectAllTypes: function(type) {
       debugger;
       this.$emit("select-all-types", "Hospital", type);
+    },
+    updateSaveTime(casenumber) {
+      debugger;
+      this.$emit("update-saved-date", "Hospital", casenumber);
     },
     openCaseContentCentral: function(casenumber) {
       window.open(

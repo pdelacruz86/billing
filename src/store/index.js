@@ -4,7 +4,7 @@ import * as actions from './actions'
 import * as getters from './getters'
 
 import login from './modules/login'
-// import billing from './modules/billing'
+import billing from './modules/billing'
 // import worklist from './modules/worklist'
 import appGlobal from './modules/app-global.js'
 
@@ -19,7 +19,8 @@ const store = new Vuex.Store({
   getters,
   modules: {
     login,
-    app: appGlobal
+    app: appGlobal,
+    wizard: billing
   },
   mutations: {
 

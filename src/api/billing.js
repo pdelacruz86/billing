@@ -23,5 +23,19 @@ export default {
       .then(function (response) {
         return response
       })
+  },
+  lockAccession: function (accession) {
+    return myAPI.post(config.api_root + config.api_root_path + '/cases/LockAccession', accession, {
+      headers: {
+        "Authorization": localStorage.getItem("token")
+      }
+    })
+  },
+  unlockAccession: function (accession) {
+    return myAPI.post(config.api_root + config.api_root_path + '/cases/UnlockAccession', accession, {
+      headers: {
+        "Authorization": localStorage.getItem("token")
+      }
+    })
   }
 }

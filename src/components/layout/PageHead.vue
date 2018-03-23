@@ -111,7 +111,7 @@
                           </li>
                            <li> Insurance Type:
                               <select v-model="accessions_filter.insuranceType"
-                              class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
+                                class="theme-setting theme-setting-top-menu-mode form-control input-sm input-small input-inline tooltips" data-original-title="Enable fixed(sticky) top menu" data-container="body" data-placement="left">
                                   <option>Select One </option>
                                   <option>Medicare </option>
                                   <option>Not Medicare</option>

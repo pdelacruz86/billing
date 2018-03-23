@@ -45,7 +45,7 @@
 							<tr v-for="item in Accession.Cases">
 								<td>{{item.CaseNumber}}</td>
 								<td v-if="item.BillingType === 'Insurance' && item.Status !== 'Complete'"> 
-									<select v-model="item.InsuranceType" @change="selectEvt" >
+									<select v-model="item.InsuranceType" @change="updateSaveTime(item.CaseNumber)" >
 										<option>Select One</option>	
 										<option>Medicare</option>	
 										<option>Not Medicare</option>	
@@ -105,6 +105,10 @@ export default {
       this.$emit("select-all-types", "Insurance", type);
     },
     selectEvt: function() {},
+    updateSaveTime(casenumber) {
+      debugger;
+      this.$emit("update-saved-date", "Insurance", casenumber);
+    },
     openCaseContentCentral: function(casenumber) {
       window.open(
         "http://csi-dis-one/ContentCentral/Search/Search.aspx?_fts=" +
