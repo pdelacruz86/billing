@@ -1,5 +1,4 @@
 export const dashboardSummarizedData = state => {
-  debugger;
   var accessions = state.accessions || [];
 
   if (accessions.length === 0) return {

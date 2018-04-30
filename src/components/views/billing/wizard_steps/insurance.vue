@@ -103,11 +103,15 @@ export default {
   methods: {
     selectAllTypes: function(type) {
       this.$emit("select-all-types", "Insurance", type);
+
+      this.Accession.Cases.forEach(element => {
+        this.$emit("update-saved-date", "Insurance", element.CaseNumber);
+      });
     },
     selectEvt: function() {},
     updateSaveTime(casenumber) {
-      debugger;
       this.$emit("update-saved-date", "Insurance", casenumber);
+      debugger;
     },
     openCaseContentCentral: function(casenumber) {
       window.open(

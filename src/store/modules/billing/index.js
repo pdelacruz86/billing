@@ -10,8 +10,9 @@ const state = {
     id: 2,
     key: 'step_accession',
     title: 'Active Accession',
-    icon_class: "fa fa-file-o"
-  }, {
+    icon_class: "fa fa-file-o" 
+  }, 
+  {
     id: 3,
     key: 'step_insurance',
     title: 'Insurance',

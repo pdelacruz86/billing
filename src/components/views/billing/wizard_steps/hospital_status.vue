@@ -54,7 +54,7 @@
 											<option>Inpatient</option>	
 											<option>Outpatient</option>	
 											<option>Non-hospital</option>	
-											<option>Not Provided</option>	
+											<option>	</option>	
 										</select>
 									</td>
 									<td v-else>
@@ -116,8 +116,11 @@ export default {
   },
   methods: {
     selectAllTypes: function(type) {
-      debugger;
       this.$emit("select-all-types", "Hospital", type);
+
+      this.Accession.Cases.forEach(element => {
+        this.$emit("update-saved-date", "Hospital", element.CaseNumber);
+      });
     },
     updateSaveTime(casenumber) {
       debugger;

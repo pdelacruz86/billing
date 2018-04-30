@@ -27,6 +27,7 @@
     "moment": "^2.20.1",
     "promise": "^7.1.1",
     "signalr-no-jquery": "^0.1.8",
+    "standard": "^11.0.1",
     "validate.js": "^0.11.1",
     "vee-validate": "^2.0.3",
     "vue": "^2.2.2",

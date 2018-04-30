@@ -113,6 +113,10 @@ export default {
   methods: {
     selectAllTypes: function(type) {
       this.$emit("select-all-types", "Billing", type);
+
+      this.Accession.Cases.forEach(element => {
+        this.$emit("update-saved-date", "Billing", element.CaseNumber);
+      });
     },
     updateSaveTime(casenumber) {
       this.$emit("update-saved-date", "Billing", casenumber);
